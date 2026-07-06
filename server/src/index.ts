@@ -54,6 +54,56 @@ app.post('/foods', (req, res) => {
   res.status(201).json(newFood);
 });
 
+app.get('/foods/:id', (req, res) => {
+  const food = foods.find((f) => f.id === req.params.id);
+  if (!food) {
+    return res.status(404).json({ error: 'Food not found' });
+  }
+  res.json(food);
+});
+
+app.put('/foods/:id', (req, res) => {
+  const index = foods.findIndex((f) => f.id === req.params.id);
+  if (index === -1) {
+    return res.status(404).json({ error: 'Food not found' });
+  }
+
+  const { name, caloriesPer100g, proteinPer100g, carbsPer100g, fatPer100g, fibrePer100g } = req.body;
+
+  if (
+    typeof name !== 'string' ||
+    typeof caloriesPer100g !== 'number' ||
+    typeof proteinPer100g !== 'number' ||
+    typeof carbsPer100g !== 'number' ||
+    typeof fatPer100g !== 'number' ||
+    typeof fibrePer100g !== 'number'
+  ) {
+    return res.status(400).json({ error: 'Invalid food data' });
+  }
+
+  const updatedFood: Food = {
+    id: req.params.id,
+    name,
+    caloriesPer100g,
+    proteinPer100g,
+    carbsPer100g,
+    fatPer100g,
+    fibrePer100g,
+  };
+
+  foods[index] = updatedFood;
+  res.json(updatedFood);
+});
+
+app.delete('/foods/:id', (req, res) => {
+  const index = foods.findIndex((f) => f.id === req.params.id);
+  if (index === -1) {
+    return res.status(404).json({ error: 'Food not found' });
+  }
+  foods.splice(index, 1);
+  res.status(204).send();
+});
+
 app.listen(PORT, () => {
   console.log(`Server listening on http://localhost:${PORT}`);
 });
