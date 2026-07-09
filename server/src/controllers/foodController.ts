@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { randomUUID } from 'crypto';
 import { Food } from '../types';
+import { pool } from '../db';
 
 const foods: Food[] = [
   {
@@ -14,19 +15,24 @@ const foods: Food[] = [
   },
 ];
 
-export function getAllFoods(req: Request, res: Response) {
-  res.json(foods);
+export async function getAllFoods(req: Request, res: Response) {
+  const result = await pool.query('SELECT * FROM foods');
+  res.json(result.rows);
 }
 
-export function getFoodById(req: Request, res: Response) {
-  const food = foods.find((f) => f.id === req.params.id);
-  if (!food) {
+export async function getFoodById(req: Request, res: Response) {
+  const { id } = req.params;
+
+  const result = await pool.query('SELECT * FROM foods WHERE id = $1', [id]);
+
+  if (result.rows.length === 0) {
     return res.status(404).json({ error: 'Food not found' });
   }
-  res.json(food);
+
+  res.json(result.rows[0]);
 }
 
-export function createFood(req: Request, res: Response) {
+export async function createFood(req: Request, res: Response) {
   const { name, caloriesPer100g, proteinPer100g, carbsPer100g, fatPer100g, fibrePer100g } = req.body;
 
   if (
@@ -40,31 +46,22 @@ export function createFood(req: Request, res: Response) {
     return res.status(400).json({ error: 'Invalid food data' });
   }
 
-  const newFood: Food = {
-    id: randomUUID(),
-    name,
-    caloriesPer100g,
-    proteinPer100g,
-    carbsPer100g,
-    fatPer100g,
-    fibrePer100g,
-  };
+  const result = await pool.query(
+    `INSERT INTO foods (name, calories_per_100g, protein_per_100g, carbs_per_100g, fat_per_100g, fibre_per_100g)
+     VALUES ($1, $2, $3, $4, $5, $6)
+     RETURNING *`,
+    [name, caloriesPer100g, proteinPer100g, carbsPer100g, fatPer100g, fibrePer100g]
+  );
 
-  foods.push(newFood);
-  res.status(201).json(newFood);
+  res.status(201).json(result.rows[0]);
 }
 
-export function updateFood(req: Request, res: Response) {
-
+export async function updateFood(req: Request, res: Response) {
   const { id } = req.params;
 
   if (typeof id !== 'string') {
     return res.status(400).json({ error: 'Invalid id' });
   }
-  const index = foods.findIndex((f) => f.id === req.params.id);
-  if (index === -1) {
-    return res.status(404).json({ error: 'Food not found' });
-  }
 
   const { name, caloriesPer100g, proteinPer100g, carbsPer100g, fatPer100g, fibrePer100g } = req.body;
 
@@ -79,25 +76,33 @@ export function updateFood(req: Request, res: Response) {
     return res.status(400).json({ error: 'Invalid food data' });
   }
 
-  const updatedFood: Food = {
-    id,
-    name,
-    caloriesPer100g,
-    proteinPer100g,
-    carbsPer100g,
-    fatPer100g,
-    fibrePer100g,
-  };
+  const result = await pool.query(
+    `UPDATE foods
+     SET name = $1, calories_per_100g = $2, protein_per_100g = $3, carbs_per_100g = $4, fat_per_100g = $5, fibre_per_100g = $6
+     WHERE id = $7
+     RETURNING *`,
+    [name, caloriesPer100g, proteinPer100g, carbsPer100g, fatPer100g, fibrePer100g, id]
+  );
 
-  foods[index] = updatedFood;
-  res.json(updatedFood);
-}
-
-export function deleteFood(req: Request, res: Response) {
-  const index = foods.findIndex((f) => f.id === req.params.id);
-  if (index === -1) {
+  if (result.rows.length === 0) {
     return res.status(404).json({ error: 'Food not found' });
   }
-  foods.splice(index, 1);
+
+  res.json(result.rows[0]);
+}
+
+export async function deleteFood(req: Request, res: Response) {
+  const { id } = req.params;
+
+  if (typeof id !== 'string') {
+    return res.status(400).json({ error: 'Invalid id' });
+  }
+
+  const result = await pool.query('DELETE FROM foods WHERE id = $1', [id]);
+
+  if (result.rowCount === 0) {
+    return res.status(404).json({ error: 'Food not found' });
+  }
+
   res.status(204).send();
 }
