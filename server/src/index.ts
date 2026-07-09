@@ -1,5 +1,6 @@
 import express from 'express';
 import foodRoutes from './routes/foodRoutes';
+import entryRoutes from './routes/entryRoutes';
 
 const app = express();
 const PORT = 4000;
@@ -11,6 +12,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/foods', foodRoutes);
+app.use('/entries', entryRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server listening on http://localhost:${PORT}`);

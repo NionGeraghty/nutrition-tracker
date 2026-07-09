@@ -7,3 +7,10 @@ export interface Food {
   fatPer100g: number;
   fibrePer100g: number;
 }
+
+export interface FoodEntry {
+  id: string;
+  foodId: string;
+  date: string;
+  grams: number;
+}
