@@ -1,29 +1,21 @@
 import { Request, Response } from 'express';
-import { randomUUID } from 'crypto';
-import { Food } from '../types';
 import { pool } from '../db';
+import { Food } from '../types';
 
-const foods: Food[] = [
-  {
-    id: '1',
-    name: 'Chicken breast',
-    caloriesPer100g: 165,
-    proteinPer100g: 31,
-    carbsPer100g: 0,
-    fatPer100g: 3.6,
-    fibrePer100g: 0,
-  },
-];
+const DEV_USER_ID = process.env.DEV_USER_ID;
 
 export async function getAllFoods(req: Request, res: Response) {
-  const result = await pool.query('SELECT * FROM foods');
+  const result = await pool.query<Food>('SELECT * FROM foods WHERE user_id = $1', [DEV_USER_ID]);
   res.json(result.rows);
 }
 
 export async function getFoodById(req: Request, res: Response) {
   const { id } = req.params;
 
-  const result = await pool.query('SELECT * FROM foods WHERE id = $1', [id]);
+  const result = await pool.query<Food>(
+    'SELECT * FROM foods WHERE id = $1 AND user_id = $2',
+    [id, DEV_USER_ID]
+  );
 
   if (result.rows.length === 0) {
     return res.status(404).json({ error: 'Food not found' });
@@ -46,11 +38,11 @@ export async function createFood(req: Request, res: Response) {
     return res.status(400).json({ error: 'Invalid food data' });
   }
 
-  const result = await pool.query(
-    `INSERT INTO foods (name, calories_per_100g, protein_per_100g, carbs_per_100g, fat_per_100g, fibre_per_100g)
-     VALUES ($1, $2, $3, $4, $5, $6)
+  const result = await pool.query<Food>(
+    `INSERT INTO foods (name, calories_per_100g, protein_per_100g, carbs_per_100g, fat_per_100g, fibre_per_100g, user_id)
+     VALUES ($1, $2, $3, $4, $5, $6, $7)
      RETURNING *`,
-    [name, caloriesPer100g, proteinPer100g, carbsPer100g, fatPer100g, fibrePer100g]
+    [name, caloriesPer100g, proteinPer100g, carbsPer100g, fatPer100g, fibrePer100g, DEV_USER_ID]
   );
 
   res.status(201).json(result.rows[0]);
@@ -76,12 +68,12 @@ export async function updateFood(req: Request, res: Response) {
     return res.status(400).json({ error: 'Invalid food data' });
   }
 
-  const result = await pool.query(
+  const result = await pool.query<Food>(
     `UPDATE foods
      SET name = $1, calories_per_100g = $2, protein_per_100g = $3, carbs_per_100g = $4, fat_per_100g = $5, fibre_per_100g = $6
-     WHERE id = $7
+     WHERE id = $7 AND user_id = $8
      RETURNING *`,
-    [name, caloriesPer100g, proteinPer100g, carbsPer100g, fatPer100g, fibrePer100g, id]
+    [name, caloriesPer100g, proteinPer100g, carbsPer100g, fatPer100g, fibrePer100g, id, DEV_USER_ID]
   );
 
   if (result.rows.length === 0) {
@@ -98,7 +90,10 @@ export async function deleteFood(req: Request, res: Response) {
     return res.status(400).json({ error: 'Invalid id' });
   }
 
-  const result = await pool.query('DELETE FROM foods WHERE id = $1', [id]);
+  const result = await pool.query(
+    'DELETE FROM foods WHERE id = $1 AND user_id = $2',
+    [id, DEV_USER_ID]
+  );
 
   if (result.rowCount === 0) {
     return res.status(404).json({ error: 'Food not found' });
