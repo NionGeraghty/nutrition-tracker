@@ -1,6 +1,7 @@
 import express from 'express';
 import foodRoutes from './routes/foodRoutes';
 import entryRoutes from './routes/entryRoutes';
+import goalRoutes from './routes/goalRoutes';
 
 const app = express();
 
@@ -12,5 +13,6 @@ app.get('/', (req, res) => {
 
 app.use('/foods', foodRoutes);
 app.use('/entries', entryRoutes);
+app.use('/goals', goalRoutes);
 
 export default app;
