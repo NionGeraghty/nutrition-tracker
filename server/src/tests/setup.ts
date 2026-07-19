@@ -11,6 +11,7 @@ beforeAll(async () => {
 afterEach(async () => {
   await pool.query('DELETE FROM food_entries');
   await pool.query('DELETE FROM foods');
+  await pool.query('DELETE FROM daily_goals');
 });
 
 afterAll(async () => {
