@@ -3,8 +3,10 @@ import foodRoutes from './routes/foodRoutes';
 import entryRoutes from './routes/entryRoutes';
 import goalRoutes from './routes/goalRoutes';
 import summaryRoutes from './routes/summaryRoutes';
+import cors from 'cors';
 
 const app = express();
+app.use(cors());
 
 app.use(express.json());
 
