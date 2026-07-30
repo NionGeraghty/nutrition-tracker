@@ -5,12 +5,16 @@ import { FoodEntry } from '../types';
 const DEV_USER_ID = process.env.DEV_USER_ID;
 
 export async function createEntry(req: Request, res: Response) {
-  const { foodId, date, grams } = req.body;
+  const { foodId, date, grams, mealType } = req.body;
+
+  const validMealTypes = ['breakfast', 'lunch', 'dinner', 'snack', 'other'];
 
   if (
     typeof foodId !== 'string' ||
     typeof date !== 'string' ||
-    typeof grams !== 'number'
+    typeof grams !== 'number' ||
+    typeof mealType !== 'string' ||
+    !validMealTypes.includes(mealType)
   ) {
     return res.status(400).json({ error: 'Invalid entry data' });
   }
@@ -24,10 +28,10 @@ export async function createEntry(req: Request, res: Response) {
   }
 
   const result = await pool.query<FoodEntry>(
-    `INSERT INTO food_entries (food_id, date, grams, user_id)
-     VALUES ($1, $2, $3, $4)
+    `INSERT INTO food_entries (food_id, date, grams, meal_type, user_id)
+     VALUES ($1, $2, $3, $4, $5)
      RETURNING *`,
-    [foodId, date, grams, DEV_USER_ID]
+    [foodId, date, grams, mealType, DEV_USER_ID]
   );
 
   res.status(201).json(result.rows[0]);
@@ -41,21 +45,22 @@ export async function getEntriesByDate(req: Request, res: Response) {
   }
 
   const result = await pool.query(
-    `SELECT
-       food_entries.id,
-       food_entries.date,
-       food_entries.grams,
-       foods.name,
-       foods.calories_per_100g,
-       foods.protein_per_100g,
-       foods.carbs_per_100g,
-       foods.fat_per_100g,
-       foods.fibre_per_100g
-     FROM food_entries
-     JOIN foods ON food_entries.food_id = foods.id
-     WHERE food_entries.date = $1 AND food_entries.user_id = $2`,
-    [date, DEV_USER_ID]
-  );
+  `SELECT
+     food_entries.id,
+     food_entries.date,
+     food_entries.grams,
+     food_entries.meal_type,
+     foods.name,
+     foods.calories_per_100g,
+     foods.protein_per_100g,
+     foods.carbs_per_100g,
+     foods.fat_per_100g,
+     foods.fibre_per_100g
+   FROM food_entries
+   JOIN foods ON food_entries.food_id = foods.id
+   WHERE food_entries.date = $1 AND food_entries.user_id = $2`,
+  [date, DEV_USER_ID]
+);
 
   res.json(result.rows);
 }

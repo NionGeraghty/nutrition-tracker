@@ -12,9 +12,10 @@ export interface Food {
 export interface FoodEntry {
   id: string;
   foodId: string;
+  userId: string;
   date: string;
   grams: number;
-  userId: string;
+  mealType: string;
 }
 
 export interface User {

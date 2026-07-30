@@ -22,10 +22,12 @@ describe('POST /entries', () => {
       foodId,
       date: '2026-07-13',
       grams: 150,
+      mealType: 'lunch',
     });
 
     expect(entryResponse.status).toBe(201);
     expect(entryResponse.body.food_id).toBe(foodId);
+    expect(entryResponse.body.meal_type).toBe('lunch');
   });
 
   it('rejects an entry referencing a food that does not exist', async () => {
@@ -33,6 +35,7 @@ describe('POST /entries', () => {
       foodId: '00000000-0000-0000-0000-000000000099',
       date: '2026-07-13',
       grams: 150,
+      mealType: 'lunch',
     });
 
     expect(response.status).toBe(400);
@@ -41,7 +44,28 @@ describe('POST /entries', () => {
   it('rejects invalid entry data', async () => {
     const response = await request(app).post('/entries').send({
       date: '2026-07-13',
-      // missing foodId and grams
+      // missing foodId, grams, and mealType
+    });
+
+    expect(response.status).toBe(400);
+  });
+
+  it('rejects an entry with an invalid mealType', async () => {
+    const foodResponse = await request(app).post('/foods').send({
+      name: 'Rice',
+      caloriesPer100g: 130,
+      proteinPer100g: 2.7,
+      carbsPer100g: 28,
+      fatPer100g: 0.3,
+      fibrePer100g: 0.4,
+    });
+    const foodId = foodResponse.body.id;
+
+    const response = await request(app).post('/entries').send({
+      foodId,
+      date: '2026-07-13',
+      grams: 150,
+      mealType: 'brunch',
     });
 
     expect(response.status).toBe(400);
@@ -64,6 +88,7 @@ describe('GET /entries', () => {
       foodId,
       date: '2026-07-13',
       grams: 50,
+      mealType: 'breakfast',
     });
 
     const response = await request(app).get('/entries?date=2026-07-13');
@@ -72,6 +97,7 @@ describe('GET /entries', () => {
     expect(response.body).toHaveLength(1);
     expect(response.body[0].name).toBe('Oats');
     expect(response.body[0].grams).toBe('50');
+    expect(response.body[0].meal_type).toBe('breakfast');
   });
 
   it('returns an empty array for a date with no entries', async () => {
