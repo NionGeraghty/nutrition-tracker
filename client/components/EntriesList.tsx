@@ -1,22 +1,11 @@
 'use client';
 
 import EntryItem from './EntryItem';
-
-interface Entry {
-  id: string;
-  grams: string;
-  meal_type: string;
-  name: string;
-  calories_per_100g: string;
-  protein_per_100g: string;
-  carbs_per_100g: string;
-  fat_per_100g: string;
-  fibre_per_100g: string;
-}
+import { Entry, Food } from '@/types';
 
 const MEAL_ORDER = ['breakfast', 'lunch', 'dinner', 'snack', 'other'];
 
-export default function EntriesList({ entries }: { entries: Entry[] }) {
+export default function EntriesList({ entries, foods }: { entries: Entry[]; foods: Food[] }) {
   const grouped = MEAL_ORDER.map((mealType) => ({
     mealType,
     items: entries.filter((entry) => entry.meal_type === mealType),
@@ -32,8 +21,8 @@ export default function EntriesList({ entries }: { entries: Entry[] }) {
         <div key={group.mealType}>
           <h3 className="font-semibold capitalize mb-2">{group.mealType}</h3>
           <ul className="space-y-2">
-            {group.items.map((entry) => (
-              <EntryItem key={entry.id} entry={entry} />
+            {group.items.map((item) => (
+              <EntryItem key={item.id} entry={item} foods={foods} />
             ))}
           </ul>
         </div>

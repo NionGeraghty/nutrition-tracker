@@ -2,16 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-
-interface Food {
-  id: string;
-  name: string;
-  calories_per_100g: string;
-  protein_per_100g: string;
-  carbs_per_100g: string;
-  fat_per_100g: string;
-  fibre_per_100g: string;
-}
+import { Food } from '@/types';
 
 export default function FoodItem({ food }: { food: Food }) {
   const router = useRouter();

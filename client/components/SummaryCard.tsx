@@ -1,9 +1,4 @@
-interface Summary {
-  date: string;
-  totals: { calories: number; protein: number; carbs: number; fat: number; fibre: number };
-  goals: { calories: number; protein: number; carbs: number; fat: number; fibre: number } | null;
-  remaining: { calories: number; protein: number; carbs: number; fat: number; fibre: number } | null;
-}
+import { Summary } from '@/types';
 
 export default function SummaryCard({ summary }: { summary: Summary }) {
   return (

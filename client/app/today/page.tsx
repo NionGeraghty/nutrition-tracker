@@ -1,36 +1,7 @@
 import LogEntryForm from '@/components/LogEntryForm';
 import EntriesList from '@/components/EntriesList';
 import SummaryCard from '@/components/SummaryCard';
-
-interface Food {
-  id: string;
-  name: string;
-  calories_per_100g: string;
-  protein_per_100g: string;
-  carbs_per_100g: string;
-  fat_per_100g: string;
-  fibre_per_100g: string;
-}
-
-interface Entry {
-  id: string;
-  date: string;
-  grams: string;
-  meal_type: string;
-  name: string;
-  calories_per_100g: string;
-  protein_per_100g: string;
-  carbs_per_100g: string;
-  fat_per_100g: string;
-  fibre_per_100g: string;
-}
-
-interface Summary {
-  date: string;
-  totals: { calories: number; protein: number; carbs: number; fat: number; fibre: number };
-  goals: { calories: number; protein: number; carbs: number; fat: number; fibre: number } | null;
-  remaining: { calories: number; protein: number; carbs: number; fat: number; fibre: number } | null;
-}
+import { Food, Entry, Summary } from '@/types';
 
 function getTodayDateString(): string {
   const now = new Date();
@@ -75,7 +46,7 @@ export default async function TodayPage() {
 
       <LogEntryForm foods={foods} date={date} />
 
-      <EntriesList entries={entries} />
+      <EntriesList entries={entries} foods={foods} />
     </main>
   );
 }

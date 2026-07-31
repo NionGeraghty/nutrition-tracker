@@ -2,11 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-
-interface Food {
-  id: string;
-  name: string;
-}
+import { Food } from '@/types';
 
 export default function LogEntryForm({ foods, date }: { foods: Food[]; date: string }) {
   const router = useRouter();

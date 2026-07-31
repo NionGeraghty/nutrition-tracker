@@ -2,16 +2,7 @@
 
 import { useState } from 'react';
 import FoodItem from './FoodItem';
-
-interface Food {
-  id: string;
-  name: string;
-  calories_per_100g: string;
-  protein_per_100g: string;
-  carbs_per_100g: string;
-  fat_per_100g: string;
-  fibre_per_100g: string;
-}
+import { Food } from '@/types';
 
 export default function FoodsList({ foods }: { foods: Food[] }) {
   const [search, setSearch] = useState('');

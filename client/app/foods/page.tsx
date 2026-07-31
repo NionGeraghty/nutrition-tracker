@@ -1,15 +1,6 @@
 import CreateFoodForm from '@/components/CreateFoodForm';
 import FoodsList from '@/components/FoodsList';
-
-interface Food {
-  id: string;
-  name: string;
-  calories_per_100g: string;
-  protein_per_100g: string;
-  carbs_per_100g: string;
-  fat_per_100g: string;
-  fibre_per_100g: string;
-}
+import { Food } from '@/types';
 
 async function getFoods(): Promise<Food[]> {
   const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/foods`, {
