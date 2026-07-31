@@ -108,6 +108,60 @@ describe('GET /entries', () => {
   });
 });
 
+describe('PUT /entries/:id', () => {
+  it('updates an existing entry', async () => {
+    const foodResponse = await request(app).post('/foods').send({
+      name: 'Rice',
+      caloriesPer100g: 130,
+      proteinPer100g: 2.7,
+      carbsPer100g: 28,
+      fatPer100g: 0.3,
+      fibrePer100g: 0.4,
+    });
+    const foodId = foodResponse.body.id;
+
+    const createResponse = await request(app).post('/entries').send({
+      foodId,
+      date: '2026-07-13',
+      grams: 100,
+      mealType: 'breakfast',
+    });
+    const entryId = createResponse.body.id;
+
+    const updateResponse = await request(app).put(`/entries/${entryId}`).send({
+      foodId,
+      date: '2026-07-13',
+      grams: 200,
+      mealType: 'lunch',
+    });
+
+    expect(updateResponse.status).toBe(200);
+    expect(updateResponse.body.grams).toBe('200');
+    expect(updateResponse.body.meal_type).toBe('lunch');
+  });
+
+  it('returns 404 when updating an entry that does not exist', async () => {
+    const foodResponse = await request(app).post('/foods').send({
+      name: 'Rice',
+      caloriesPer100g: 130,
+      proteinPer100g: 2.7,
+      carbsPer100g: 28,
+      fatPer100g: 0.3,
+      fibrePer100g: 0.4,
+    });
+    const foodId = foodResponse.body.id;
+
+    const response = await request(app).put('/entries/00000000-0000-0000-0000-000000000099').send({
+      foodId,
+      date: '2026-07-13',
+      grams: 200,
+      mealType: 'lunch',
+    });
+
+    expect(response.status).toBe(404);
+  });
+});
+
 describe('user isolation', () => {
   it('does not return another user\'s entries', async () => {
     await pool.query(
