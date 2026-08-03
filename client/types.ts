@@ -36,3 +36,11 @@ export interface Summary {
   goals: MacroValues | null;
   remaining: MacroValues | null;
 }
+
+export interface Goals {
+  calories: string;
+  protein: string;
+  carbs: string;
+  fat: string;
+  fibre: string;
+}
