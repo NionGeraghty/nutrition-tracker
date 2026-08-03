@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Goals } from '@/types';
+import GoalsCalculator from './GoalsCalculator';
 
 export default function GoalsForm({ goals }: { goals: Goals | null }) {
   const router = useRouter();
@@ -14,7 +15,23 @@ export default function GoalsForm({ goals }: { goals: Goals | null }) {
   const [error, setError] = useState('');
   const [saved, setSaved] = useState(false);
 
+  function handleCalculated(macros: {
+    calories: number;
+    protein: number;
+    carbs: number;
+    fat: number;
+    fibre: number;
+  }) {
+    setCalories(String(macros.calories));
+    setProtein(String(macros.protein));
+    setCarbs(String(macros.carbs));
+    setFat(String(macros.fat));
+    setFibre(String(macros.fibre));
+  }
+
   return (
+    <div className="space-y-6">
+      <GoalsCalculator onCalculate={handleCalculated} />
     <form
       onSubmit={async (e) => {
         e.preventDefault();
@@ -104,6 +121,8 @@ export default function GoalsForm({ goals }: { goals: Goals | null }) {
       <button type="submit" className="bg-black text-white px-4 py-2 rounded">
         Save goals
       </button>
+
     </form>
+    </div>
   );
 }
