@@ -7,6 +7,8 @@ import cors from 'cors';
 import session from 'express-session';
 import connectPgSimple from 'connect-pg-simple';
 import { pool } from './db';
+import authRoutes from './routes/authRoutes';
+import './types/session';
 
 const app = express();
 app.use(cors({
@@ -39,5 +41,6 @@ app.use('/foods', foodRoutes);
 app.use('/entries', entryRoutes);
 app.use('/goals', goalRoutes);
 app.use('/summary', summaryRoutes);
+app.use('/auth', authRoutes);
 
 export default app;
