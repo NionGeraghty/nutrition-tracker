@@ -1,18 +1,27 @@
 import { describe, it, expect } from 'vitest';
 import request from 'supertest';
 import app from '../app';
-import { pool } from '../db';
+import { createAndLoginUser } from './helpers';
 
 describe('GET /summary', () => {
   it('returns 400 if date query parameter is missing', async () => {
-    const response = await request(app).get('/summary');
+    const agent = await createAndLoginUser('summary-missing-date@example.com');
+
+    const response = await agent.get('/summary');
 
     expect(response.status).toBe(400);
     expect(response.body.error).toBe('A date query parameter is required');
   });
 
+  it('rejects the request when not logged in', async () => {
+    const response = await request(app).get('/summary?date=2024-06-01');
+    expect(response.status).toBe(401);
+  });
+
   it('returns zeroed totals when there are no entries for the date', async () => {
-    const response = await request(app).get('/summary').query({ date: '2099-01-01' });
+    const agent = await createAndLoginUser('summary-empty@example.com');
+
+    const response = await agent.get('/summary').query({ date: '2099-01-01' });
 
     expect(response.status).toBe(200);
     expect(response.body.totals).toEqual({
@@ -25,7 +34,9 @@ describe('GET /summary', () => {
   });
 
   it('returns null goals and remaining when no goals are set', async () => {
-    const response = await request(app).get('/summary').query({ date: '2024-06-01' });
+    const agent = await createAndLoginUser('summary-no-goals@example.com');
+
+    const response = await agent.get('/summary').query({ date: '2024-06-01' });
 
     expect(response.status).toBe(200);
     expect(response.body.goals).toBeNull();
@@ -33,27 +44,34 @@ describe('GET /summary', () => {
   });
 
   it('returns correct totals, goals, and remaining when entries and goals exist', async () => {
-    const foodResult = await pool.query(
-      `INSERT INTO foods (name, calories_per_100g, protein_per_100g, carbs_per_100g, fat_per_100g, fibre_per_100g, user_id)
-       VALUES ($1, $2, $3, $4, $5, $6, $7)
-       RETURNING id`,
-      ['Test Food', 200, 10, 30, 5, 2, process.env.DEV_USER_ID]
-    );
-    const foodId = foodResult.rows[0].id;
+    const agent = await createAndLoginUser('summary-full@example.com');
 
-    await pool.query(
-      `INSERT INTO food_entries (user_id, food_id, grams, date)
-       VALUES ($1, $2, $3, $4)`,
-      [process.env.DEV_USER_ID, foodId, 150, '2024-06-01']
-    );
+    const foodResponse = await agent.post('/foods').send({
+      name: 'Test Food',
+      caloriesPer100g: 200,
+      proteinPer100g: 10,
+      carbsPer100g: 30,
+      fatPer100g: 5,
+      fibrePer100g: 2,
+    });
+    const foodId = foodResponse.body.id;
 
-    await pool.query(
-      `INSERT INTO daily_goals (user_id, calories, protein, carbs, fat, fibre)
-       VALUES ($1, $2, $3, $4, $5, $6)`,
-      [process.env.DEV_USER_ID, 2000, 150, 200, 65, 30]
-    );
+    await agent.post('/entries').send({
+      foodId,
+      date: '2024-06-01',
+      grams: 150,
+      mealType: 'lunch',
+    });
 
-    const response = await request(app).get('/summary').query({ date: '2024-06-01' });
+    await agent.put('/goals').send({
+      calories: 2000,
+      protein: 150,
+      carbs: 200,
+      fat: 65,
+      fibre: 30,
+    });
+
+    const response = await agent.get('/summary').query({ date: '2024-06-01' });
 
     expect(response.status).toBe(200);
     expect(response.body.totals.calories).toBeCloseTo(300);
@@ -64,24 +82,32 @@ describe('GET /summary', () => {
   });
 
   it('sums multiple entries on the same date correctly', async () => {
-    const foodResult = await pool.query(
-      `INSERT INTO foods (name, calories_per_100g, protein_per_100g, carbs_per_100g, fat_per_100g, fibre_per_100g, user_id)
-       VALUES ($1, $2, $3, $4, $5, $6, $7)
-       RETURNING id`,
-      ['Test Food', 100, 10, 10, 10, 1, process.env.DEV_USER_ID]
-    );
-    const foodId = foodResult.rows[0].id;
+    const agent = await createAndLoginUser('summary-multi@example.com');
 
-    await pool.query(
-      `INSERT INTO food_entries (user_id, food_id, grams, date) VALUES ($1, $2, $3, $4)`,
-      [process.env.DEV_USER_ID, foodId, 100, '2024-06-01']
-    );
-    await pool.query(
-      `INSERT INTO food_entries (user_id, food_id, grams, date) VALUES ($1, $2, $3, $4)`,
-      [process.env.DEV_USER_ID, foodId, 50, '2024-06-01']
-    );
+    const foodResponse = await agent.post('/foods').send({
+      name: 'Test Food',
+      caloriesPer100g: 100,
+      proteinPer100g: 10,
+      carbsPer100g: 10,
+      fatPer100g: 10,
+      fibrePer100g: 1,
+    });
+    const foodId = foodResponse.body.id;
 
-    const response = await request(app).get('/summary').query({ date: '2024-06-01' });
+    await agent.post('/entries').send({
+      foodId,
+      date: '2024-06-01',
+      grams: 100,
+      mealType: 'breakfast',
+    });
+    await agent.post('/entries').send({
+      foodId,
+      date: '2024-06-01',
+      grams: 50,
+      mealType: 'lunch',
+    });
+
+    const response = await agent.get('/summary').query({ date: '2024-06-01' });
 
     expect(response.body.totals.calories).toBeCloseTo(150);
   });

@@ -1,13 +1,13 @@
 import { describe, it, expect } from 'vitest';
 import request from 'supertest';
 import app from '../app';
-import { pool } from '../db';
-
-const OTHER_USER_ID = '00000000-0000-0000-0000-000000000002';
+import { createAndLoginUser } from './helpers';
 
 describe('POST /entries', () => {
   it('creates an entry when the food exists', async () => {
-    const foodResponse = await request(app).post('/foods').send({
+    const agent = await createAndLoginUser('entries-create@example.com');
+
+    const foodResponse = await agent.post('/foods').send({
       name: 'Rice',
       caloriesPer100g: 130,
       proteinPer100g: 2.7,
@@ -15,10 +15,9 @@ describe('POST /entries', () => {
       fatPer100g: 0.3,
       fibrePer100g: 0.4,
     });
-
     const foodId = foodResponse.body.id;
 
-    const entryResponse = await request(app).post('/entries').send({
+    const entryResponse = await agent.post('/entries').send({
       foodId,
       date: '2026-07-13',
       grams: 150,
@@ -31,7 +30,9 @@ describe('POST /entries', () => {
   });
 
   it('rejects an entry referencing a food that does not exist', async () => {
-    const response = await request(app).post('/entries').send({
+    const agent = await createAndLoginUser('entries-no-food@example.com');
+
+    const response = await agent.post('/entries').send({
       foodId: '00000000-0000-0000-0000-000000000099',
       date: '2026-07-13',
       grams: 150,
@@ -42,7 +43,9 @@ describe('POST /entries', () => {
   });
 
   it('rejects invalid entry data', async () => {
-    const response = await request(app).post('/entries').send({
+    const agent = await createAndLoginUser('entries-invalid@example.com');
+
+    const response = await agent.post('/entries').send({
       date: '2026-07-13',
       // missing foodId, grams, and mealType
     });
@@ -51,7 +54,9 @@ describe('POST /entries', () => {
   });
 
   it('rejects an entry with an invalid mealType', async () => {
-    const foodResponse = await request(app).post('/foods').send({
+    const agent = await createAndLoginUser('entries-bad-mealtype@example.com');
+
+    const foodResponse = await agent.post('/foods').send({
       name: 'Rice',
       caloriesPer100g: 130,
       proteinPer100g: 2.7,
@@ -61,7 +66,7 @@ describe('POST /entries', () => {
     });
     const foodId = foodResponse.body.id;
 
-    const response = await request(app).post('/entries').send({
+    const response = await agent.post('/entries').send({
       foodId,
       date: '2026-07-13',
       grams: 150,
@@ -70,11 +75,24 @@ describe('POST /entries', () => {
 
     expect(response.status).toBe(400);
   });
+
+  it('rejects the request when not logged in', async () => {
+    const response = await request(app).post('/entries').send({
+      foodId: '00000000-0000-0000-0000-000000000099',
+      date: '2026-07-13',
+      grams: 150,
+      mealType: 'lunch',
+    });
+
+    expect(response.status).toBe(401);
+  });
 });
 
 describe('GET /entries', () => {
   it('returns entries for the requested date, joined with food details', async () => {
-    const foodResponse = await request(app).post('/foods').send({
+    const agent = await createAndLoginUser('entries-get@example.com');
+
+    const foodResponse = await agent.post('/foods').send({
       name: 'Oats',
       caloriesPer100g: 389,
       proteinPer100g: 16.9,
@@ -84,14 +102,14 @@ describe('GET /entries', () => {
     });
     const foodId = foodResponse.body.id;
 
-    await request(app).post('/entries').send({
+    await agent.post('/entries').send({
       foodId,
       date: '2026-07-13',
       grams: 50,
       mealType: 'breakfast',
     });
 
-    const response = await request(app).get('/entries?date=2026-07-13');
+    const response = await agent.get('/entries?date=2026-07-13');
 
     expect(response.status).toBe(200);
     expect(response.body).toHaveLength(1);
@@ -101,7 +119,9 @@ describe('GET /entries', () => {
   });
 
   it('returns an empty array for a date with no entries', async () => {
-    const response = await request(app).get('/entries?date=2099-01-01');
+    const agent = await createAndLoginUser('entries-empty@example.com');
+
+    const response = await agent.get('/entries?date=2099-01-01');
 
     expect(response.status).toBe(200);
     expect(response.body).toEqual([]);
@@ -110,7 +130,9 @@ describe('GET /entries', () => {
 
 describe('PUT /entries/:id', () => {
   it('updates an existing entry', async () => {
-    const foodResponse = await request(app).post('/foods').send({
+    const agent = await createAndLoginUser('entries-update@example.com');
+
+    const foodResponse = await agent.post('/foods').send({
       name: 'Rice',
       caloriesPer100g: 130,
       proteinPer100g: 2.7,
@@ -120,7 +142,7 @@ describe('PUT /entries/:id', () => {
     });
     const foodId = foodResponse.body.id;
 
-    const createResponse = await request(app).post('/entries').send({
+    const createResponse = await agent.post('/entries').send({
       foodId,
       date: '2026-07-13',
       grams: 100,
@@ -128,7 +150,7 @@ describe('PUT /entries/:id', () => {
     });
     const entryId = createResponse.body.id;
 
-    const updateResponse = await request(app).put(`/entries/${entryId}`).send({
+    const updateResponse = await agent.put(`/entries/${entryId}`).send({
       foodId,
       date: '2026-07-13',
       grams: 200,
@@ -141,7 +163,9 @@ describe('PUT /entries/:id', () => {
   });
 
   it('returns 404 when updating an entry that does not exist', async () => {
-    const foodResponse = await request(app).post('/foods').send({
+    const agent = await createAndLoginUser('entries-update-404@example.com');
+
+    const foodResponse = await agent.post('/foods').send({
       name: 'Rice',
       caloriesPer100g: 130,
       proteinPer100g: 2.7,
@@ -151,7 +175,7 @@ describe('PUT /entries/:id', () => {
     });
     const foodId = foodResponse.body.id;
 
-    const response = await request(app).put('/entries/00000000-0000-0000-0000-000000000099').send({
+    const response = await agent.put('/entries/00000000-0000-0000-0000-000000000099').send({
       foodId,
       date: '2026-07-13',
       grams: 200,
@@ -164,30 +188,28 @@ describe('PUT /entries/:id', () => {
 
 describe('user isolation', () => {
   it('does not return another user\'s entries', async () => {
-    await pool.query(
-      `INSERT INTO users (id, email) VALUES ($1, $2) ON CONFLICT (id) DO NOTHING`,
-      [OTHER_USER_ID, 'other@example.com']
-    );
+    const otherAgent = await createAndLoginUser('entries-other-user@example.com');
 
-    const foodResult = await pool.query(
-      `INSERT INTO foods (name, calories_per_100g, protein_per_100g, carbs_per_100g, fat_per_100g, fibre_per_100g, user_id)
-       VALUES ($1, $2, $3, $4, $5, $6, $7)
-       RETURNING id`,
-      ['Other user food', 100, 10, 10, 10, 1, OTHER_USER_ID]
-    );
-    const otherUsersFoodId = foodResult.rows[0].id;
+    const foodResponse = await otherAgent.post('/foods').send({
+      name: 'Other user food',
+      caloriesPer100g: 100,
+      proteinPer100g: 10,
+      carbsPer100g: 10,
+      fatPer100g: 10,
+      fibrePer100g: 1,
+    });
+    const otherUsersFoodId = foodResponse.body.id;
 
-    await pool.query(
-      `INSERT INTO food_entries (food_id, date, grams, user_id)
-       VALUES ($1, $2, $3, $4)`,
-      [otherUsersFoodId, '2026-07-13', 100, OTHER_USER_ID]
-    );
+    await otherAgent.post('/entries').send({
+      foodId: otherUsersFoodId,
+      date: '2026-07-13',
+      grams: 100,
+      mealType: 'lunch',
+    });
 
-    const response = await request(app).get('/entries?date=2026-07-13');
+    const myAgent = await createAndLoginUser('entries-me@example.com');
+
+    const response = await myAgent.get('/entries?date=2026-07-13');
     expect(response.body).toEqual([]);
-
-    await pool.query('DELETE FROM food_entries WHERE user_id = $1', [OTHER_USER_ID]);
-    await pool.query('DELETE FROM foods WHERE user_id = $1', [OTHER_USER_ID]);
-    await pool.query('DELETE FROM users WHERE id = $1', [OTHER_USER_ID]);
   });
 });
