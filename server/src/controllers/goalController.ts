@@ -1,12 +1,10 @@
 import { Request, Response } from 'express';
 import { pool } from '../db';
 
-const DEV_USER_ID = process.env.DEV_USER_ID;
-
 export async function getGoals(req: Request, res: Response) {
   const result = await pool.query(
     'SELECT * FROM daily_goals WHERE user_id = $1',
-    [DEV_USER_ID]
+    [req.session.userId]
   );
 
   if (result.rows.length === 0) {
@@ -35,7 +33,7 @@ export async function upsertGoals(req: Request, res: Response) {
      ON CONFLICT (user_id)
      DO UPDATE SET calories = $2, protein = $3, carbs = $4, fat = $5, fibre = $6
      RETURNING *`,
-    [DEV_USER_ID, calories, protein, carbs, fat, fibre]
+    [req.session.userId, calories, protein, carbs, fat, fibre]
   );
 
   res.json(result.rows[0]);

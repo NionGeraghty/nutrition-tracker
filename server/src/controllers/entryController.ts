@@ -2,8 +2,6 @@ import { Request, Response } from 'express';
 import { pool } from '../db';
 import { FoodEntry } from '../types';
 
-const DEV_USER_ID = process.env.DEV_USER_ID;
-
 export async function createEntry(req: Request, res: Response) {
   const { foodId, date, grams, mealType } = req.body;
 
@@ -21,7 +19,7 @@ export async function createEntry(req: Request, res: Response) {
 
   const foodCheck = await pool.query(
     'SELECT id FROM foods WHERE id = $1 AND user_id = $2',
-    [foodId, DEV_USER_ID]
+    [foodId, req.session.userId]
   );
   if (foodCheck.rows.length === 0) {
     return res.status(400).json({ error: 'No food exists with that id' });
@@ -31,7 +29,7 @@ export async function createEntry(req: Request, res: Response) {
     `INSERT INTO food_entries (food_id, date, grams, meal_type, user_id)
      VALUES ($1, $2, $3, $4, $5)
      RETURNING *`,
-    [foodId, date, grams, mealType, DEV_USER_ID]
+    [foodId, date, grams, mealType, req.session.userId]
   );
 
   res.status(201).json(result.rows[0]);
@@ -59,7 +57,7 @@ export async function getEntriesByDate(req: Request, res: Response) {
    FROM food_entries
    JOIN foods ON food_entries.food_id = foods.id
    WHERE food_entries.date = $1 AND food_entries.user_id = $2`,
-  [date, DEV_USER_ID]
+  [date, req.session.userId]
 );
 
   res.json(result.rows);
@@ -88,7 +86,7 @@ export async function updateEntry(req: Request, res: Response) {
 
   const foodCheck = await pool.query(
     'SELECT id FROM foods WHERE id = $1 AND user_id = $2',
-    [foodId, DEV_USER_ID]
+    [foodId, req.session.userId]
   );
   if (foodCheck.rows.length === 0) {
     return res.status(400).json({ error: 'No food exists with that id' });
@@ -99,7 +97,7 @@ export async function updateEntry(req: Request, res: Response) {
      SET food_id = $1, date = $2, grams = $3, meal_type = $4
      WHERE id = $5 AND user_id = $6
      RETURNING *`,
-    [foodId, date, grams, mealType, id, DEV_USER_ID]
+    [foodId, date, grams, mealType, id, req.session.userId]
   );
 
   if (result.rows.length === 0) {
@@ -118,7 +116,7 @@ export async function deleteEntry(req: Request, res: Response) {
 
   const result = await pool.query(
     'DELETE FROM food_entries WHERE id = $1 AND user_id = $2',
-    [id, DEV_USER_ID]
+    [id, req.session.userId]
   );
 
   if (result.rowCount === 0) {

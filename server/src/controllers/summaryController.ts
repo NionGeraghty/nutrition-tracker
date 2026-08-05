@@ -1,8 +1,6 @@
 import { Request, Response } from 'express';
 import { pool } from '../db';
 
-const DEV_USER_ID = process.env.DEV_USER_ID;
-
 export async function getSummary(req: Request, res: Response) {
   const { date } = req.query;
 
@@ -21,7 +19,7 @@ export async function getSummary(req: Request, res: Response) {
      FROM food_entries
      JOIN foods ON food_entries.food_id = foods.id
      WHERE food_entries.date = $1 AND food_entries.user_id = $2`,
-    [date, DEV_USER_ID]
+    [date, req.session.userId]
   );
 
   const totals = entriesResult.rows.reduce(
@@ -39,7 +37,7 @@ export async function getSummary(req: Request, res: Response) {
 
   const goalsResult = await pool.query(
     'SELECT * FROM daily_goals WHERE user_id = $1',
-    [DEV_USER_ID]
+    [req.session.userId]
   );
 
   if (goalsResult.rows.length === 0) {

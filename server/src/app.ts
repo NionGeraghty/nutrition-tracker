@@ -9,6 +9,7 @@ import connectPgSimple from 'connect-pg-simple';
 import { pool } from './db';
 import authRoutes from './routes/authRoutes';
 import './types/session';
+import { requireAuth } from './middleware/requireAuth';
 
 const app = express();
 app.use(cors({
@@ -37,10 +38,10 @@ app.get('/', (req, res) => {
   res.send('Nutrition tracker API is running');
 });
 
-app.use('/foods', foodRoutes);
-app.use('/entries', entryRoutes);
-app.use('/goals', goalRoutes);
-app.use('/summary', summaryRoutes);
+app.use('/foods', requireAuth, foodRoutes);
+app.use('/entries', requireAuth, entryRoutes);
+app.use('/goals', requireAuth, goalRoutes);
+app.use('/summary', requireAuth, summaryRoutes);
 app.use('/auth', authRoutes);
 
 export default app;
