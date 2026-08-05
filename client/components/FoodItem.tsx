@@ -17,6 +17,7 @@ export default function FoodItem({ food }: { food: Food }) {
   async function handleSave() {
     await fetch(`${process.env.NEXT_PUBLIC_API_URL}/foods/${food.id}`, {
       method: 'PUT',
+      credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         name,
@@ -38,6 +39,7 @@ export default function FoodItem({ food }: { food: Food }) {
 
     await fetch(`${process.env.NEXT_PUBLIC_API_URL}/foods/${food.id}`, {
       method: 'DELETE',
+      credentials: 'include',
     });
 
     router.refresh();

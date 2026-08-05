@@ -1,10 +1,11 @@
 import GoalsForm from '@/components/GoalsForm';
 import { Goals } from '@/types';
+import { serverFetch } from '@/lib/api';
+import { redirect } from 'next/navigation';
+import { getCurrentUser } from '@/lib/api';
 
 async function getGoals(): Promise<Goals | null> {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/goals`, {
-    cache: 'no-store',
-  });
+  const response = await serverFetch('/goals');
 
   if (response.status === 404) {
     return null;
@@ -14,6 +15,11 @@ async function getGoals(): Promise<Goals | null> {
 }
 
 export default async function GoalsPage() {
+  const user = await getCurrentUser();
+  if (!user) {
+    redirect('/login');
+  }
+
   const goals = await getGoals();
 
   return (

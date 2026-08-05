@@ -40,6 +40,7 @@ export default function GoalsForm({ goals }: { goals: Goals | null }) {
 
         const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/goals`, {
           method: 'PUT',
+          credentials: 'include',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             calories: Number(calories),

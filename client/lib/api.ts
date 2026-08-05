@@ -13,3 +13,11 @@ export async function serverFetch(path: string, options: RequestInit = {}) {
     cache: 'no-store',
   });
 }
+
+export async function getCurrentUser(): Promise<{ id: string; email: string } | null> {
+  const response = await serverFetch('/auth/me');
+  if (!response.ok) {
+    return null;
+  }
+  return response.json();
+}

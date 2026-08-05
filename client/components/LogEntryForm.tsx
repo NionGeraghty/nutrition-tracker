@@ -31,6 +31,7 @@ export default function LogEntryForm({ foods, date }: { foods: Food[]; date: str
 
             const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/entries`, {
               method: 'POST',
+              credentials: 'include',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({
                 foodId,

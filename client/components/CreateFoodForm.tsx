@@ -33,6 +33,7 @@ export default function CreateFoodForm() {
 
             const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/foods`, {
               method: 'POST',
+              credentials: 'include',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({
                 name,

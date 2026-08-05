@@ -22,6 +22,7 @@ export default function EntryItem({ entry, foods }: { entry: Entry; foods: Food[
   async function handleSave() {
     await fetch(`${process.env.NEXT_PUBLIC_API_URL}/entries/${entry.id}`, {
       method: 'PUT',
+      credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         foodId,
@@ -38,6 +39,7 @@ export default function EntryItem({ entry, foods }: { entry: Entry; foods: Food[
   async function handleDelete() {
     await fetch(`${process.env.NEXT_PUBLIC_API_URL}/entries/${entry.id}`, {
       method: 'DELETE',
+      credentials: 'include',
     });
     router.refresh();
   }

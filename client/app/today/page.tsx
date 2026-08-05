@@ -2,6 +2,9 @@ import LogEntryForm from '@/components/LogEntryForm';
 import EntriesList from '@/components/EntriesList';
 import SummaryCard from '@/components/SummaryCard';
 import { Food, Entry, Summary } from '@/types';
+import { serverFetch } from '@/lib/api';
+import { redirect } from 'next/navigation';
+import { getCurrentUser } from '@/lib/api';
 
 function getTodayDateString(): string {
   const now = new Date();
@@ -12,25 +15,26 @@ function getTodayDateString(): string {
 }
 
 async function getFoods(): Promise<Food[]> {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/foods`, { cache: 'no-store' });
+  const response = await serverFetch('/foods', { cache: 'no-store' });
   return response.json();
 }
 
 async function getEntries(date: string): Promise<Entry[]> {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/entries?date=${date}`, {
-    cache: 'no-store',
-  });
+  const response = await serverFetch(`/entries?date=${date}`);
   return response.json();
 }
 
 async function getSummary(date: string): Promise<Summary> {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/summary?date=${date}`, {
-    cache: 'no-store',
-  });
+  const response = await serverFetch(`/summary?date=${date}`, { cache: 'no-store' });
   return response.json();
 }
 
 export default async function TodayPage() {
+  const user = await getCurrentUser();
+  if (!user) {
+    redirect('/login');
+  }
+
   const date = getTodayDateString();
   const [foods, entries, summary] = await Promise.all([
     getFoods(),

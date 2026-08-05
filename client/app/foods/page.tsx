@@ -1,9 +1,12 @@
 import CreateFoodForm from '@/components/CreateFoodForm';
 import FoodsList from '@/components/FoodsList';
 import { Food } from '@/types';
+import { serverFetch } from '@/lib/api';
+import { redirect } from 'next/navigation';
+import { getCurrentUser } from '@/lib/api';
 
 async function getFoods(): Promise<Food[]> {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/foods`, {
+  const response = await serverFetch('/foods', {
     cache: 'no-store',
   });
 
@@ -15,6 +18,11 @@ async function getFoods(): Promise<Food[]> {
 }
 
 export default async function FoodsPage() {
+  const user = await getCurrentUser();
+  if (!user) {
+    redirect('/login');
+  }
+  
   const foods = await getFoods();
 
   return (
