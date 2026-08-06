@@ -88,7 +88,7 @@ export default function EntryItem({ entry, foods }: { entry: Entry; foods: Food[
   }
 
   return (
-    <li className="border p-2 rounded flex justify-between items-center text-sm">
+    <li className="border p-2 rounded flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 text-sm">
       <div>
         <div>
           {entry.name} — {entry.grams}g

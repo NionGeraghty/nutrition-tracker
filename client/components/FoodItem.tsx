@@ -49,7 +49,7 @@ export default function FoodItem({ food }: { food: Food }) {
     return (
       <li className="border p-3 rounded space-y-2">
         <input value={name} onChange={(e) => setName(e.target.value)} className="border p-1 rounded w-full" />
-        <div className="grid grid-cols-2 gap-2">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
           <input value={calories} onChange={(e) => setCalories(e.target.value)} className="border p-1 rounded" />
           <input value={protein} onChange={(e) => setProtein(e.target.value)} className="border p-1 rounded" />
           <input value={carbs} onChange={(e) => setCarbs(e.target.value)} className="border p-1 rounded" />
@@ -69,7 +69,7 @@ export default function FoodItem({ food }: { food: Food }) {
   }
 
   return (
-    <li className="border p-3 rounded flex justify-between items-center">
+    <li className="border p-2 rounded flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 text-sm">
       <div>
         <div className="font-semibold">{food.name}</div>
         <div className="text-sm text-gray-600">

@@ -23,7 +23,7 @@ export default async function GoalsPage() {
   const goals = await getGoals();
 
   return (
-    <main className="p-8">
+    <main className="p-4 md:p-8">
       <h1 className="text-2xl font-bold mb-4">Goals</h1>
       <GoalsForm goals={goals} />
     </main>

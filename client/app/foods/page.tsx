@@ -26,7 +26,7 @@ export default async function FoodsPage() {
   const foods = await getFoods();
 
   return (
-    <main className="p-8">
+    <main className="p-4 md:p-8">
       <h1 className="text-2xl font-bold mb-4">Foods</h1>
       <CreateFoodForm />
       <FoodsList foods={foods} />

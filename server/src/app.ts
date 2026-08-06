@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Request, Response, NextFunction } from 'express';
 import foodRoutes from './routes/foodRoutes';
 import entryRoutes from './routes/entryRoutes';
 import goalRoutes from './routes/goalRoutes';
@@ -13,7 +13,7 @@ import { requireAuth } from './middleware/requireAuth';
 
 const app = express();
 app.use(cors({
-  origin: 'http://localhost:3000',
+  origin: process.env.FRONTEND_URL || 'http://localhost:3000',
   credentials: true,
 }));
 
@@ -27,7 +27,9 @@ app.use(
     saveUninitialized: false,
     cookie: {
       httpOnly: true,
-      maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+      maxAge: 1000 * 60 * 60 * 24 * 7,
     },
   })
 );
@@ -43,5 +45,10 @@ app.use('/entries', requireAuth, entryRoutes);
 app.use('/goals', requireAuth, goalRoutes);
 app.use('/summary', requireAuth, summaryRoutes);
 app.use('/auth', authRoutes);
+
+app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+  console.error(err);
+  res.status(500).json({ error: 'Something went wrong' });
+});
 
 export default app;

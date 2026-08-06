@@ -49,7 +49,7 @@ export default async function HistoryPage({
   ]);
 
   return (
-    <main className="p-8 space-y-6">
+    <main className="p-4 md:p-8 space-y-6">
       <h1 className="text-2xl font-bold">History</h1>
 
       <DatePicker date={date} />

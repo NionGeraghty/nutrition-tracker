@@ -1,5 +1,9 @@
 {
   "devDependencies": {
     "node-pg-migrate": "^8.0.4"
+  },
+  "dependencies": {
+    "express-rate-limit": "^8.6.2",
+    "resend": "^6.18.1"
   }
 }
