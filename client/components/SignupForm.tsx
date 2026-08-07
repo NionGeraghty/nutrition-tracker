@@ -16,7 +16,7 @@ export default function SignupForm() {
         e.preventDefault();
         setError('');
 
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/signup`, {
+        const response = await fetch(`/api/auth/signup`, {
           method: 'POST',
           credentials: 'include',
           headers: { 'Content-Type': 'application/json' },

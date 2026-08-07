@@ -38,7 +38,7 @@ export default function GoalsForm({ goals }: { goals: Goals | null }) {
         setError('');
         setSaved(false);
 
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/goals`, {
+        const response = await fetch(`/api/goals`, {
           method: 'PUT',
           credentials: 'include',
           headers: { 'Content-Type': 'application/json' },

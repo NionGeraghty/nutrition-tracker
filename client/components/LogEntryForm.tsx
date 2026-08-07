@@ -29,7 +29,7 @@ export default function LogEntryForm({ foods, date }: { foods: Food[]; date: str
             e.preventDefault();
             setError('');
 
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/entries`, {
+            const response = await fetch(`/api/entries`, {
               method: 'POST',
               credentials: 'include',
               headers: { 'Content-Type': 'application/json' },

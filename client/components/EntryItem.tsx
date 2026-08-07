@@ -20,7 +20,7 @@ export default function EntryItem({ entry, foods }: { entry: Entry; foods: Food[
   const fibre = factor * Number(entry.fibre_per_100g);
 
   async function handleSave() {
-    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/entries/${entry.id}`, {
+    await fetch(`/api/entries/${entry.id}`, {
       method: 'PUT',
       credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
@@ -37,7 +37,7 @@ export default function EntryItem({ entry, foods }: { entry: Entry; foods: Food[
   }
 
   async function handleDelete() {
-    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/entries/${entry.id}`, {
+    await fetch(`/api/entries/${entry.id}`, {
       method: 'DELETE',
       credentials: 'include',
     });

@@ -15,7 +15,7 @@ export default function FoodItem({ food }: { food: Food }) {
   const [fibre, setFibre] = useState(food.fibre_per_100g);
 
   async function handleSave() {
-    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/foods/${food.id}`, {
+    await fetch(`/api/foods/${food.id}`, {
       method: 'PUT',
       credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
@@ -37,7 +37,7 @@ export default function FoodItem({ food }: { food: Food }) {
     const confirmed = window.confirm(`Delete ${food.name}?`);
     if (!confirmed) return;
 
-    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/foods/${food.id}`, {
+    await fetch(`/api/foods/${food.id}`, {
       method: 'DELETE',
       credentials: 'include',
     });
