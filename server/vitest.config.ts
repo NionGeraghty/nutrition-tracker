@@ -8,5 +8,6 @@ export default defineConfig({
     environment: 'node',
     setupFiles: ['./src/tests/setup.ts'],
     fileParallelism: false,
+    exclude: ['**/node_modules/**', '**/dist/**'],
   },
 });
