@@ -118,13 +118,6 @@ export default function CreateFoodForm() {
             <button type="submit" className="bg-black text-white px-4 py-2 rounded">
               Add food
             </button>
-            <button
-              type="button"
-              onClick={() => setIsOpen(false)}
-              className="border px-4 py-2 rounded"
-            >
-              Done
-            </button>
           </div>
         </form>
       )}
