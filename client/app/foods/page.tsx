@@ -20,7 +20,7 @@ async function getFoods(): Promise<Food[]> {
 export default async function FoodsPage() {
   const user = await getCurrentUser();
   if (!user) {
-    redirect('/login');
+    redirect('/login?redirect=/foods');
   }
   
   const foods = await getFoods();

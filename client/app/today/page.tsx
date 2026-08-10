@@ -32,7 +32,7 @@ async function getSummary(date: string): Promise<Summary> {
 export default async function TodayPage() {
   const user = await getCurrentUser();
   if (!user) {
-    redirect('/login');
+    redirect('/login?redirect=/today');
   }
 
   const date = getTodayDateString();

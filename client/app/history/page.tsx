@@ -38,7 +38,7 @@ export default async function HistoryPage({
   const params = await searchParams;
   const user = await getCurrentUser();
   if (!user) {
-    redirect('/login');
+    redirect('/login?redirect=/history');
   }
   const date = params.date ?? getTodayDateString();
 

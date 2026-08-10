@@ -17,7 +17,7 @@ async function getGoals(): Promise<Goals | null> {
 export default async function GoalsPage() {
   const user = await getCurrentUser();
   if (!user) {
-    redirect('/login');
+    redirect('/login?redirect=/goals');
   }
 
   const goals = await getGoals();
