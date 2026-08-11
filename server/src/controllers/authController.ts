@@ -2,9 +2,6 @@ import { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
 import { pool } from '../db';
 import { randomBytes } from 'crypto';
-import { Resend } from 'resend';
-
-const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function signup(req: Request, res: Response) {
   const { email, password } = req.body;
@@ -112,14 +109,7 @@ export async function forgotPassword(req: Request, res: Response) {
 
   const resetUrl = `${process.env.FRONTEND_URL}/reset-password?token=${token}`;
 
-  const emailPayload = {
-  from: 'onboarding@resend.dev',
-  to: email,
-  subject: 'Reset your password',
-  html: `<p>Click the link below to reset your password. This link expires in 1 hour.</p><p><a href="${resetUrl}">${resetUrl}</a></p>`,
-};
-
-await resend.emails.send(emailPayload);
+  console.log(`Password reset requested for ${email}: ${resetUrl}`);
 
   res.status(200).json({ message: 'If that email exists, a reset link has been sent' });
 }
