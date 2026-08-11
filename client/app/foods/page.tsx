@@ -27,7 +27,8 @@ export default async function FoodsPage() {
 
   return (
     <main className="p-4 md:p-8">
-      <h1 className="text-2xl font-bold mb-4">Foods</h1>
+      <h1 className="text-2xl font-bold mb-1">Foods</h1>
+      <p className="text-sm text-gray-500 mb-4">Your personal database of foods and their nutrition values</p>
       <CreateFoodForm />
       <FoodsList foods={foods} />
     </main>

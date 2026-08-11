@@ -44,7 +44,8 @@ export default async function TodayPage() {
 
   return (
     <main className="p-8 space-y-6">
-      <h1 className="text-2xl font-bold">Today — {date}</h1>
+      <h1 className="text-2xl font-bold mb-1">Today — {date}</h1>
+      <p className="text-sm text-gray-500">What you've eaten today, compared to your goals</p>
 
       <SummaryCard summary={summary} />
 
