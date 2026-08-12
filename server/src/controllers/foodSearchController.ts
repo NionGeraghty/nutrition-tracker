@@ -29,8 +29,10 @@ export async function searchExternalFoods(req: Request, res: Response) {
   const response = await fetch(url.toString());
 
   if (!response.ok) {
-    return res.status(502).json({ error: 'Failed to search external food database' });
-  }
+  const errorBody = await response.text();
+  console.log('USDA API error:', response.status, errorBody);
+  return res.status(502).json({ error: 'Failed to search external food database' });
+}
 
   const data = await response.json();
 
