@@ -4,6 +4,10 @@ import { pool } from '../db';
 export async function createRecipe(req: Request, res: Response) {
   const { name, ingredients } = req.body;
 
+  function round2(value: number): number {
+  return Math.round(value * 100) / 100;
+}
+
   if (
     typeof name !== 'string' ||
     !Array.isArray(ingredients) ||
@@ -65,15 +69,15 @@ export async function createRecipe(req: Request, res: Response) {
     const factor100g = 100 / totals.totalGrams;
     const foodResult = await client.query(
       `INSERT INTO foods (name, calories_per_100g, protein_per_100g, carbs_per_100g, fat_per_100g, fibre_per_100g, user_id, recipe_id)
-       VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
-       RETURNING *`,
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+      RETURNING *`,
       [
         name,
-        totals.calories * factor100g,
-        totals.protein * factor100g,
-        totals.carbs * factor100g,
-        totals.fat * factor100g,
-        totals.fibre * factor100g,
+        round2(totals.calories * factor100g),
+        round2(totals.protein * factor100g),
+        round2(totals.carbs * factor100g),
+        round2(totals.fat * factor100g),
+        round2(totals.fibre * factor100g),
         req.session.userId,
         recipeId,
       ]
