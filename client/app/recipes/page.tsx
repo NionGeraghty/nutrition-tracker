@@ -2,6 +2,7 @@ import { redirect } from 'next/navigation';
 import { getCurrentUser, serverFetch } from '@/lib/api';
 import { Food } from '@/types';
 import CreateRecipeForm from '@/components/CreateRecipeForm';
+import RecipeItem from '@/components/RecipeItem';
 
 interface Recipe {
   id: string;
@@ -44,10 +45,7 @@ export default async function RecipesPage() {
       ) : (
         <ul className="space-y-2">
           {recipes.map((recipe) => (
-            <li key={recipe.id} className="border p-3 rounded">
-              <div className="font-semibold">{recipe.name}</div>
-              <div className="text-sm text-gray-600">{recipe.total_grams}g total</div>
-            </li>
+            <RecipeItem key={recipe.id} recipe={recipe} foods={foods} />
           ))}
         </ul>
       )}

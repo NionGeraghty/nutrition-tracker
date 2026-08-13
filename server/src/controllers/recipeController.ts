@@ -1,12 +1,12 @@
 import { Request, Response } from 'express';
 import { pool } from '../db';
 
-export async function createRecipe(req: Request, res: Response) {
-  const { name, ingredients } = req.body;
-
-  function round2(value: number): number {
+function round2(value: number): number {
   return Math.round(value * 100) / 100;
 }
+
+export async function createRecipe(req: Request, res: Response) {
+  const { name, ingredients } = req.body;
 
   if (
     typeof name !== 'string' ||
@@ -127,4 +127,107 @@ export async function getRecipeIngredients(req: Request, res: Response) {
   );
 
   res.json(result.rows);
+}
+
+export async function updateRecipe(req: Request, res: Response) {
+  const { id } = req.params;
+  const { name, ingredients } = req.body;
+
+  if (
+    typeof id !== 'string' ||
+    typeof name !== 'string' ||
+    !Array.isArray(ingredients) ||
+    ingredients.length === 0 ||
+    !ingredients.every(
+      (i) => typeof i.foodId === 'string' && typeof i.grams === 'number' && i.grams > 0
+    )
+  ) {
+    return res.status(400).json({ error: 'Invalid recipe data' });
+  }
+
+  const client = await pool.connect();
+
+  try {
+    await client.query('BEGIN');
+
+    const recipeCheck = await client.query(
+      'SELECT id FROM recipes WHERE id = $1 AND user_id = $2',
+      [id, req.session.userId]
+    );
+    if (recipeCheck.rows.length === 0) {
+      await client.query('ROLLBACK');
+      return res.status(404).json({ error: 'Recipe not found' });
+    }
+
+    const foodIds = ingredients.map((i) => i.foodId);
+    const foodsResult = await client.query(
+      `SELECT id, calories_per_100g, protein_per_100g, carbs_per_100g, fat_per_100g, fibre_per_100g
+       FROM foods WHERE id = ANY($1) AND user_id = $2`,
+      [foodIds, req.session.userId]
+    );
+
+    if (foodsResult.rows.length !== ingredients.length) {
+      await client.query('ROLLBACK');
+      return res.status(400).json({ error: 'One or more ingredients do not exist' });
+    }
+
+    const foodsById = new Map(foodsResult.rows.map((f) => [f.id, f]));
+
+    const totals = ingredients.reduce(
+      (acc, ing) => {
+        const food = foodsById.get(ing.foodId);
+        const factor = ing.grams / 100;
+        acc.calories += factor * Number(food.calories_per_100g);
+        acc.protein += factor * Number(food.protein_per_100g);
+        acc.carbs += factor * Number(food.carbs_per_100g);
+        acc.fat += factor * Number(food.fat_per_100g);
+        acc.fibre += factor * Number(food.fibre_per_100g);
+        acc.totalGrams += ing.grams;
+        return acc;
+      },
+      { calories: 0, protein: 0, carbs: 0, fat: 0, fibre: 0, totalGrams: 0 }
+    );
+
+    await client.query('UPDATE recipes SET name = $1, total_grams = $2 WHERE id = $3', [
+      name,
+      totals.totalGrams,
+      id,
+    ]);
+
+    await client.query('DELETE FROM recipe_ingredients WHERE recipe_id = $1', [id]);
+
+    for (const ing of ingredients) {
+      await client.query(
+        `INSERT INTO recipe_ingredients (recipe_id, food_id, grams) VALUES ($1, $2, $3)`,
+        [id, ing.foodId, ing.grams]
+      );
+    }
+
+    const factor100g = 100 / totals.totalGrams;
+    const foodResult = await client.query(
+      `UPDATE foods
+       SET name = $1, calories_per_100g = $2, protein_per_100g = $3, carbs_per_100g = $4, fat_per_100g = $5, fibre_per_100g = $6
+       WHERE recipe_id = $7
+       RETURNING *`,
+      [
+        name,
+        round2(totals.calories * factor100g),
+        round2(totals.protein * factor100g),
+        round2(totals.carbs * factor100g),
+        round2(totals.fat * factor100g),
+        round2(totals.fibre * factor100g),
+        id,
+      ]
+    );
+
+    await client.query('COMMIT');
+
+    res.json(foodResult.rows[0]);
+  } catch (err) {
+    await client.query('ROLLBACK');
+    console.error(err);
+    res.status(500).json({ error: 'Failed to update recipe' });
+  } finally {
+    client.release();
+  }
 }
