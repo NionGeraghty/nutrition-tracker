@@ -16,6 +16,7 @@ export default async function Nav() {
         {/* Desktop nav — hidden on mobile, shown from md breakpoint up */}
         <div className="hidden md:flex items-center gap-6">
           <Link href="/foods">Foods</Link>
+          <Link href="/recipes">Recipes</Link>
           <Link href="/today">Today</Link>
           <Link href="/history">History</Link>
           <Link href="/goals">Goals</Link>

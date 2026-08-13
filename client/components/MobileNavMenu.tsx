@@ -28,6 +28,9 @@ export default function MobileNavMenu({ user }: { user: User | null }) {
           <Link href="/foods" onClick={() => setIsOpen(false)}>
             Foods
           </Link>
+          <Link href="/recipes" onClick={() => setIsOpen(false)}>
+            Recipes
+          </Link>
           <Link href="/today" onClick={() => setIsOpen(false)}>
             Today
           </Link>

@@ -10,6 +10,7 @@ import { pool } from './db';
 import authRoutes from './routes/authRoutes';
 import './types/session';
 import { requireAuth } from './middleware/requireAuth';
+import recipeRoutes from './routes/recipeRoutes';
 
 const app = express();
 
@@ -47,6 +48,7 @@ app.use('/foods', requireAuth, foodRoutes);
 app.use('/entries', requireAuth, entryRoutes);
 app.use('/goals', requireAuth, goalRoutes);
 app.use('/summary', requireAuth, summaryRoutes);
+app.use('/recipes', requireAuth, recipeRoutes);
 app.use('/auth', authRoutes);
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
