@@ -231,3 +231,18 @@ export async function updateRecipe(req: Request, res: Response) {
     client.release();
   }
 }
+
+export async function deleteRecipe(req: Request, res: Response) {
+  const { id } = req.params;
+
+  const result = await pool.query(
+    'DELETE FROM recipes WHERE id = $1 AND user_id = $2',
+    [id, req.session.userId]
+  );
+
+  if (result.rowCount === 0) {
+    return res.status(404).json({ error: 'Recipe not found' });
+  }
+
+  res.status(204).send();
+}

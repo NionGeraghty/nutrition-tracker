@@ -35,6 +35,18 @@ export default function RecipeItem({ recipe, foods }: { recipe: Recipe; foods: F
     setIsEditing(true);
   }
 
+  async function handleDelete() {
+    const confirmed = window.confirm(`Delete ${recipe.name}? The derived food will remain in your Foods list.`);
+    if (!confirmed) return;
+
+    await fetch(`/api/recipes/${recipe.id}`, {
+      method: 'DELETE',
+      credentials: 'include',
+    });
+
+    router.refresh();
+  }
+
   function updateIngredient(index: number, field: keyof IngredientRow, value: string) {
     setIngredients((prev) =>
       prev.map((ing, i) => (i === index ? { ...ing, [field]: value } : ing))
@@ -151,9 +163,14 @@ export default function RecipeItem({ recipe, foods }: { recipe: Recipe; foods: F
         <div className="font-semibold">{recipe.name}</div>
         <div className="text-sm text-gray-600">{recipe.total_grams}g total</div>
       </div>
-      <button onClick={startEditing} className="text-sm underline" disabled={loading}>
-        {loading ? 'Loading...' : 'Edit'}
-      </button>
+      <div className="flex gap-2">
+        <button onClick={startEditing} className="text-sm underline" disabled={loading}>
+          {loading ? 'Loading...' : 'Edit'}
+        </button>
+        <button onClick={handleDelete} className="text-sm text-red-600 underline">
+          Delete
+        </button>
+      </div>
     </li>
   );
 }
