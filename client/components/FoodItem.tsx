@@ -74,7 +74,7 @@ export default function FoodItem({ food }: { food: Food }) {
         <div className="font-semibold">{food.name}</div>
         <div className="text-sm text-gray-600">
           {food.calories_per_100g} cal · {food.protein_per_100g}g protein ·{' '}
-          {food.carbs_per_100g}g carbs · {food.fat_per_100g}g fat
+          {food.carbs_per_100g}g carbs · {food.fat_per_100g}g fat · {food.fibre_per_100g}g fibre
         </div>
       </div>
       <div className="flex gap-2">
