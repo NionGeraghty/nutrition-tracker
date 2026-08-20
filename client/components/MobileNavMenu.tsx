@@ -40,6 +40,9 @@ export default function MobileNavMenu({ user }: { user: User | null }) {
           <Link href="/goals" onClick={() => setIsOpen(false)}>
             Goals
           </Link>
+          <Link href="/editors" onClick={() => setIsOpen(false)}>
+            Shared Users
+          </Link>
           {user ? (
             <>
               <span className="text-sm text-gray-600">{user.email}</span>
