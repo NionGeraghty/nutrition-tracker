@@ -12,9 +12,7 @@ afterEach(async () => {
   await pool.query('DELETE FROM food_entries');
   await pool.query('DELETE FROM foods');
   await pool.query('DELETE FROM daily_goals');
-  await pool.query('DELETE FROM food_entries');
-  await pool.query('DELETE FROM foods');
-  await pool.query('DELETE FROM daily_goals');
+  await pool.query('DELETE FROM editor_permissions');
   await pool.query(`DELETE FROM users WHERE id != $1`, [process.env.DEV_USER_ID]);
 });
 

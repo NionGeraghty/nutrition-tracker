@@ -5,7 +5,7 @@ import rateLimit from 'express-rate-limit';
 const router = Router();
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 10,
+  max: process.env.NODE_ENV === 'test' ? 10000 : 10,
   message: { error: 'Too many attempts, please try again later' },
 });
 
