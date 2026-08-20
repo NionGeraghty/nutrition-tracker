@@ -3,7 +3,7 @@ import { pool } from '../db';
 import { FoodEntry } from '../types';
 
 export async function createEntry(req: Request, res: Response) {
-  const { foodId, date, grams, mealType } = req.body;
+  const { foodId, date, grams, mealType, targetUserId } = req.body;
 
   const validMealTypes = ['breakfast', 'lunch', 'dinner', 'snack', 'other'];
 
@@ -17,19 +17,31 @@ export async function createEntry(req: Request, res: Response) {
     return res.status(400).json({ error: 'Invalid entry data' });
   }
 
+  const target = typeof targetUserId === 'string' ? targetUserId : req.session.userId!;
+
+  if (target !== req.session.userId) {
+    const permCheck = await pool.query(
+      'SELECT id FROM editor_permissions WHERE owner_id = $1 AND editor_id = $2',
+      [target, req.session.userId]
+    );
+    if (permCheck.rows.length === 0) {
+      return res.status(403).json({ error: 'You do not have permission to log to this account' });
+    }
+  }
+
   const foodCheck = await pool.query(
     'SELECT id FROM foods WHERE id = $1 AND user_id = $2',
-    [foodId, req.session.userId]
+    [foodId, target]
   );
   if (foodCheck.rows.length === 0) {
-    return res.status(400).json({ error: 'No food exists with that id' });
+    return res.status(400).json({ error: 'No food exists with that id for this account' });
   }
 
   const result = await pool.query<FoodEntry>(
     `INSERT INTO food_entries (food_id, date, grams, meal_type, user_id)
      VALUES ($1, $2, $3, $4, $5)
      RETURNING *`,
-    [foodId, date, grams, mealType, req.session.userId]
+    [foodId, date, grams, mealType, target]
   );
 
   res.status(201).json(result.rows[0]);

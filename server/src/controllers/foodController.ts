@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { pool } from '../db';
 import { Food } from '../types';
+import { resolveAllowedTargets } from '../lib/permissions';
 
 export async function getAllFoods(req: Request, res: Response) {
   const result = await pool.query<Food>('SELECT * FROM foods WHERE user_id = $1', [req.session.userId]);
@@ -23,7 +24,7 @@ export async function getFoodById(req: Request, res: Response) {
 }
 
 export async function createFood(req: Request, res: Response) {
-  const { name, caloriesPer100g, proteinPer100g, carbsPer100g, fatPer100g, fibrePer100g } = req.body;
+  const { name, caloriesPer100g, proteinPer100g, carbsPer100g, fatPer100g, fibrePer100g, targetUserIds } = req.body;
 
   if (
     typeof name !== 'string' ||
@@ -36,14 +37,23 @@ export async function createFood(req: Request, res: Response) {
     return res.status(400).json({ error: 'Invalid food data' });
   }
 
-  const result = await pool.query<Food>(
-    `INSERT INTO foods (name, calories_per_100g, protein_per_100g, carbs_per_100g, fat_per_100g, fibre_per_100g, user_id)
-     VALUES ($1, $2, $3, $4, $5, $6, $7)
-     RETURNING *`,
-    [name, caloriesPer100g, proteinPer100g, carbsPer100g, fatPer100g, fibrePer100g, req.session.userId]
-  );
+  const targets = await resolveAllowedTargets(req.session.userId!, targetUserIds);
+  if (targets === null) {
+    return res.status(403).json({ error: 'You do not have permission to add to one or more of these accounts' });
+  }
 
-  res.status(201).json(result.rows[0]);
+  const results = [];
+  for (const userId of targets) {
+    const result = await pool.query<Food>(
+      `INSERT INTO foods (name, calories_per_100g, protein_per_100g, carbs_per_100g, fat_per_100g, fibre_per_100g, user_id)
+       VALUES ($1, $2, $3, $4, $5, $6, $7)
+       RETURNING *`,
+      [name, caloriesPer100g, proteinPer100g, carbsPer100g, fatPer100g, fibrePer100g, userId]
+    );
+    results.push(result.rows[0]);
+  }
+
+  res.status(201).json(results);
 }
 
 export async function updateFood(req: Request, res: Response) {

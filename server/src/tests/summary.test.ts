@@ -54,7 +54,7 @@ describe('GET /summary', () => {
       fatPer100g: 5,
       fibrePer100g: 2,
     });
-    const foodId = foodResponse.body.id;
+    const foodId = foodResponse.body[0].id;
 
     await agent.post('/entries').send({
       foodId,
@@ -92,7 +92,7 @@ describe('GET /summary', () => {
       fatPer100g: 10,
       fibrePer100g: 1,
     });
-    const foodId = foodResponse.body.id;
+    const foodId = foodResponse.body[0].id;
 
     await agent.post('/entries').send({
       foodId,

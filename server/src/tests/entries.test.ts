@@ -15,7 +15,7 @@ describe('POST /entries', () => {
       fatPer100g: 0.3,
       fibrePer100g: 0.4,
     });
-    const foodId = foodResponse.body.id;
+    const foodId = foodResponse.body[0].id;
 
     const entryResponse = await agent.post('/entries').send({
       foodId,
@@ -64,7 +64,7 @@ describe('POST /entries', () => {
       fatPer100g: 0.3,
       fibrePer100g: 0.4,
     });
-    const foodId = foodResponse.body.id;
+    const foodId = foodResponse.body[0].id;
 
     const response = await agent.post('/entries').send({
       foodId,
@@ -100,7 +100,7 @@ describe('GET /entries', () => {
       fatPer100g: 6.9,
       fibrePer100g: 10.6,
     });
-    const foodId = foodResponse.body.id;
+    const foodId = foodResponse.body[0].id;
 
     await agent.post('/entries').send({
       foodId,
@@ -140,7 +140,7 @@ describe('PUT /entries/:id', () => {
       fatPer100g: 0.3,
       fibrePer100g: 0.4,
     });
-    const foodId = foodResponse.body.id;
+    const foodId = foodResponse.body[0].id;
 
     const createResponse = await agent.post('/entries').send({
       foodId,
@@ -173,7 +173,7 @@ describe('PUT /entries/:id', () => {
       fatPer100g: 0.3,
       fibrePer100g: 0.4,
     });
-    const foodId = foodResponse.body.id;
+    const foodId = foodResponse.body[0].id;
 
     const response = await agent.put('/entries/00000000-0000-0000-0000-000000000099').send({
       foodId,
@@ -198,7 +198,7 @@ describe('user isolation', () => {
       fatPer100g: 10,
       fibrePer100g: 1,
     });
-    const otherUsersFoodId = foodResponse.body.id;
+    const otherUsersFoodId = foodResponse.body[0].id;
 
     await otherAgent.post('/entries').send({
       foodId: otherUsersFoodId,
