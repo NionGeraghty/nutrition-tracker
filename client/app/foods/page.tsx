@@ -1,19 +1,21 @@
 import CreateFoodForm from '@/components/CreateFoodForm';
 import FoodsList from '@/components/FoodsList';
-import { Food } from '@/types';
-import { serverFetch } from '@/lib/api';
 import { redirect } from 'next/navigation';
-import { getCurrentUser } from '@/lib/api';
+import { getCurrentUser, serverFetch } from '@/lib/api';
+import { Food } from '@/types';
+
+interface GrantedAccount {
+  id: string;
+  email: string;
+}
 
 async function getFoods(): Promise<Food[]> {
-  const response = await serverFetch('/foods', {
-    cache: 'no-store',
-  });
+  const response = await serverFetch('/foods');
+  return response.json();
+}
 
-  if (!response.ok) {
-    throw new Error('Failed to fetch foods');
-  }
-
+async function getGrantedToMe(): Promise<GrantedAccount[]> {
+  const response = await serverFetch('/editors/granted-to-me');
   return response.json();
 }
 
@@ -22,14 +24,16 @@ export default async function FoodsPage() {
   if (!user) {
     redirect('/login?redirect=/foods');
   }
-  
-  const foods = await getFoods();
+
+  const [foods, grantedToMe] = await Promise.all([getFoods(), getGrantedToMe()]);
 
   return (
     <main className="p-4 md:p-8">
-      <h1 className="text-2xl font-bold mb-1">Foods</h1>
-      <p className="text-sm text-gray-500 mb-4">Your personal database of foods and their nutrition values</p>
-      <CreateFoodForm />
+      <div>
+        <h1 className="text-2xl font-bold mb-1">Foods</h1>
+        <p className="text-sm text-gray-500 mb-4">Your personal database of foods and their nutrition values</p>
+      </div>
+      <CreateFoodForm grantedToMe={grantedToMe} userId={user.id} />
       <FoodsList foods={foods} />
     </main>
   );

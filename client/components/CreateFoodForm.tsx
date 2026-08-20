@@ -12,7 +12,12 @@ interface ExternalFood {
   fibrePer100g: number;
 }
 
-export default function CreateFoodForm() {
+interface GrantedAccount {
+  id: string;
+  email: string;
+}
+
+export default function CreateFoodForm({ grantedToMe, userId }: { grantedToMe: GrantedAccount[]; userId: string }) {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [name, setName] = useState('');
@@ -22,10 +27,17 @@ export default function CreateFoodForm() {
   const [fat, setFat] = useState('');
   const [fibre, setFibre] = useState('');
   const [error, setError] = useState('');
+  const [selectedTargets, setSelectedTargets] = useState<string[]>([]);
 
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<ExternalFood[]>([]);
   const [searching, setSearching] = useState(false);
+
+  function toggleTarget(id: string) {
+    setSelectedTargets((prev) =>
+      prev.includes(id) ? prev.filter((t) => t !== id) : [...prev, id]
+    );
+  }
 
   async function handleSearch() {
     if (searchQuery.trim().length === 0) return;
@@ -144,6 +156,7 @@ export default function CreateFoodForm() {
                   carbsPer100g: Number(carbs),
                   fatPer100g: Number(fat),
                   fibrePer100g: Number(fibre),
+                  targetUserIds: selectedTargets.length > 0 ? [userId, ...selectedTargets] : undefined,
                 }),
               });
 
@@ -233,6 +246,26 @@ export default function CreateFoodForm() {
                 />
               </div>
             </div>
+
+            {grantedToMe.length > 0 && (
+              <div>
+                <label className="block text-xs text-gray-500 mb-1">
+                  Also add to (in addition to your own account)
+                </label>
+                <div className="space-y-1">
+                  {grantedToMe.map((account) => (
+                    <label key={account.id} className="flex items-center gap-2 text-sm">
+                      <input
+                        type="checkbox"
+                        checked={selectedTargets.includes(account.id)}
+                        onChange={() => toggleTarget(account.id)}
+                      />
+                      {account.email}
+                    </label>
+                  ))}
+                </div>
+              </div>
+            )}
 
             <div className="flex gap-2">
               <button type="submit" className="bg-black text-white px-4 py-2 rounded">

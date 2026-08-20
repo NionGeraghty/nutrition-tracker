@@ -4,7 +4,22 @@ import { Food } from '../types';
 import { resolveAllowedTargets } from '../lib/permissions';
 
 export async function getAllFoods(req: Request, res: Response) {
-  const result = await pool.query<Food>('SELECT * FROM foods WHERE user_id = $1', [req.session.userId]);
+  const { forUserId } = req.query;
+
+  let targetUserId = req.session.userId!;
+
+  if (typeof forUserId === 'string' && forUserId !== req.session.userId) {
+    const permCheck = await pool.query(
+      'SELECT id FROM editor_permissions WHERE owner_id = $1 AND editor_id = $2',
+      [forUserId, req.session.userId]
+    );
+    if (permCheck.rows.length === 0) {
+      return res.status(403).json({ error: 'You do not have permission to view this account\'s foods' });
+    }
+    targetUserId = forUserId;
+  }
+
+  const result = await pool.query<Food>('SELECT * FROM foods WHERE user_id = $1', [targetUserId]);
   res.json(result.rows);
 }
 
