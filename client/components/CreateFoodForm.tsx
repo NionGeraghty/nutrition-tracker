@@ -50,6 +50,24 @@ export default function CreateFoodForm() {
     setSearchQuery('');
   }
 
+  function handleArrowNav(e: React.KeyboardEvent<HTMLInputElement>) {
+    if (e.key !== 'ArrowDown' && e.key !== 'ArrowUp') return;
+
+    const form = e.currentTarget.form;
+    if (!form) return;
+
+    const inputs = Array.from(form.querySelectorAll('input'));
+    const currentIndex = inputs.indexOf(e.currentTarget);
+
+    if (e.key === 'ArrowDown' && currentIndex < inputs.length - 1) {
+      e.preventDefault();
+      inputs[currentIndex + 1].focus();
+    } else if (e.key === 'ArrowUp' && currentIndex > 0) {
+      e.preventDefault();
+      inputs[currentIndex - 1].focus();
+    }
+  }
+
   return (
     <div className="border rounded mb-6 max-w-md">
       <button
@@ -147,55 +165,73 @@ export default function CreateFoodForm() {
           >
             {error && <p className="text-red-600 text-sm">{error}</p>}
 
-            <input
-              type="text"
-              placeholder="Name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              className="border p-2 w-full rounded"
-              required
-            />
+            <div>
+              <label className="block text-xs text-gray-500 mb-1">Name</label>
+              <input
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                onKeyDown={handleArrowNav}
+                className="border p-2 w-full rounded"
+                required
+              />
+            </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-              <input
-                type="number"
-                placeholder="Calories per 100g"
-                value={calories}
-                onChange={(e) => setCalories(e.target.value)}
-                className="border p-2 rounded"
-                required
-              />
-              <input
-                type="number"
-                placeholder="Protein per 100g"
-                value={protein}
-                onChange={(e) => setProtein(e.target.value)}
-                className="border p-2 rounded"
-                required
-              />
-              <input
-                type="number"
-                placeholder="Carbs per 100g"
-                value={carbs}
-                onChange={(e) => setCarbs(e.target.value)}
-                className="border p-2 rounded"
-                required
-              />
-              <input
-                type="number"
-                placeholder="Fat per 100g"
-                value={fat}
-                onChange={(e) => setFat(e.target.value)}
-                className="border p-2 rounded"
-                required
-              />
-              <input
-                type="number"
-                placeholder="Fibre per 100g"
-                value={fibre}
-                onChange={(e) => setFibre(e.target.value)}
-                className="border p-2 rounded"
-                required
-              />
+              <div>
+                <label className="block text-xs text-gray-500 mb-1">Calories per 100g</label>
+                <input
+                  type="number"
+                  value={calories}
+                  onChange={(e) => setCalories(e.target.value)}
+                  onKeyDown={handleArrowNav}
+                  className="border p-2 rounded w-full"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-xs text-gray-500 mb-1">Protein per 100g</label>
+                <input
+                  type="number"
+                  value={protein}
+                  onChange={(e) => setProtein(e.target.value)}
+                  onKeyDown={handleArrowNav}
+                  className="border p-2 rounded w-full"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-xs text-gray-500 mb-1">Carbs per 100g</label>
+                <input
+                  type="number"
+                  value={carbs}
+                  onChange={(e) => setCarbs(e.target.value)}
+                  onKeyDown={handleArrowNav}
+                  className="border p-2 rounded w-full"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-xs text-gray-500 mb-1">Fat per 100g</label>
+                <input
+                  type="number"
+                  value={fat}
+                  onChange={(e) => setFat(e.target.value)}
+                  onKeyDown={handleArrowNav}
+                  className="border p-2 rounded w-full"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-xs text-gray-500 mb-1">Fibre per 100g</label>
+                <input
+                  type="number"
+                  value={fibre}
+                  onChange={(e) => setFibre(e.target.value)}
+                  onKeyDown={handleArrowNav}
+                  className="border p-2 rounded w-full"
+                  required
+                />
+              </div>
             </div>
 
             <div className="flex gap-2">
