@@ -8,6 +8,11 @@ interface Recipe {
   id: string;
   name: string;
   total_grams: string;
+  calories_per_100g: string | null;
+  protein_per_100g: string | null;
+  carbs_per_100g: string | null;
+  fat_per_100g: string | null;
+  fibre_per_100g: string | null;
 }
 
 interface IngredientRow {
@@ -158,19 +163,30 @@ export default function RecipeItem({ recipe, foods }: { recipe: Recipe; foods: F
   }
 
   return (
-    <li className="border p-3 rounded flex justify-between items-center">
-      <div>
-        <div className="font-semibold">{recipe.name}</div>
-        <div className="text-sm text-gray-600">{recipe.total_grams}g total</div>
+  <li className="border p-3 rounded flex justify-between items-center">
+    <div>
+      <div className="font-semibold">{recipe.name}</div>
+      <div className="text-sm text-gray-600">
+        {recipe.total_grams}g total
+        {recipe.calories_per_100g && (
+          <>
+            {' · '}
+            {recipe.calories_per_100g} cal · {recipe.protein_per_100g}g protein ·{' '}
+            {recipe.carbs_per_100g}g carbs · {recipe.fat_per_100g}g fat ·{' '}
+            {recipe.fibre_per_100g}g fibre
+            {' (per 100g)'}
+          </>
+        )}
       </div>
-      <div className="flex gap-2">
-        <button onClick={startEditing} className="text-sm underline" disabled={loading}>
-          {loading ? 'Loading...' : 'Edit'}
-        </button>
-        <button onClick={handleDelete} className="text-sm text-red-600 underline">
-          Delete
-        </button>
-      </div>
-    </li>
-  );
+    </div>
+    <div className="flex gap-2">
+      <button onClick={startEditing} className="text-sm underline" disabled={loading}>
+        {loading ? 'Loading...' : 'Edit'}
+      </button>
+      <button onClick={handleDelete} className="text-sm text-red-600 underline">
+        Delete
+      </button>
+    </div>
+  </li>
+);
 }

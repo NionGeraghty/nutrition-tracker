@@ -9,6 +9,11 @@ interface Recipe {
   name: string;
   total_grams: string;
   food_id: string | null;
+  calories_per_100g: string | null;
+  protein_per_100g: string | null;
+  carbs_per_100g: string | null;
+  fat_per_100g: string | null;
+  fibre_per_100g: string | null;
 }
 
 async function getFoods(): Promise<Food[]> {

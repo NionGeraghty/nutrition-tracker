@@ -97,7 +97,16 @@ export async function createRecipe(req: Request, res: Response) {
 
 export async function getRecipes(req: Request, res: Response) {
   const result = await pool.query(
-    `SELECT recipes.*, foods.id AS food_id
+    `SELECT
+       recipes.id,
+       recipes.name,
+       recipes.total_grams,
+       foods.id AS food_id,
+       foods.calories_per_100g,
+       foods.protein_per_100g,
+       foods.carbs_per_100g,
+       foods.fat_per_100g,
+       foods.fibre_per_100g
      FROM recipes
      LEFT JOIN foods ON foods.recipe_id = recipes.id
      WHERE recipes.user_id = $1
