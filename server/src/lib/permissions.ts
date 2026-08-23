@@ -7,6 +7,7 @@ export async function resolveAllowedTargets(
   const targets = requestedTargets && requestedTargets.length > 0 ? requestedTargets : [requesterId];
 
   const others = targets.filter((id) => id !== requesterId);
+  console.log('Permission check:', { requesterId, requestedTargets, others });
 
   if (others.length === 0) {
     return targets;
