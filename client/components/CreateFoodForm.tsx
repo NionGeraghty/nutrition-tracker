@@ -14,6 +14,7 @@ interface ExternalFood {
 }
 
 export default function CreateFoodForm({ grantedToMe, userId }: { grantedToMe: GrantedAccount[]; userId: string }) {
+  console.log('CreateFoodForm rendered, grantedToMe:', grantedToMe);
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [name, setName] = useState('');
