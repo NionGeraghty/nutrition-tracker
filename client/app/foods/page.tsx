@@ -21,6 +21,7 @@ export default async function FoodsPage() {
   }
 
   const [foods, grantedToMe] = await Promise.all([getFoods(), getGrantedToMe()]);
+  console.log('grantedToMe:', JSON.stringify(grantedToMe));
 
   return (
     <main className="p-4 md:p-8">
