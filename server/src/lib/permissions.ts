@@ -7,6 +7,7 @@ export async function resolveAllowedTargets(
   const targets = requestedTargets && requestedTargets.length > 0 ? requestedTargets : [requesterId];
 
   const others = targets.filter((id) => id !== requesterId);
+  
   console.log('Permission check:', { requesterId, requestedTargets, others });
 
   if (others.length === 0) {
@@ -18,8 +19,12 @@ export async function resolveAllowedTargets(
     [requesterId, others]
   );
 
+  console.log('Query result rows:', result.rows);
+
   const permitted = new Set(result.rows.map((r) => r.owner_id));
   const allValid = others.every((id) => permitted.has(id));
+
+  console.log('Permitted set:', permitted, 'allValid:', allValid);
 
   return allValid ? targets : null;
 }
