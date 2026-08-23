@@ -14,7 +14,6 @@ interface ExternalFood {
 }
 
 export default function CreateFoodForm({ grantedToMe, userId }: { grantedToMe: GrantedAccount[]; userId: string }) {
-  console.log('CreateFoodForm rendered, grantedToMe:', grantedToMe);
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [name, setName] = useState('');
@@ -31,7 +30,6 @@ export default function CreateFoodForm({ grantedToMe, userId }: { grantedToMe: G
   const [searching, setSearching] = useState(false);
 
   function toggleTarget(id: string) {
-  console.log('toggleTarget called with:', id);
   setSelectedTargets((prev) =>
     prev.includes(id) ? prev.filter((t) => t !== id) : [...prev, id]
   );
