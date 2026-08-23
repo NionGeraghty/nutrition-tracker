@@ -13,6 +13,10 @@ function extractNutrient(foodNutrients: any[], nutrientId: number): number {
   return match ? match.value : 0;
 }
 
+function calculateCaloriesFromMacros(protein: number, carbs: number, fat: number): number {
+  return protein * 4 + carbs * 4 + fat * 9;
+}
+
 export async function searchExternalFoods(req: Request, res: Response) {
   const { q } = req.query;
 
@@ -36,14 +40,26 @@ export async function searchExternalFoods(req: Request, res: Response) {
 
   const data = await response.json();
 
-  const results = data.foods.map((food: any) => ({
+  const results = data.foods.map((food: any) => {
+  const protein = extractNutrient(food.foodNutrients, NUTRIENT_IDS.protein);
+  const carbs = extractNutrient(food.foodNutrients, NUTRIENT_IDS.carbs);
+  const fat = extractNutrient(food.foodNutrients, NUTRIENT_IDS.fat);
+  const fibre = extractNutrient(food.foodNutrients, NUTRIENT_IDS.fibre);
+  let calories = extractNutrient(food.foodNutrients, NUTRIENT_IDS.calories);
+
+  if (calories === 0 && (protein > 0 || carbs > 0 || fat > 0)) {
+    calories = Math.round(calculateCaloriesFromMacros(protein, carbs, fat));
+  }
+
+  return {
     name: food.description,
-    caloriesPer100g: extractNutrient(food.foodNutrients, NUTRIENT_IDS.calories),
-    proteinPer100g: extractNutrient(food.foodNutrients, NUTRIENT_IDS.protein),
-    carbsPer100g: extractNutrient(food.foodNutrients, NUTRIENT_IDS.carbs),
-    fatPer100g: extractNutrient(food.foodNutrients, NUTRIENT_IDS.fat),
-    fibrePer100g: extractNutrient(food.foodNutrients, NUTRIENT_IDS.fibre),
-  }));
+    caloriesPer100g: calories,
+    proteinPer100g: protein,
+    carbsPer100g: carbs,
+    fatPer100g: fat,
+    fibrePer100g: fibre,
+  };
+});
 
   res.json(results);
 }
