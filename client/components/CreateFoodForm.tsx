@@ -30,10 +30,11 @@ export default function CreateFoodForm({ grantedToMe, userId }: { grantedToMe: G
   const [searching, setSearching] = useState(false);
 
   function toggleTarget(id: string) {
-    setSelectedTargets((prev) =>
-      prev.includes(id) ? prev.filter((t) => t !== id) : [...prev, id]
-    );
-  }
+  console.log('toggleTarget called with:', id);
+  setSelectedTargets((prev) =>
+    prev.includes(id) ? prev.filter((t) => t !== id) : [...prev, id]
+  );
+}
 
   async function handleSearch() {
     if (searchQuery.trim().length === 0) return;
