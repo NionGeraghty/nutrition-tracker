@@ -44,3 +44,9 @@ export interface Goals {
   fat: string;
   fibre: string;
 }
+
+export interface GrantedAccount {
+  id: string;
+  owner_id: string;
+  email: string;
+}

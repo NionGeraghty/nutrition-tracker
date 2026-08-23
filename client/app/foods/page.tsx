@@ -2,12 +2,7 @@ import CreateFoodForm from '@/components/CreateFoodForm';
 import FoodsList from '@/components/FoodsList';
 import { redirect } from 'next/navigation';
 import { getCurrentUser, serverFetch } from '@/lib/api';
-import { Food } from '@/types';
-
-interface GrantedAccount {
-  id: string;
-  email: string;
-}
+import { Food, GrantedAccount } from '@/types';
 
 async function getFoods(): Promise<Food[]> {
   const response = await serverFetch('/foods');

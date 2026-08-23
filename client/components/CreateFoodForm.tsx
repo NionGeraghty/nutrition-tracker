@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { GrantedAccount } from '@/types';
 
 interface ExternalFood {
   name: string;
@@ -10,12 +11,6 @@ interface ExternalFood {
   carbsPer100g: number;
   fatPer100g: number;
   fibrePer100g: number;
-}
-
-interface GrantedAccount {
-  id: string;
-  owner_id: string;
-  email: string;
 }
 
 export default function CreateFoodForm({ grantedToMe, userId }: { grantedToMe: GrantedAccount[]; userId: string }) {

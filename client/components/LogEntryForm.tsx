@@ -2,16 +2,11 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { GrantedAccount } from '@/types';
 
 interface Food {
   id: string;
   name: string;
-}
-
-interface GrantedAccount {
-  id: string;
-  owner_id: string;
-  email: string;
 }
 
 export default function LogEntryForm({
