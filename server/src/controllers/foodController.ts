@@ -19,7 +19,10 @@ export async function getAllFoods(req: Request, res: Response) {
     targetUserId = forUserId;
   }
 
-  const result = await pool.query<Food>('SELECT * FROM foods WHERE user_id = $1', [targetUserId]);
+  const result = await pool.query<Food>(
+    'SELECT * FROM foods WHERE user_id = $1 ORDER BY LOWER(name) ASC',
+    [targetUserId]
+  );
   res.json(result.rows);
 }
 
