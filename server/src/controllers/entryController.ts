@@ -48,29 +48,42 @@ export async function createEntry(req: Request, res: Response) {
 }
 
 export async function getEntriesByDate(req: Request, res: Response) {
-  const { date } = req.query;
+  const { date, forUserId } = req.query;
 
   if (typeof date !== 'string') {
     return res.status(400).json({ error: 'A date query parameter is required' });
   }
 
+  let targetUserId = req.session.userId!;
+
+  if (typeof forUserId === 'string' && forUserId !== req.session.userId) {
+    const permCheck = await pool.query(
+      'SELECT id FROM editor_permissions WHERE owner_id = $1 AND editor_id = $2',
+      [forUserId, req.session.userId]
+    );
+    if (permCheck.rows.length === 0) {
+      return res.status(403).json({ error: 'You do not have permission to view this account\'s entries' });
+    }
+    targetUserId = forUserId;
+  }
+
   const result = await pool.query(
-  `SELECT
-     food_entries.id,
-     food_entries.date,
-     food_entries.grams,
-     food_entries.meal_type,
-     foods.name,
-     foods.calories_per_100g,
-     foods.protein_per_100g,
-     foods.carbs_per_100g,
-     foods.fat_per_100g,
-     foods.fibre_per_100g
-   FROM food_entries
-   JOIN foods ON food_entries.food_id = foods.id
-   WHERE food_entries.date = $1 AND food_entries.user_id = $2`,
-  [date, req.session.userId]
-);
+    `SELECT
+       food_entries.id,
+       food_entries.date,
+       food_entries.grams,
+       food_entries.meal_type,
+       foods.name,
+       foods.calories_per_100g,
+       foods.protein_per_100g,
+       foods.carbs_per_100g,
+       foods.fat_per_100g,
+       foods.fibre_per_100g
+     FROM food_entries
+     JOIN foods ON food_entries.food_id = foods.id
+     WHERE food_entries.date = $1 AND food_entries.user_id = $2`,
+    [date, targetUserId]
+  );
 
   res.json(result.rows);
 }

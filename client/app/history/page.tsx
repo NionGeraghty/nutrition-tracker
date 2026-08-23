@@ -1,11 +1,11 @@
+import { redirect } from 'next/navigation';
+import { getCurrentUser, serverFetch } from '@/lib/api';
+import { Food, Entry, Summary, GrantedAccount } from '@/types';
 import LogEntryForm from '@/components/LogEntryForm';
 import EntriesList from '@/components/EntriesList';
 import SummaryCard from '@/components/SummaryCard';
 import DatePicker from '@/components/DatePicker';
-import { Food, Entry, Summary, GrantedAccount } from '@/types';
-import { serverFetch } from '@/lib/api';
-import { redirect } from 'next/navigation';
-import { getCurrentUser } from '@/lib/api';
+import ViewingSelector from '@/components/ViewingSelector';
 
 function getTodayDateString(): string {
   const now = new Date();
@@ -15,42 +15,44 @@ function getTodayDateString(): string {
   return `${year}-${month}-${day}`;
 }
 
+async function getFoods(forUserId: string): Promise<Food[]> {
+  const response = await serverFetch(`/foods?forUserId=${forUserId}`);
+  return response.json();
+}
+
+async function getEntries(date: string, forUserId: string): Promise<Entry[]> {
+  const response = await serverFetch(`/entries?date=${date}&forUserId=${forUserId}`);
+  return response.json();
+}
+
+async function getSummary(date: string, forUserId: string): Promise<Summary> {
+  const response = await serverFetch(`/summary?date=${date}&forUserId=${forUserId}`);
+  return response.json();
+}
+
 async function getGrantedToMe(): Promise<GrantedAccount[]> {
   const response = await serverFetch('/editors/granted-to-me');
-  return response.json();
-}
-
-async function getFoods(): Promise<Food[]> {
-  const response = await serverFetch('/foods');
-  return response.json();
-}
-
-async function getEntries(date: string): Promise<Entry[]> {
-  const response = await serverFetch(`/entries?date=${date}`);
-  return response.json();
-}
-
-async function getSummary(date: string): Promise<Summary> {
-  const response = await serverFetch(`/summary?date=${date}`);
   return response.json();
 }
 
 export default async function HistoryPage({
   searchParams,
 }: {
-  searchParams: Promise<{ date?: string }>;
+  searchParams: Promise<{ date?: string; viewing?: string }>;
 }) {
-  const params = await searchParams;
   const user = await getCurrentUser();
   if (!user) {
     redirect('/login?redirect=/history');
   }
+
+  const params = await searchParams;
   const date = params.date ?? getTodayDateString();
+  const viewing = params.viewing || user.id;
 
   const [foods, entries, summary, grantedToMe] = await Promise.all([
-    getFoods(),
-    getEntries(date),
-    getSummary(date),
+    getFoods(viewing),
+    getEntries(date, viewing),
+    getSummary(date, viewing),
     getGrantedToMe(),
   ]);
 
@@ -58,11 +60,14 @@ export default async function HistoryPage({
     <main className="p-4 md:p-8 space-y-6">
       <h1 className="text-2xl font-bold">History</h1>
 
-      <DatePicker date={date} />
+      <div className="flex flex-wrap gap-4">
+        <DatePicker date={date} />
+        <ViewingSelector userId={user.id} userEmail={user.email} grantedToMe={grantedToMe} basePath="/history" />
+      </div>
 
       <SummaryCard summary={summary} />
 
-      <LogEntryForm foods={foods} date={date} userId={user.id} grantedToMe={grantedToMe} />
+      <LogEntryForm foods={foods} date={date} targetUserId={viewing} />
 
       <EntriesList entries={entries} foods={foods} />
     </main>

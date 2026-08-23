@@ -2,10 +2,23 @@ import { Request, Response } from 'express';
 import { pool } from '../db';
 
 export async function getSummary(req: Request, res: Response) {
-  const { date } = req.query;
+  const { date, forUserId } = req.query;
 
   if (typeof date !== 'string') {
     return res.status(400).json({ error: 'A date query parameter is required' });
+  }
+
+  let targetUserId = req.session.userId!;
+
+  if (typeof forUserId === 'string' && forUserId !== req.session.userId) {
+    const permCheck = await pool.query(
+      'SELECT id FROM editor_permissions WHERE owner_id = $1 AND editor_id = $2',
+      [forUserId, req.session.userId]
+    );
+    if (permCheck.rows.length === 0) {
+      return res.status(403).json({ error: 'You do not have permission to view this account\'s summary' });
+    }
+    targetUserId = forUserId;
   }
 
   const entriesResult = await pool.query(
@@ -19,7 +32,7 @@ export async function getSummary(req: Request, res: Response) {
      FROM food_entries
      JOIN foods ON food_entries.food_id = foods.id
      WHERE food_entries.date = $1 AND food_entries.user_id = $2`,
-    [date, req.session.userId]
+    [date, targetUserId]
   );
 
   const totals = entriesResult.rows.reduce(
@@ -37,7 +50,7 @@ export async function getSummary(req: Request, res: Response) {
 
   const goalsResult = await pool.query(
     'SELECT * FROM daily_goals WHERE user_id = $1',
-    [req.session.userId]
+    [targetUserId]
   );
 
   if (goalsResult.rows.length === 0) {
