@@ -2,7 +2,7 @@ import LogEntryForm from '@/components/LogEntryForm';
 import EntriesList from '@/components/EntriesList';
 import SummaryCard from '@/components/SummaryCard';
 import DatePicker from '@/components/DatePicker';
-import { Food, Entry, Summary } from '@/types';
+import { Food, Entry, Summary, GrantedAccount } from '@/types';
 import { serverFetch } from '@/lib/api';
 import { redirect } from 'next/navigation';
 import { getCurrentUser } from '@/lib/api';
@@ -13,11 +13,6 @@ function getTodayDateString(): string {
   const month = String(now.getMonth() + 1).padStart(2, '0');
   const day = String(now.getDate()).padStart(2, '0');
   return `${year}-${month}-${day}`;
-}
-
-interface GrantedAccount {
-  id: string;
-  email: string;
 }
 
 async function getGrantedToMe(): Promise<GrantedAccount[]> {
