@@ -90,12 +90,11 @@ export async function getEntriesByDate(req: Request, res: Response) {
 
 export async function updateEntry(req: Request, res: Response) {
   const { id } = req.params;
+  const { foodId, date, grams, mealType, targetUserId: bodyTargetUserId } = req.body;
 
   if (typeof id !== 'string') {
     return res.status(400).json({ error: 'Invalid id' });
   }
-
-  const { foodId, date, grams, mealType } = req.body;
 
   const validMealTypes = ['breakfast', 'lunch', 'dinner', 'snack', 'other'];
 
@@ -109,9 +108,22 @@ export async function updateEntry(req: Request, res: Response) {
     return res.status(400).json({ error: 'Invalid entry data' });
   }
 
+  let targetUserId = req.session.userId!;
+
+  if (typeof bodyTargetUserId === 'string' && bodyTargetUserId !== req.session.userId) {
+    const permCheck = await pool.query(
+      'SELECT id FROM editor_permissions WHERE owner_id = $1 AND editor_id = $2',
+      [bodyTargetUserId, req.session.userId]
+    );
+    if (permCheck.rows.length === 0) {
+      return res.status(403).json({ error: 'You do not have permission to edit this account\'s entries' });
+    }
+    targetUserId = bodyTargetUserId;
+  }
+
   const foodCheck = await pool.query(
     'SELECT id FROM foods WHERE id = $1 AND user_id = $2',
-    [foodId, req.session.userId]
+    [foodId, targetUserId]
   );
   if (foodCheck.rows.length === 0) {
     return res.status(400).json({ error: 'No food exists with that id' });
@@ -122,7 +134,7 @@ export async function updateEntry(req: Request, res: Response) {
      SET food_id = $1, date = $2, grams = $3, meal_type = $4
      WHERE id = $5 AND user_id = $6
      RETURNING *`,
-    [foodId, date, grams, mealType, id, req.session.userId]
+    [foodId, date, grams, mealType, id, targetUserId]
   );
 
   if (result.rows.length === 0) {
@@ -134,14 +146,28 @@ export async function updateEntry(req: Request, res: Response) {
 
 export async function deleteEntry(req: Request, res: Response) {
   const { id } = req.params;
+  const { forUserId } = req.query;
 
   if (typeof id !== 'string') {
     return res.status(400).json({ error: 'Invalid id' });
   }
 
+  let targetUserId = req.session.userId!;
+
+  if (typeof forUserId === 'string' && forUserId !== req.session.userId) {
+    const permCheck = await pool.query(
+      'SELECT id FROM editor_permissions WHERE owner_id = $1 AND editor_id = $2',
+      [forUserId, req.session.userId]
+    );
+    if (permCheck.rows.length === 0) {
+      return res.status(403).json({ error: 'You do not have permission to delete from this account' });
+    }
+    targetUserId = forUserId;
+  }
+
   const result = await pool.query(
     'DELETE FROM food_entries WHERE id = $1 AND user_id = $2',
-    [id, req.session.userId]
+    [id, targetUserId]
   );
 
   if (result.rowCount === 0) {

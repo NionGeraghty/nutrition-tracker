@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Entry, Food } from '@/types';
 
-export default function EntryItem({ entry, foods }: { entry: Entry; foods: Food[] }) {
+export default function EntryItem({ entry, foods, targetUserId }: { entry: Entry; foods: Food[]; targetUserId: string }) {
   const router = useRouter();
   const [isEditing, setIsEditing] = useState(false);
   const [foodId, setFoodId] = useState(entry.food_id);
@@ -29,6 +29,7 @@ export default function EntryItem({ entry, foods }: { entry: Entry; foods: Food[
         date: entry.date,
         grams: Number(grams),
         mealType,
+        targetUserId,
       }),
     });
 
@@ -37,7 +38,7 @@ export default function EntryItem({ entry, foods }: { entry: Entry; foods: Food[
   }
 
   async function handleDelete() {
-    await fetch(`/api/entries/${entry.id}`, {
+    await fetch(`/api/entries/${entry.id}?forUserId=${targetUserId}`, {
       method: 'DELETE',
       credentials: 'include',
     });

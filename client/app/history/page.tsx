@@ -69,7 +69,7 @@ export default async function HistoryPage({
 
       <LogEntryForm foods={foods} date={date} targetUserId={viewing} />
 
-      <EntriesList entries={entries} foods={foods} />
+      <EntriesList entries={entries} foods={foods} targetUserId={viewing} />
     </main>
   );
 }

@@ -5,7 +5,7 @@ import { Entry, Food } from '@/types';
 
 const MEAL_ORDER = ['breakfast', 'lunch', 'dinner', 'snack', 'other'];
 
-export default function EntriesList({ entries, foods }: { entries: Entry[]; foods: Food[] }) {
+export default function EntriesList({ entries, foods, targetUserId }: { entries: Entry[]; foods: Food[]; targetUserId: string }) {
   const grouped = MEAL_ORDER.map((mealType) => ({
     mealType,
     items: entries.filter((entry) => entry.meal_type === mealType),
@@ -22,7 +22,7 @@ export default function EntriesList({ entries, foods }: { entries: Entry[]; food
           <h3 className="font-semibold capitalize mb-2">{group.mealType}</h3>
           <ul className="space-y-2">
             {group.items.map((item) => (
-              <EntryItem key={item.id} entry={item} foods={foods} />
+              <EntryItem key={item.id} entry={item} foods={foods} targetUserId={targetUserId} />
             ))}
           </ul>
         </div>

@@ -68,7 +68,7 @@ export default async function TodayPage({
 
       <LogEntryForm foods={foods} date={date} targetUserId={viewing} />
 
-      <EntriesList entries={entries} foods={foods} />
+      <EntriesList entries={entries} foods={foods} targetUserId={viewing} />
     </main>
   );
 }
