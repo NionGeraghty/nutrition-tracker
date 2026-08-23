@@ -1,16 +1,55 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { Food } from '@/types';
 
-export default function LogEntryForm({ foods, date }: { foods: Food[]; date: string }) {
+interface Food {
+  id: string;
+  name: string;
+}
+
+interface GrantedAccount {
+  id: string;
+  email: string;
+}
+
+export default function LogEntryForm({
+  foods,
+  date,
+  userId,
+  grantedToMe,
+}: {
+  foods: Food[];
+  date: string;
+  userId: string;
+  grantedToMe: GrantedAccount[];
+}) {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
+  const [target, setTarget] = useState(userId);
+  const [availableFoods, setAvailableFoods] = useState<Food[]>(foods);
+  const [loadingFoods, setLoadingFoods] = useState(false);
   const [foodId, setFoodId] = useState('');
   const [grams, setGrams] = useState('');
   const [mealType, setMealType] = useState('breakfast');
   const [error, setError] = useState('');
+
+  useEffect(() => {
+    if (target === userId) {
+      setAvailableFoods(foods);
+      setFoodId('');
+      return;
+    }
+
+    setLoadingFoods(true);
+    fetch(`/api/foods?forUserId=${target}`, { credentials: 'include' })
+      .then((res) => res.json())
+      .then((data) => {
+        setAvailableFoods(Array.isArray(data) ? data : []);
+        setFoodId('');
+        setLoadingFoods(false);
+      });
+  }, [target, userId, foods]);
 
   return (
     <div className="border rounded max-w-md">
@@ -29,7 +68,7 @@ export default function LogEntryForm({ foods, date }: { foods: Food[]; date: str
             e.preventDefault();
             setError('');
 
-            const response = await fetch(`/api/entries`, {
+            const response = await fetch('/api/entries', {
               method: 'POST',
               credentials: 'include',
               headers: { 'Content-Type': 'application/json' },
@@ -38,11 +77,13 @@ export default function LogEntryForm({ foods, date }: { foods: Food[]; date: str
                 date,
                 grams: Number(grams),
                 mealType,
+                targetUserId: target,
               }),
             });
 
             if (!response.ok) {
-              setError('Failed to log entry.');
+              const data = await response.json();
+              setError(data.error ?? 'Failed to log entry.');
               return;
             }
 
@@ -54,16 +95,35 @@ export default function LogEntryForm({ foods, date }: { foods: Food[]; date: str
         >
           {error && <p className="text-red-600 text-sm">{error}</p>}
 
+          {grantedToMe.length > 0 && (
+            <div>
+              <label className="block text-xs text-gray-500 mb-1">Log to</label>
+              <select
+                value={target}
+                onChange={(e) => setTarget(e.target.value)}
+                className="border p-2 rounded w-full"
+              >
+                <option value={userId}>Me</option>
+                {grantedToMe.map((account) => (
+                  <option key={account.id} value={account.id}>
+                    {account.email}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
+
           <select
             value={foodId}
             onChange={(e) => setFoodId(e.target.value)}
             className="border p-2 rounded w-full"
             required
+            disabled={loadingFoods}
           >
             <option value="" disabled>
-              Select a food
+              {loadingFoods ? 'Loading foods...' : 'Select a food'}
             </option>
-            {foods.map((food) => (
+            {availableFoods.map((food) => (
               <option key={food.id} value={food.id}>
                 {food.name}
               </option>

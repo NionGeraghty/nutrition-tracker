@@ -15,6 +15,16 @@ function getTodayDateString(): string {
   return `${year}-${month}-${day}`;
 }
 
+interface GrantedAccount {
+  id: string;
+  email: string;
+}
+
+async function getGrantedToMe(): Promise<GrantedAccount[]> {
+  const response = await serverFetch('/editors/granted-to-me');
+  return response.json();
+}
+
 async function getFoods(): Promise<Food[]> {
   const response = await serverFetch('/foods');
   return response.json();
@@ -42,10 +52,11 @@ export default async function HistoryPage({
   }
   const date = params.date ?? getTodayDateString();
 
-  const [foods, entries, summary] = await Promise.all([
+  const [foods, entries, summary, grantedToMe] = await Promise.all([
     getFoods(),
     getEntries(date),
     getSummary(date),
+    getGrantedToMe(),
   ]);
 
   return (
@@ -56,7 +67,7 @@ export default async function HistoryPage({
 
       <SummaryCard summary={summary} />
 
-      <LogEntryForm foods={foods} date={date} />
+      <LogEntryForm foods={foods} date={date} userId={user.id} grantedToMe={grantedToMe} />
 
       <EntriesList entries={entries} foods={foods} />
     </main>
