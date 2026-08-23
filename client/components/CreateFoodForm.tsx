@@ -14,6 +14,7 @@ interface ExternalFood {
 
 interface GrantedAccount {
   id: string;
+  owner_id: string;
   email: string;
 }
 
@@ -254,15 +255,15 @@ export default function CreateFoodForm({ grantedToMe, userId }: { grantedToMe: G
                 </label>
                 <div className="space-y-1">
                   {grantedToMe.map((account) => (
-                    <label key={account.id} className="flex items-center gap-2 text-sm">
-                      <input
-                        type="checkbox"
-                        checked={selectedTargets.includes(account.id)}
-                        onChange={() => toggleTarget(account.id)}
-                      />
-                      {account.email}
-                    </label>
-                  ))}
+                <label key={account.id} className="flex items-center gap-2 text-sm">
+                  <input
+                    type="checkbox"
+                    checked={selectedTargets.includes(account.owner_id)}
+                    onChange={() => toggleTarget(account.owner_id)}
+                  />
+                  {account.email}
+                </label>
+              ))}
                 </div>
               </div>
             )}

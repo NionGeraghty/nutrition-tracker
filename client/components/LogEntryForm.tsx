@@ -10,6 +10,7 @@ interface Food {
 
 interface GrantedAccount {
   id: string;
+  owner_id: string;
   email: string;
 }
 
@@ -105,10 +106,10 @@ export default function LogEntryForm({
               >
                 <option value={userId}>Me</option>
                 {grantedToMe.map((account) => (
-                  <option key={account.id} value={account.id}>
-                    {account.email}
-                  </option>
-                ))}
+                <option key={account.id} value={account.owner_id}>
+                  {account.email}
+                </option>
+              ))}
               </select>
             </div>
           )}
