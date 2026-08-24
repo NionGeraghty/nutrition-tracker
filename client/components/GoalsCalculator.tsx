@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import ExplanationSection from './ExplanationSection';
 
 interface CalculatedMacros {
   calories: number;
@@ -88,10 +89,6 @@ export default function GoalsCalculator({
 
       {isOpen && (
         <form onSubmit={handleCalculate} className="p-4 pt-0 space-y-3">
-          <p className="text-xs text-gray-500">
-            This is an estimate based on standard formulas, not personalised medical advice.
-          </p>
-
           <select
             value={sex}
             onChange={(e) => setSex(e.target.value)}
@@ -154,6 +151,21 @@ export default function GoalsCalculator({
           </button>
         </form>
       )}
+      <div className="mt-4 pt-4 border-t space-y-3">
+        <p className="text-xs text-gray-500">
+          <strong>This is not medical or dietetic advice.</strong> These numbers are a
+          general estimate based on population-average formulas, not a personalised
+          assessment of your body, health, or medical history. They don't account for
+          medical conditions, medications, body composition, or other individual
+          factors that can meaningfully change your real needs. For guidance tailored
+          to you, consult a registered dietitian, doctor, or other qualified
+          professional. Treat these numbers as a starting point — track your actual
+          results over a few weeks and adjust as needed, rather than following them
+          rigidly. Use at your own discretion.
+        </p>
+
+        <ExplanationSection />
+      </div>
     </div>
   );
 }
