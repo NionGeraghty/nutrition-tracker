@@ -63,3 +63,36 @@ export async function searchExternalFoods(req: Request, res: Response) {
 
   res.json(results);
 }
+
+export async function lookupBarcode(req: Request, res: Response) {
+  const { code } = req.params;
+
+  if (typeof code !== 'string' || code.trim().length === 0) {
+    return res.status(400).json({ error: 'A barcode is required' });
+  }
+
+  const response = await fetch(`https://world.openfoodfacts.org/api/v2/product/${code}.json`);
+
+  if (!response.ok) {
+    return res.status(502).json({ error: 'Failed to look up barcode' });
+  }
+
+  const data = await response.json();
+
+  if (data.status !== 1 || !data.product) {
+    return res.status(404).json({ error: 'No product found for that barcode' });
+  }
+
+  const nutriments = data.product.nutriments || {};
+
+  const result = {
+    name: data.product.product_name || data.product.generic_name || 'Unknown product',
+    caloriesPer100g: Math.round(nutriments['energy-kcal_100g'] || 0),
+    proteinPer100g: nutriments['proteins_100g'] || 0,
+    carbsPer100g: nutriments['carbohydrates_100g'] || 0,
+    fatPer100g: nutriments['fat_100g'] || 0,
+    fibrePer100g: nutriments['fiber_100g'] || 0,
+  };
+
+  res.json(result);
+}
