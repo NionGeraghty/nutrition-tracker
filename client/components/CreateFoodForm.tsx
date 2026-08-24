@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { GrantedAccount } from '@/types';
+import BarcodeScanner from './BarcodeScanner';
 
 interface ExternalFood {
   name: string;
@@ -28,6 +29,7 @@ export default function CreateFoodForm({ grantedToMe, userId }: { grantedToMe: G
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<ExternalFood[]>([]);
   const [searching, setSearching] = useState(false);
+  const [scanning, setScanning] = useState(false);
 
   function toggleTarget(id: string) {
   setSelectedTargets((prev) =>
@@ -135,6 +137,35 @@ export default function CreateFoodForm({ grantedToMe, userId }: { grantedToMe: G
               </ul>
             )}
           </div>
+
+          <button
+  type="button"
+  onClick={() => setScanning(true)}
+  className="border px-3 py-2 rounded text-sm"
+>
+  Scan barcode
+</button>
+
+{scanning && (
+  <BarcodeScanner
+    onDetected={async (code) => {
+      setScanning(false);
+      const response = await fetch(`/api/foods/barcode/${code}`, { credentials: 'include' });
+      if (response.ok) {
+        const result = await response.json();
+        setName(result.name);
+        setCalories(String(result.caloriesPer100g));
+        setProtein(String(result.proteinPer100g));
+        setCarbs(String(result.carbsPer100g));
+        setFat(String(result.fatPer100g));
+        setFibre(String(result.fibrePer100g));
+      } else {
+        setError('No product found for that barcode.');
+      }
+    }}
+    onClose={() => setScanning(false)}
+  />
+)}
 
           <form
             onSubmit={async (e) => {
