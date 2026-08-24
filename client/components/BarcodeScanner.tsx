@@ -61,13 +61,19 @@ export default function BarcodeScanner({
           try {
             const barcodes = await detector.detect(video);
             if (barcodes.length > 0) {
-              const box = barcodes[0].boundingBox;
-              ctx.strokeStyle = '#22c55e';
-              ctx.lineWidth = 4;
-              ctx.strokeRect(box.x, box.y, box.width, box.height);
+                const box = barcodes[0].boundingBox;
+                const verticalPadding = 40;
+                ctx.strokeStyle = '#22c55e';
+                ctx.lineWidth = 4;
+                ctx.strokeRect(
+                    box.x - 10,
+                    box.y - verticalPadding,
+                    box.width + 20,
+                    box.height + verticalPadding * 2
+                );
 
-              detected = true;
-              setTimeout(() => onDetected(barcodes[0].rawValue), 150);
+                detected = true;
+                setTimeout(() => onDetected(barcodes[0].rawValue), 150);
             }
           } catch {
             // ignore individual frame failures, keep scanning
