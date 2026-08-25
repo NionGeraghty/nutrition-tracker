@@ -134,3 +134,42 @@ describe('multi-target creation', () => {
     expect(ownerFoodsResponse.body[0].name).toBe('Shared rice');
   });
 });
+
+describe('GET /foods with forUserId', () => {
+  it('returns the target account\'s foods when permission has been granted', async () => {
+    const owner = await createAndLoginUser('viewperm-owner@example.com');
+    const editor = await createAndLoginUser('viewperm-editor@example.com');
+
+    await owner.post('/editors').send({ email: 'viewperm-editor@example.com' });
+
+    const ownerMe = await owner.get('/auth/me');
+    const ownerId = ownerMe.body.id;
+
+    await owner.post('/foods').send({
+      name: 'Owner Food',
+      caloriesPer100g: 100,
+      proteinPer100g: 10,
+      carbsPer100g: 10,
+      fatPer100g: 10,
+      fibrePer100g: 1,
+    });
+
+    const response = await editor.get(`/foods?forUserId=${ownerId}`);
+
+    expect(response.status).toBe(200);
+    expect(response.body).toHaveLength(1);
+    expect(response.body[0].name).toBe('Owner Food');
+  });
+
+  it('rejects viewing another account\'s foods without permission', async () => {
+    const agent = await createAndLoginUser('viewperm-noaccess@example.com');
+    const stranger = await createAndLoginUser('viewperm-stranger@example.com');
+
+    const strangerMe = await stranger.get('/auth/me');
+    const strangerId = strangerMe.body.id;
+
+    const response = await agent.get(`/foods?forUserId=${strangerId}`);
+
+    expect(response.status).toBe(403);
+  });
+});

@@ -112,3 +112,49 @@ describe('GET /summary', () => {
     expect(response.body.totals.calories).toBeCloseTo(150);
   });
 });
+
+describe('GET /summary with forUserId', () => {
+  it('returns the target account\'s summary when permission has been granted', async () => {
+    const owner = await createAndLoginUser('summaryperm-owner@example.com');
+    const editor = await createAndLoginUser('summaryperm-editor@example.com');
+
+    await owner.post('/editors').send({ email: 'summaryperm-editor@example.com' });
+
+    const ownerMe = await owner.get('/auth/me');
+    const ownerId = ownerMe.body.id;
+
+    const foodResponse = await owner.post('/foods').send({
+      name: 'Owner Food',
+      caloriesPer100g: 200,
+      proteinPer100g: 10,
+      carbsPer100g: 30,
+      fatPer100g: 5,
+      fibrePer100g: 2,
+    });
+    const foodId = foodResponse.body[0].id;
+
+    await owner.post('/entries').send({
+      foodId,
+      date: '2026-08-27',
+      grams: 100,
+      mealType: 'breakfast',
+    });
+
+    const response = await editor.get(`/summary?date=2026-08-27&forUserId=${ownerId}`);
+
+    expect(response.status).toBe(200);
+    expect(response.body.totals.calories).toBeCloseTo(200);
+  });
+
+  it('rejects viewing another account\'s summary without permission', async () => {
+    const agent = await createAndLoginUser('summaryperm-noaccess@example.com');
+    const stranger = await createAndLoginUser('summaryperm-stranger@example.com');
+
+    const strangerMe = await stranger.get('/auth/me');
+    const strangerId = strangerMe.body.id;
+
+    const response = await agent.get(`/summary?date=2026-08-27&forUserId=${strangerId}`);
+
+    expect(response.status).toBe(403);
+  });
+});
