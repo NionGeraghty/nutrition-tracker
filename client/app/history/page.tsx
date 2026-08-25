@@ -6,6 +6,7 @@ import EntriesList from '@/components/EntriesList';
 import SummaryCard from '@/components/SummaryCard';
 import DatePicker from '@/components/DatePicker';
 import ViewingSelector from '@/components/ViewingSelector';
+import CopyDayButton from '@/components/CopyDayButton';
 
 function getTodayDateString(): string {
   const now = new Date();
@@ -64,6 +65,8 @@ export default async function HistoryPage({
         <DatePicker date={date} />
         <ViewingSelector userId={user.id} userEmail={user.email} grantedToMe={grantedToMe} basePath="/history" />
       </div>
+
+      <CopyDayButton toDate={date} targetUserId={viewing} />
 
       <SummaryCard summary={summary} />
 

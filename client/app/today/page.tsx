@@ -5,6 +5,7 @@ import LogEntryForm from '@/components/LogEntryForm';
 import EntriesList from '@/components/EntriesList';
 import SummaryCard from '@/components/SummaryCard';
 import ViewingSelector from '@/components/ViewingSelector';
+import CopyDayButton from '@/components/CopyDayButton';
 
 function getTodayDateString(): string {
   const now = new Date();
@@ -63,6 +64,8 @@ export default async function TodayPage({
       </div>
 
       <ViewingSelector userId={user.id} userEmail={user.email} grantedToMe={grantedToMe} basePath="/today" />
+
+      <CopyDayButton toDate={date} targetUserId={viewing} />
 
       <SummaryCard summary={summary} />
 

@@ -213,3 +213,107 @@ describe('user isolation', () => {
     expect(response.body).toEqual([]);
   });
 });
+
+describe('POST /entries/copy', () => {
+  it('copies all entries from one date to another', async () => {
+    const agent = await createAndLoginUser('copy-basic@example.com');
+
+    const foodResponse = await agent.post('/foods').send({
+      name: 'Rice',
+      caloriesPer100g: 130,
+      proteinPer100g: 2.7,
+      carbsPer100g: 28,
+      fatPer100g: 0.3,
+      fibrePer100g: 0.4,
+    });
+    const foodId = foodResponse.body[0].id;
+
+    await agent.post('/entries').send({
+      foodId,
+      date: '2026-08-27',
+      grams: 100,
+      mealType: 'breakfast',
+    });
+    await agent.post('/entries').send({
+      foodId,
+      date: '2026-08-27',
+      grams: 50,
+      mealType: 'lunch',
+    });
+
+    const response = await agent.post('/entries/copy').send({
+      fromDate: '2026-08-27',
+      toDate: '2026-08-28',
+    });
+
+    expect(response.status).toBe(201);
+    expect(response.body.copied).toBe(2);
+
+    const newDayResponse = await agent.get('/entries?date=2026-08-28');
+    expect(newDayResponse.body).toHaveLength(2);
+  });
+
+  it('returns 404 when the source date has no entries', async () => {
+    const agent = await createAndLoginUser('copy-empty@example.com');
+
+    const response = await agent.post('/entries/copy').send({
+      fromDate: '2099-01-01',
+      toDate: '2099-01-02',
+    });
+
+    expect(response.status).toBe(404);
+  });
+
+  it('rejects copying to another account without permission', async () => {
+    const agent = await createAndLoginUser('copy-no-perm@example.com');
+    const stranger = await createAndLoginUser('copy-stranger@example.com');
+
+    const strangerMe = await stranger.get('/auth/me');
+    const strangerId = strangerMe.body.id;
+
+    const response = await agent.post('/entries/copy').send({
+      fromDate: '2026-08-27',
+      toDate: '2026-08-28',
+      targetUserId: strangerId,
+    });
+
+    expect(response.status).toBe(403);
+  });
+
+  it('copies entries to a shared account when permission is granted', async () => {
+    const owner = await createAndLoginUser('copy-owner@example.com');
+    const editor = await createAndLoginUser('copy-editor@example.com');
+
+    await owner.post('/editors').send({ email: 'copy-editor@example.com' });
+
+    const ownerMe = await owner.get('/auth/me');
+    const ownerId = ownerMe.body.id;
+
+    const foodResponse = await owner.post('/foods').send({
+      name: 'Oats',
+      caloriesPer100g: 389,
+      proteinPer100g: 16.9,
+      carbsPer100g: 66,
+      fatPer100g: 6.9,
+      fibrePer100g: 10.6,
+    });
+    const foodId = foodResponse.body[0].id;
+
+    await editor.post('/entries').send({
+      foodId,
+      date: '2026-08-27',
+      grams: 50,
+      mealType: 'breakfast',
+      targetUserId: ownerId,
+    });
+
+    const response = await editor.post('/entries/copy').send({
+      fromDate: '2026-08-27',
+      toDate: '2026-08-28',
+      targetUserId: ownerId,
+    });
+
+    expect(response.status).toBe(201);
+    expect(response.body.copied).toBe(1);
+  });
+});

@@ -176,3 +176,58 @@ export async function deleteEntry(req: Request, res: Response) {
 
   res.status(204).send();
 }
+
+export async function copyEntries(req: Request, res: Response) {
+  const { fromDate, toDate, targetUserId: bodyTargetUserId } = req.body;
+
+  if (typeof fromDate !== 'string' || typeof toDate !== 'string') {
+    return res.status(400).json({ error: 'fromDate and toDate are required' });
+  }
+
+  let targetUserId = req.session.userId!;
+
+  if (typeof bodyTargetUserId === 'string' && bodyTargetUserId !== req.session.userId) {
+    const permCheck = await pool.query(
+      'SELECT id FROM editor_permissions WHERE owner_id = $1 AND editor_id = $2',
+      [bodyTargetUserId, req.session.userId]
+    );
+    if (permCheck.rows.length === 0) {
+      return res.status(403).json({ error: 'You do not have permission to edit this account\'s entries' });
+    }
+    targetUserId = bodyTargetUserId;
+  }
+
+  const client = await pool.connect();
+
+  try {
+    await client.query('BEGIN');
+
+    const sourceEntries = await client.query(
+      'SELECT food_id, grams, meal_type FROM food_entries WHERE date = $1 AND user_id = $2',
+      [fromDate, targetUserId]
+    );
+
+    if (sourceEntries.rows.length === 0) {
+      await client.query('ROLLBACK');
+      return res.status(404).json({ error: 'No entries found for that date' });
+    }
+
+    for (const entry of sourceEntries.rows) {
+      await client.query(
+        `INSERT INTO food_entries (food_id, date, grams, meal_type, user_id)
+         VALUES ($1, $2, $3, $4, $5)`,
+        [entry.food_id, toDate, entry.grams, entry.meal_type, targetUserId]
+      );
+    }
+
+    await client.query('COMMIT');
+
+    res.status(201).json({ copied: sourceEntries.rows.length });
+  } catch (err) {
+    await client.query('ROLLBACK');
+    console.error(err);
+    res.status(500).json({ error: 'Failed to copy entries' });
+  } finally {
+    client.release();
+  }
+}
