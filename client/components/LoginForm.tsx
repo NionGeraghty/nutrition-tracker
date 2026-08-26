@@ -2,11 +2,13 @@
 
 import { useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 
 export default function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const t = useTranslations('Auth');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -25,7 +27,7 @@ export default function LoginForm() {
         });
 
         if (!response.ok) {
-          setError('Invalid email or password.');
+          setError(t('invalidCredentials'));
           return;
         }
 
@@ -37,38 +39,18 @@ export default function LoginForm() {
     >
       {error && <p className="text-red-600 text-sm">{error}</p>}
 
-      <input
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        className="border p-2 rounded w-full"
-        required
-      />
-      <input
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        className="border p-2 rounded w-full"
-        required
-      />
+      <input type="email" placeholder={t('email')} value={email} onChange={(e) => setEmail(e.target.value)} className="border p-2 rounded w-full" required />
+      <input type="password" placeholder={t('password')} value={password} onChange={(e) => setPassword(e.target.value)} className="border p-2 rounded w-full" required />
 
-      <button type="submit" className="bg-black text-white px-4 py-2 rounded w-full">
-        Log in
-      </button>
+      <button type="submit" className="bg-black text-white px-4 py-2 rounded w-full">{t('logIn')}</button>
 
       <p className="text-sm text-gray-600">
-        <Link href="/forgot-password" className="underline">
-          Forgot your password?
-        </Link>
+        <Link href="/forgot-password" className="underline">{t('forgotYourPassword')}</Link>
       </p>
 
       <p className="text-sm text-gray-600">
-        No account?{' '}
-        <Link href="/signup" className="underline">
-          Sign up
-        </Link>
+        {t('noAccount')}{' '}
+        <Link href="/signup" className="underline">{t('signUp')}</Link>
       </p>
     </form>
   );

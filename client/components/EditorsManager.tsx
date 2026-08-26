@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 
 interface EditorRelation {
   id: string;
@@ -18,6 +19,7 @@ export default function EditorsManager({
   unreciprocated: EditorRelation[];
 }) {
   const router = useRouter();
+  const t = useTranslations('Editors');
   const [email, setEmail] = useState('');
   const [error, setError] = useState('');
 
@@ -32,10 +34,7 @@ export default function EditorsManager({
   }
 
   async function handleRemove(id: string) {
-    await fetch(`/api/editors/${id}`, {
-      method: 'DELETE',
-      credentials: 'include',
-    });
+    await fetch(`/api/editors/${id}`, { method: 'DELETE', credentials: 'include' });
     router.refresh();
   }
 
@@ -43,17 +42,12 @@ export default function EditorsManager({
     <div className="space-y-6">
       {unreciprocated.length > 0 && (
         <div className="border border-amber-300 bg-amber-50 rounded p-4 space-y-2">
-          <h2 className="font-semibold text-sm">Return the favour?</h2>
+          <h2 className="font-semibold text-sm">{t('returnFavour')}</h2>
           {unreciprocated.map((person) => (
             <div key={person.id} className="flex justify-between items-center text-sm">
-              <span>
-                <strong>{person.email}</strong> has given you permission to edit their data.
-              </span>
-              <button
-                onClick={() => handleReciprocate(person.email)}
-                className="bg-black text-white px-3 py-1 rounded text-xs"
-              >
-                Give access back
+              <span>{t('hasGivenAccess', { email: person.email })}</span>
+              <button onClick={() => handleReciprocate(person.email)} className="bg-black text-white px-3 py-1 rounded text-xs">
+                {t('giveAccessBack')}
               </button>
             </div>
           ))}
@@ -74,7 +68,7 @@ export default function EditorsManager({
 
           if (!response.ok) {
             const data = await response.json();
-            setError(data.error ?? 'Failed to grant access.');
+            setError(data.error ?? t('grantError'));
             return;
           }
 
@@ -83,33 +77,29 @@ export default function EditorsManager({
         }}
         className="border p-4 rounded space-y-3 max-w-sm"
       >
-        <h2 className="font-semibold">Give someone permission to edit your data</h2>
+        <h2 className="font-semibold">{t('grantTitle')}</h2>
         {error && <p className="text-red-600 text-sm">{error}</p>}
         <input
           type="email"
-          placeholder="Their email"
+          placeholder={t('theirEmail')}
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           className="border p-2 rounded w-full"
           required
         />
-        <button type="submit" className="bg-black text-white px-4 py-2 rounded">
-          Grant access
-        </button>
+        <button type="submit" className="bg-black text-white px-4 py-2 rounded">{t('grantAccess')}</button>
       </form>
 
       <div>
-        <h2 className="font-semibold mb-2">People who can edit your data</h2>
+        <h2 className="font-semibold mb-2">{t('myEditorsTitle')}</h2>
         {myEditors.length === 0 ? (
-          <p className="text-sm text-gray-500">No one yet.</p>
+          <p className="text-sm text-gray-500">{t('noEditors')}</p>
         ) : (
           <ul className="space-y-2">
             {myEditors.map((person) => (
               <li key={person.id} className="border p-2 rounded flex justify-between items-center text-sm">
                 <span>{person.email}</span>
-                <button onClick={() => handleRemove(person.id)} className="text-red-600 underline">
-                  Remove
-                </button>
+                <button onClick={() => handleRemove(person.id)} className="text-red-600 underline">{t('remove')}</button>
               </li>
             ))}
           </ul>
@@ -117,15 +107,13 @@ export default function EditorsManager({
       </div>
 
       <div>
-        <h2 className="font-semibold mb-2">Accounts you can edit</h2>
+        <h2 className="font-semibold mb-2">{t('grantedToMeTitle')}</h2>
         {grantedToMe.length === 0 ? (
-          <p className="text-sm text-gray-500">No one has given you access yet.</p>
+          <p className="text-sm text-gray-500">{t('noneGranted')}</p>
         ) : (
           <ul className="space-y-2">
             {grantedToMe.map((person) => (
-              <li key={person.id} className="border p-2 rounded text-sm">
-                {person.email}
-              </li>
+              <li key={person.id} className="border p-2 rounded text-sm">{person.email}</li>
             ))}
           </ul>
         )}

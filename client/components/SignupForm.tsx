@@ -2,10 +2,12 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 
 export default function SignupForm() {
   const router = useRouter();
+  const t = useTranslations('Auth');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -16,7 +18,7 @@ export default function SignupForm() {
         e.preventDefault();
         setError('');
 
-        const response = await fetch(`/api/auth/signup`, {
+        const response = await fetch('/api/auth/signup', {
           method: 'POST',
           credentials: 'include',
           headers: { 'Content-Type': 'application/json' },
@@ -25,7 +27,7 @@ export default function SignupForm() {
 
         if (!response.ok) {
           const data = await response.json();
-          setError(data.error ?? 'Failed to sign up.');
+          setError(data.error ?? t('signUpFailed'));
           return;
         }
 
@@ -36,33 +38,14 @@ export default function SignupForm() {
     >
       {error && <p className="text-red-600 text-sm">{error}</p>}
 
-      <input
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        className="border p-2 rounded w-full"
-        required
-      />
-      <input
-        type="password"
-        placeholder="Password (min 8 characters)"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        className="border p-2 rounded w-full"
-        required
-        minLength={8}
-      />
+      <input type="email" placeholder={t('email')} value={email} onChange={(e) => setEmail(e.target.value)} className="border p-2 rounded w-full" required />
+      <input type="password" placeholder={t('passwordMin')} value={password} onChange={(e) => setPassword(e.target.value)} className="border p-2 rounded w-full" required minLength={8} />
 
-      <button type="submit" className="bg-black text-white px-4 py-2 rounded w-full">
-        Sign up
-      </button>
+      <button type="submit" className="bg-black text-white px-4 py-2 rounded w-full">{t('signUp')}</button>
 
       <p className="text-sm text-gray-600">
-        Already have an account?{' '}
-        <Link href="/login" className="underline">
-          Log in
-        </Link>
+        {t('alreadyHaveAccount')}{' '}
+        <Link href="/login" className="underline">{t('logIn')}</Link>
       </p>
     </form>
   );

@@ -2,11 +2,13 @@
 
 import { useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 
 export default function ResetPasswordForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const t = useTranslations('Auth');
   const token = searchParams.get('token');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -15,11 +17,8 @@ export default function ResetPasswordForm() {
   if (!token) {
     return (
       <p className="text-red-600">
-        This reset link is missing a token. Please request a new one from the{' '}
-        <Link href="/forgot-password" className="underline">
-          forgot password page
-        </Link>
-        .
+        {t('missingToken')}{' '}
+        <Link href="/forgot-password" className="underline">{t('forgotPasswordPage')}</Link>.
       </p>
     );
   }
@@ -27,10 +26,8 @@ export default function ResetPasswordForm() {
   if (success) {
     return (
       <div className="border p-4 rounded max-w-sm space-y-2">
-        <p>Your password has been reset.</p>
-        <Link href="/login" className="underline">
-          Log in
-        </Link>
+        <p>{t('resetSuccess')}</p>
+        <Link href="/login" className="underline">{t('logIn')}</Link>
       </div>
     );
   }
@@ -50,7 +47,7 @@ export default function ResetPasswordForm() {
 
         if (!response.ok) {
           const data = await response.json();
-          setError(data.error ?? 'Failed to reset password.');
+          setError(data.error ?? t('resetFailed'));
           return;
         }
 
@@ -59,20 +56,8 @@ export default function ResetPasswordForm() {
       className="border p-4 rounded space-y-3 max-w-sm"
     >
       {error && <p className="text-red-600 text-sm">{error}</p>}
-
-      <input
-        type="password"
-        placeholder="New password (min 8 characters)"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        className="border p-2 rounded w-full"
-        required
-        minLength={8}
-      />
-
-      <button type="submit" className="bg-black text-white px-4 py-2 rounded w-full">
-        Reset password
-      </button>
+      <input type="password" placeholder={t('newPasswordMin')} value={password} onChange={(e) => setPassword(e.target.value)} className="border p-2 rounded w-full" required minLength={8} />
+      <button type="submit" className="bg-black text-white px-4 py-2 rounded w-full">{t('resetPassword')}</button>
     </form>
   );
 }
