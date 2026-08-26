@@ -1,5 +1,5 @@
-import { getTranslations } from 'next-intl/server';
-import { redirect } from 'next/navigation';
+import { getTranslations, getLocale } from 'next-intl/server';
+import { redirect } from '@/i18n/navigation'
 import { getCurrentUser, serverFetch } from '@/lib/api';
 import { Food, Entry, Summary, GrantedAccount } from '@/types';
 import LogEntryForm from '@/components/LogEntryForm';
@@ -42,14 +42,16 @@ export default async function TodayPage({
   searchParams: Promise<{ viewing?: string }>;
 }) {
   const user = await getCurrentUser();
+  const locale = await getLocale();
+
   if (!user) {
-    redirect('/login?redirect=/today');
+    redirect({ href: '/login?redirect=/today', locale });
   }
 
   const t = await getTranslations('Today');
   const params = await searchParams;
   const date = getTodayDateString();
-  const viewing = params.viewing || user.id;
+  const viewing = params.viewing || user!.id;
 
   const [foods, entries, summary, grantedToMe] = await Promise.all([
     getFoods(viewing),
@@ -65,7 +67,7 @@ export default async function TodayPage({
         <p className="text-sm text-gray-500">{t('subtitle')}</p>
       </div>
 
-      <ViewingSelector userId={user.id} userEmail={user.email} grantedToMe={grantedToMe} basePath="/today" />
+      <ViewingSelector userId={user!.id} userEmail={user!.email} grantedToMe={grantedToMe} basePath="/today" />
 
       <CopyDayButton toDate={date} targetUserId={viewing} />
 

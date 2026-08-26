@@ -1,5 +1,5 @@
-import { getTranslations } from 'next-intl/server';
-import { redirect } from 'next/navigation';
+import { getTranslations, getLocale } from 'next-intl/server';
+import { redirect } from '@/i18n/navigation';
 import { getCurrentUser, serverFetch } from '@/lib/api';
 import { Food, GrantedAccount } from '@/types';
 import CreateFoodForm from '@/components/CreateFoodForm';
@@ -17,8 +17,10 @@ async function getGrantedToMe(): Promise<GrantedAccount[]> {
 
 export default async function FoodsPage() {
   const user = await getCurrentUser();
+  const locale = await getLocale();
+
   if (!user) {
-    redirect('/login?redirect=/foods');
+    redirect({ href: '/login?redirect=/foods', locale });
   }
 
   const t = await getTranslations('Foods');
@@ -30,7 +32,7 @@ export default async function FoodsPage() {
         <h1 className="text-2xl font-bold mb-1">{t('title')}</h1>
         <p className="text-sm text-gray-500 mb-4">{t('subtitle')}</p>
       </div>
-      <CreateFoodForm grantedToMe={grantedToMe} userId={user.id} />
+      <CreateFoodForm grantedToMe={grantedToMe} userId={user!.id} />
       <FoodsList foods={foods} />
     </main>
   );

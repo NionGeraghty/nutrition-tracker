@@ -1,5 +1,5 @@
-import { getTranslations } from 'next-intl/server';
-import { redirect } from 'next/navigation';
+import { getTranslations, getLocale } from 'next-intl/server';
+import { redirect } from '@/i18n/navigation';
 import { getCurrentUser, serverFetch } from '@/lib/api';
 import EditorsManager from '@/components/EditorsManager';
 
@@ -25,8 +25,10 @@ async function getUnreciprocated(): Promise<EditorRelation[]> {
 
 export default async function EditorsPage() {
   const user = await getCurrentUser();
+  const locale = await getLocale();
+
   if (!user) {
-    redirect('/login?redirect=/editors');
+    redirect({ href: '/login?redirect=/editors', locale });
   }
 
   const t = await getTranslations('Editors');

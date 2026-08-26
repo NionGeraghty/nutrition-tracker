@@ -1,5 +1,5 @@
-import { getTranslations } from 'next-intl/server';
-import { redirect } from 'next/navigation';
+import { getTranslations, getLocale } from 'next-intl/server';
+import { redirect } from '@/i18n/navigation';
 import { getCurrentUser, serverFetch } from '@/lib/api';
 import { Goals } from '@/types';
 import GoalsForm from '@/components/GoalsForm';
@@ -12,8 +12,10 @@ async function getGoals(): Promise<Goals | null> {
 
 export default async function GoalsPage() {
   const user = await getCurrentUser();
+  const locale = await getLocale();
+
   if (!user) {
-    redirect('/login?redirect=/goals');
+    redirect({ href: '/login?redirect=/goals', locale });
   }
 
   const t = await getTranslations('Goals');

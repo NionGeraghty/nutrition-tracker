@@ -1,5 +1,5 @@
-import { getTranslations } from 'next-intl/server';
-import { redirect } from 'next/navigation';
+import { getTranslations, getLocale } from 'next-intl/server';
+import { redirect } from '@/i18n/navigation';
 import { getCurrentUser, serverFetch } from '@/lib/api';
 import { Food } from '@/types';
 import CreateRecipeForm from '@/components/CreateRecipeForm';
@@ -29,8 +29,10 @@ async function getRecipes(): Promise<Recipe[]> {
 
 export default async function RecipesPage() {
   const user = await getCurrentUser();
+  const locale = await getLocale();
+
   if (!user) {
-    redirect('/login?redirect=/recipes');
+    redirect({ href: '/login?redirect=/recipes', locale });
   }
 
   const t = await getTranslations('Recipes');

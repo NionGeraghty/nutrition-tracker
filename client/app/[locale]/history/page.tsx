@@ -1,5 +1,5 @@
-import { getTranslations } from 'next-intl/server';
-import { redirect } from 'next/navigation';
+import { getTranslations, getLocale } from 'next-intl/server';
+import { redirect } from '@/i18n/navigation'
 import { getCurrentUser, serverFetch } from '@/lib/api';
 import { Food, Entry, Summary, GrantedAccount } from '@/types';
 import LogEntryForm from '@/components/LogEntryForm';
@@ -43,14 +43,16 @@ export default async function HistoryPage({
   searchParams: Promise<{ date?: string; viewing?: string }>;
 }) {
   const user = await getCurrentUser();
+  const locale = await getLocale();
+
   if (!user) {
-    redirect('/login?redirect=/history');
+    redirect({ href: '/login?redirect=/history', locale });
   }
 
   const t = await getTranslations('History');
   const params = await searchParams;
   const date = params.date ?? getTodayDateString();
-  const viewing = params.viewing || user.id;
+  const viewing = params.viewing || user!.id;
 
   const [foods, entries, summary, grantedToMe] = await Promise.all([
     getFoods(viewing),
@@ -65,7 +67,7 @@ export default async function HistoryPage({
 
       <div className="flex flex-wrap gap-4">
         <DatePicker date={date} />
-        <ViewingSelector userId={user.id} userEmail={user.email} grantedToMe={grantedToMe} basePath="/history" />
+        <ViewingSelector userId={user!.id} userEmail={user!.email} grantedToMe={grantedToMe} basePath="/history" />
       </div>
 
       <CopyDayButton toDate={date} targetUserId={viewing} />
