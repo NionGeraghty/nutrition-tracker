@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 
 interface Food {
   id: string;
@@ -18,6 +19,7 @@ export default function LogEntryForm({
   targetUserId: string;
 }) {
   const router = useRouter();
+  const t = useTranslations('Today');
   const [isOpen, setIsOpen] = useState(false);
   const [foodId, setFoodId] = useState('');
   const [grams, setGrams] = useState('');
@@ -31,7 +33,7 @@ export default function LogEntryForm({
         onClick={() => setIsOpen(!isOpen)}
         className="w-full text-left p-4 font-semibold flex justify-between items-center"
       >
-        Log food
+        {t('logFood')}
         <span>{isOpen ? '▲' : '▼'}</span>
       </button>
 
@@ -56,7 +58,7 @@ export default function LogEntryForm({
 
             if (!response.ok) {
               const data = await response.json();
-              setError(data.error ?? 'Failed to log entry.');
+              setError(data.error ?? t('logError'));
               return;
             }
 
@@ -74,19 +76,15 @@ export default function LogEntryForm({
             className="border p-2 rounded w-full"
             required
           >
-            <option value="" disabled>
-              Select a food
-            </option>
+            <option value="" disabled>{t('selectAFood')}</option>
             {foods.map((food) => (
-              <option key={food.id} value={food.id}>
-                {food.name}
-              </option>
+              <option key={food.id} value={food.id}>{food.name}</option>
             ))}
           </select>
 
           <input
             type="number"
-            placeholder="Grams"
+            placeholder={t('grams')}
             value={grams}
             onChange={(e) => setGrams(e.target.value)}
             className="border p-2 rounded w-full"
@@ -98,16 +96,16 @@ export default function LogEntryForm({
             onChange={(e) => setMealType(e.target.value)}
             className="border p-2 rounded w-full"
           >
-            <option value="breakfast">Breakfast</option>
-            <option value="lunch">Lunch</option>
-            <option value="dinner">Dinner</option>
-            <option value="snack">Snack</option>
-            <option value="other">Other</option>
+            <option value="breakfast">{t('breakfast')}</option>
+            <option value="lunch">{t('lunch')}</option>
+            <option value="dinner">{t('dinner')}</option>
+            <option value="snack">{t('snack')}</option>
+            <option value="other">{t('other')}</option>
           </select>
 
           <div className="flex gap-2">
             <button type="submit" className="bg-black text-white px-4 py-2 rounded">
-              Log entry
+              {t('logEntry')}
             </button>
           </div>
         </form>

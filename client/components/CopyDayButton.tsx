@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 
 function formatDateDisplay(isoDate: string): string {
   const [year, month, day] = isoDate.split('-');
@@ -17,19 +18,15 @@ function getYesterday(toDate: string): string {
   return `${year}-${month}-${day}`;
 }
 
-const MONTHS = [
-  'January', 'February', 'March', 'April', 'May', 'June',
-  'July', 'August', 'September', 'October', 'November', 'December',
+const MONTH_KEYS = [
+  'january', 'february', 'march', 'april', 'may', 'june',
+  'july', 'august', 'september', 'october', 'november', 'december',
 ];
 
-export default function CopyDayButton({
-  toDate,
-  targetUserId,
-}: {
-  toDate: string;
-  targetUserId: string;
-}) {
+export default function CopyDayButton({ toDate, targetUserId }: { toDate: string; targetUserId: string }) {
   const router = useRouter();
+  const t = useTranslations('Today');
+  const tMonths = useTranslations('Months');
   const [isOpen, setIsOpen] = useState(false);
   const [mode, setMode] = useState<'yesterday' | 'specific'>('yesterday');
   const [day, setDay] = useState('');
@@ -40,10 +37,7 @@ export default function CopyDayButton({
   const [loading, setLoading] = useState(false);
 
   const yesterday = getYesterday(toDate);
-  const specificDate =
-    day && month && year
-      ? `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`
-      : '';
+  const specificDate = day && month && year ? `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}` : '';
   const fromDate = mode === 'yesterday' ? yesterday : specificDate;
 
   return (
@@ -53,7 +47,7 @@ export default function CopyDayButton({
         onClick={() => setIsOpen(!isOpen)}
         className="w-full text-left p-3 text-sm font-medium flex justify-between items-center"
       >
-        Copy from another day
+        {t('copyFromAnotherDay')}
         <span>{isOpen ? '▲' : '▼'}</span>
       </button>
 
@@ -62,44 +56,26 @@ export default function CopyDayButton({
           {error && <p className="text-red-600 text-xs">{error}</p>}
           {message && <p className="text-green-600 text-xs">{message}</p>}
 
-          <select
-            value={mode}
-            onChange={(e) => setMode(e.target.value as 'yesterday' | 'specific')}
-            className="border p-2 rounded w-full text-sm"
-          >
-            <option value="yesterday">Yesterday ({formatDateDisplay(yesterday)})</option>
-            <option value="specific">Choose a specific date</option>
+          <select value={mode} onChange={(e) => setMode(e.target.value as 'yesterday' | 'specific')} className="border p-2 rounded w-full text-sm">
+            <option value="yesterday">{t('yesterday', { date: formatDateDisplay(yesterday) })}</option>
+            <option value="specific">{t('chooseSpecificDate')}</option>
           </select>
 
           {mode === 'specific' && (
             <div className="grid grid-cols-3 gap-2">
-              <select
-                value={day}
-                onChange={(e) => setDay(e.target.value)}
-                className="border p-2 rounded text-sm"
-              >
-                <option value="" disabled>Day</option>
+              <select value={day} onChange={(e) => setDay(e.target.value)} className="border p-2 rounded text-sm">
+                <option value="" disabled>{t('day')}</option>
                 {Array.from({ length: 31 }, (_, i) => i + 1).map((d) => (
                   <option key={d} value={d}>{d}</option>
                 ))}
               </select>
-
-              <select
-                value={month}
-                onChange={(e) => setMonth(e.target.value)}
-                className="border p-2 rounded text-sm"
-              >
-                <option value="" disabled>Month</option>
-                {MONTHS.map((m, i) => (
-                  <option key={m} value={i + 1}>{m}</option>
+              <select value={month} onChange={(e) => setMonth(e.target.value)} className="border p-2 rounded text-sm">
+                <option value="" disabled>{t('month')}</option>
+                {MONTH_KEYS.map((m, i) => (
+                  <option key={m} value={i + 1}>{tMonths(m)}</option>
                 ))}
               </select>
-
-              <select
-                value={year}
-                onChange={(e) => setYear(e.target.value)}
-                className="border p-2 rounded text-sm"
-              >
+              <select value={year} onChange={(e) => setYear(e.target.value)} className="border p-2 rounded text-sm">
                 {Array.from({ length: 5 }, (_, i) => new Date().getFullYear() - i).map((y) => (
                   <option key={y} value={y}>{y}</option>
                 ))}
@@ -126,16 +102,16 @@ export default function CopyDayButton({
               setLoading(false);
 
               if (!response.ok) {
-                setError(data.error ?? 'Failed to copy entries.');
+                setError(data.error ?? t('copyError'));
                 return;
               }
 
-              setMessage(`Copied ${data.copied} entr${data.copied === 1 ? 'y' : 'ies'}.`);
+              setMessage(t('copySuccess', { count: data.copied }));
               router.refresh();
             }}
             className="bg-black text-white px-3 py-2 rounded text-sm w-full disabled:opacity-50"
           >
-            {loading ? 'Copying...' : 'Copy entries'}
+            {loading ? t('copying') : t('copyEntries')}
           </button>
         </div>
       )}

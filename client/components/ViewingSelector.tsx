@@ -1,6 +1,7 @@
 'use client';
 
 import { useRouter, useSearchParams } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { GrantedAccount } from '@/types';
 
 export default function ViewingSelector({
@@ -16,6 +17,7 @@ export default function ViewingSelector({
 }) {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const t = useTranslations('Today');
   const viewing = searchParams.get('viewing') || userId;
 
   if (grantedToMe.length === 0) {
@@ -34,17 +36,11 @@ export default function ViewingSelector({
 
   return (
     <div>
-      <label className="block text-xs text-gray-500 mb-1">Viewing</label>
-      <select
-        value={viewing}
-        onChange={(e) => handleChange(e.target.value)}
-        className="border p-2 rounded"
-      >
-        <option value={userId}>Me ({userEmail})</option>
+      <label className="block text-xs text-gray-500 mb-1">{t('viewing')}</label>
+      <select value={viewing} onChange={(e) => handleChange(e.target.value)} className="border p-2 rounded">
+        <option value={userId}>{t('me')} ({userEmail})</option>
         {grantedToMe.map((account) => (
-          <option key={account.id} value={account.owner_id}>
-            {account.email}
-          </option>
+          <option key={account.id} value={account.owner_id}>{account.email}</option>
         ))}
       </select>
     </div>

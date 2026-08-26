@@ -1,3 +1,4 @@
+import { getTranslations } from 'next-intl/server';
 import { redirect } from 'next/navigation';
 import { getCurrentUser, serverFetch } from '@/lib/api';
 import { Food, Entry, Summary, GrantedAccount } from '@/types';
@@ -45,6 +46,7 @@ export default async function TodayPage({
     redirect('/login?redirect=/today');
   }
 
+  const t = await getTranslations('Today');
   const params = await searchParams;
   const date = getTodayDateString();
   const viewing = params.viewing || user.id;
@@ -59,8 +61,8 @@ export default async function TodayPage({
   return (
     <main className="p-4 md:p-8 space-y-6">
       <div>
-        <h1 className="text-2xl font-bold mb-1">Today — {date}</h1>
-        <p className="text-sm text-gray-500">What you've eaten today, compared to your goals</p>
+        <h1 className="text-2xl font-bold mb-1">{t('title', { date })}</h1>
+        <p className="text-sm text-gray-500">{t('subtitle')}</p>
       </div>
 
       <ViewingSelector userId={user.id} userEmail={user.email} grantedToMe={grantedToMe} basePath="/today" />
