@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { Food } from '@/types';
 
 interface IngredientRow {
@@ -11,15 +12,14 @@ interface IngredientRow {
 
 export default function CreateRecipeForm({ foods }: { foods: Food[] }) {
   const router = useRouter();
+  const t = useTranslations('Recipes');
   const [isOpen, setIsOpen] = useState(false);
   const [name, setName] = useState('');
   const [ingredients, setIngredients] = useState<IngredientRow[]>([{ foodId: '', grams: '' }]);
   const [error, setError] = useState('');
 
   function updateIngredient(index: number, field: keyof IngredientRow, value: string) {
-    setIngredients((prev) =>
-      prev.map((ing, i) => (i === index ? { ...ing, [field]: value } : ing))
-    );
+    setIngredients((prev) => prev.map((ing, i) => (i === index ? { ...ing, [field]: value } : ing)));
   }
 
   function addIngredientRow() {
@@ -37,7 +37,7 @@ export default function CreateRecipeForm({ foods }: { foods: Food[] }) {
         onClick={() => setIsOpen(!isOpen)}
         className="w-full text-left p-4 font-semibold flex justify-between items-center"
       >
-        Create a recipe
+        {t('createRecipe')}
         <span>{isOpen ? '▲' : '▼'}</span>
       </button>
 
@@ -53,16 +53,13 @@ export default function CreateRecipeForm({ foods }: { foods: Food[] }) {
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({
                 name,
-                ingredients: ingredients.map((ing) => ({
-                  foodId: ing.foodId,
-                  grams: Number(ing.grams),
-                })),
+                ingredients: ingredients.map((ing) => ({ foodId: ing.foodId, grams: Number(ing.grams) })),
               }),
             });
 
             if (!response.ok) {
               const data = await response.json();
-              setError(data.error ?? 'Failed to create recipe.');
+              setError(data.error ?? t('createError'));
               return;
             }
 
@@ -76,7 +73,7 @@ export default function CreateRecipeForm({ foods }: { foods: Food[] }) {
 
           <input
             type="text"
-            placeholder="Recipe name"
+            placeholder={t('recipeName')}
             value={name}
             onChange={(e) => setName(e.target.value)}
             className="border p-2 rounded w-full"
@@ -92,29 +89,21 @@ export default function CreateRecipeForm({ foods }: { foods: Food[] }) {
                   className="border p-2 rounded flex-1"
                   required
                 >
-                  <option value="" disabled>
-                    Select a food
-                  </option>
+                  <option value="" disabled>{t('selectAFood')}</option>
                   {foods.map((food) => (
-                    <option key={food.id} value={food.id}>
-                      {food.name}
-                    </option>
+                    <option key={food.id} value={food.id}>{food.name}</option>
                   ))}
                 </select>
                 <input
                   type="number"
-                  placeholder="Grams"
+                  placeholder={t('grams')}
                   value={ing.grams}
                   onChange={(e) => updateIngredient(index, 'grams', e.target.value)}
                   className="border p-2 rounded w-24"
                   required
                 />
                 {ingredients.length > 1 && (
-                  <button
-                    type="button"
-                    onClick={() => removeIngredientRow(index)}
-                    className="text-red-600 text-sm"
-                  >
+                  <button type="button" onClick={() => removeIngredientRow(index)} className="text-red-600 text-sm">
                     ✕
                   </button>
                 )}
@@ -122,17 +111,13 @@ export default function CreateRecipeForm({ foods }: { foods: Food[] }) {
             ))}
           </div>
 
-          <button
-            type="button"
-            onClick={addIngredientRow}
-            className="text-sm underline"
-          >
-            + Add ingredient
+          <button type="button" onClick={addIngredientRow} className="text-sm underline">
+            {t('addIngredient')}
           </button>
 
           <div>
             <button type="submit" className="bg-black text-white px-4 py-2 rounded">
-              Create recipe
+              {t('submit')}
             </button>
           </div>
         </form>

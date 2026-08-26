@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { Food } from '@/types';
 
 interface Recipe {
@@ -22,6 +23,7 @@ interface IngredientRow {
 
 export default function RecipeItem({ recipe, foods }: { recipe: Recipe; foods: Food[] }) {
   const router = useRouter();
+  const t = useTranslations('Recipes');
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(false);
   const [name, setName] = useState(recipe.name);
@@ -30,9 +32,7 @@ export default function RecipeItem({ recipe, foods }: { recipe: Recipe; foods: F
 
   async function startEditing() {
     setLoading(true);
-    const response = await fetch(`/api/recipes/${recipe.id}/ingredients`, {
-      credentials: 'include',
-    });
+    const response = await fetch(`/api/recipes/${recipe.id}/ingredients`, { credentials: 'include' });
     const data = await response.json();
     setIngredients(data.map((i: any) => ({ foodId: i.food_id, grams: i.grams })));
     setName(recipe.name);
@@ -40,22 +40,8 @@ export default function RecipeItem({ recipe, foods }: { recipe: Recipe; foods: F
     setIsEditing(true);
   }
 
-  async function handleDelete() {
-    const confirmed = window.confirm(`Delete ${recipe.name}? The derived food will remain in your Foods list.`);
-    if (!confirmed) return;
-
-    await fetch(`/api/recipes/${recipe.id}`, {
-      method: 'DELETE',
-      credentials: 'include',
-    });
-
-    router.refresh();
-  }
-
   function updateIngredient(index: number, field: keyof IngredientRow, value: string) {
-    setIngredients((prev) =>
-      prev.map((ing, i) => (i === index ? { ...ing, [field]: value } : ing))
-    );
+    setIngredients((prev) => prev.map((ing, i) => (i === index ? { ...ing, [field]: value } : ing)));
   }
 
   function addIngredientRow() {
@@ -66,17 +52,20 @@ export default function RecipeItem({ recipe, foods }: { recipe: Recipe; foods: F
     setIngredients((prev) => prev.filter((_, i) => i !== index));
   }
 
+  async function handleDelete() {
+    const confirmed = window.confirm(`${t('delete')} ${recipe.name}?`);
+    if (!confirmed) return;
+
+    await fetch(`/api/recipes/${recipe.id}`, { method: 'DELETE', credentials: 'include' });
+    router.refresh();
+  }
+
   if (isEditing) {
     return (
       <li className="border p-3 rounded space-y-3">
         {error && <p className="text-red-600 text-sm">{error}</p>}
 
-        <input
-          type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          className="border p-2 rounded w-full"
-        />
+        <input value={name} onChange={(e) => setName(e.target.value)} className="border p-2 rounded w-full" />
 
         <div className="space-y-2">
           {ingredients.map((ing, index) => (
@@ -86,28 +75,20 @@ export default function RecipeItem({ recipe, foods }: { recipe: Recipe; foods: F
                 onChange={(e) => updateIngredient(index, 'foodId', e.target.value)}
                 className="border p-2 rounded flex-1"
               >
-                <option value="" disabled>
-                  Select a food
-                </option>
+                <option value="" disabled>{t('selectAFood')}</option>
                 {foods.map((food) => (
-                  <option key={food.id} value={food.id}>
-                    {food.name}
-                  </option>
+                  <option key={food.id} value={food.id}>{food.name}</option>
                 ))}
               </select>
               <input
                 type="number"
-                placeholder="Grams"
+                placeholder={t('grams')}
                 value={ing.grams}
                 onChange={(e) => updateIngredient(index, 'grams', e.target.value)}
                 className="border p-2 rounded w-24"
               />
               {ingredients.length > 1 && (
-                <button
-                  type="button"
-                  onClick={() => removeIngredientRow(index)}
-                  className="text-red-600 text-sm"
-                >
+                <button type="button" onClick={() => removeIngredientRow(index)} className="text-red-600 text-sm">
                   ✕
                 </button>
               )}
@@ -116,7 +97,7 @@ export default function RecipeItem({ recipe, foods }: { recipe: Recipe; foods: F
         </div>
 
         <button type="button" onClick={addIngredientRow} className="text-sm underline">
-          + Add ingredient
+          {t('addIngredient')}
         </button>
 
         <div className="flex gap-2">
@@ -130,16 +111,13 @@ export default function RecipeItem({ recipe, foods }: { recipe: Recipe; foods: F
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                   name,
-                  ingredients: ingredients.map((ing) => ({
-                    foodId: ing.foodId,
-                    grams: Number(ing.grams),
-                  })),
+                  ingredients: ingredients.map((ing) => ({ foodId: ing.foodId, grams: Number(ing.grams) })),
                 }),
               });
 
               if (!response.ok) {
                 const data = await response.json();
-                setError(data.error ?? 'Failed to update recipe.');
+                setError(data.error ?? t('updateError'));
                 return;
               }
 
@@ -148,14 +126,10 @@ export default function RecipeItem({ recipe, foods }: { recipe: Recipe; foods: F
             }}
             className="bg-black text-white px-3 py-1 rounded text-sm"
           >
-            Save
+            {t('save')}
           </button>
-          <button
-            type="button"
-            onClick={() => setIsEditing(false)}
-            className="border px-3 py-1 rounded text-sm"
-          >
-            Cancel
+          <button type="button" onClick={() => setIsEditing(false)} className="border px-3 py-1 rounded text-sm">
+            {t('cancel')}
           </button>
         </div>
       </li>
@@ -163,30 +137,29 @@ export default function RecipeItem({ recipe, foods }: { recipe: Recipe; foods: F
   }
 
   return (
-  <li className="border p-3 rounded flex justify-between items-center">
-    <div>
-      <div className="font-semibold">{recipe.name}</div>
-      <div className="text-sm text-gray-600">
-        {recipe.total_grams}g total
-        {recipe.calories_per_100g && (
-          <>
-            {' · '}
-            {recipe.calories_per_100g} cal · {recipe.protein_per_100g}g protein ·{' '}
-            {recipe.carbs_per_100g}g carbs · {recipe.fat_per_100g}g fat ·{' '}
-            {recipe.fibre_per_100g}g fibre
-            {' (per 100g)'}
-          </>
-        )}
+    <li className="border p-3 rounded flex justify-between items-center">
+      <div>
+        <div className="font-semibold">{recipe.name}</div>
+        <div className="text-sm text-gray-600">
+          {t('totalGrams', { grams: recipe.total_grams })}
+          {recipe.calories_per_100g && (
+            <>
+              {' · '}
+              {recipe.calories_per_100g} {t('cal')} · {recipe.protein_per_100g}g {t('proteinUnit')} ·{' '}
+              {recipe.carbs_per_100g}g {t('carbsUnit')} · {recipe.fat_per_100g}g {t('fatUnit')} ·{' '}
+              {recipe.fibre_per_100g}g {t('fibreUnit')} ({t('perHundredG')})
+            </>
+          )}
+        </div>
       </div>
-    </div>
-    <div className="flex gap-2">
-      <button onClick={startEditing} className="text-sm underline" disabled={loading}>
-        {loading ? 'Loading...' : 'Edit'}
-      </button>
-      <button onClick={handleDelete} className="text-sm text-red-600 underline">
-        Delete
-      </button>
-    </div>
-  </li>
-);
+      <div className="flex gap-2">
+        <button onClick={startEditing} className="text-sm underline" disabled={loading}>
+          {loading ? t('loading') : t('edit')}
+        </button>
+        <button onClick={handleDelete} className="text-sm text-red-600 underline">
+          {t('delete')}
+        </button>
+      </div>
+    </li>
+  );
 }

@@ -1,3 +1,4 @@
+import { getTranslations } from 'next-intl/server';
 import { redirect } from 'next/navigation';
 import { getCurrentUser, serverFetch } from '@/lib/api';
 import { Food, Entry, Summary, GrantedAccount } from '@/types';
@@ -46,6 +47,7 @@ export default async function HistoryPage({
     redirect('/login?redirect=/history');
   }
 
+  const t = await getTranslations('History');
   const params = await searchParams;
   const date = params.date ?? getTodayDateString();
   const viewing = params.viewing || user.id;
@@ -59,7 +61,7 @@ export default async function HistoryPage({
 
   return (
     <main className="p-4 md:p-8 space-y-6">
-      <h1 className="text-2xl font-bold">History</h1>
+      <h1 className="text-2xl font-bold">{t('title')}</h1>
 
       <div className="flex flex-wrap gap-4">
         <DatePicker date={date} />

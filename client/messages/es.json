@@ -90,5 +90,33 @@
   "january": "January", "february": "February", "march": "March", "april": "April",
   "may": "May", "june": "June", "july": "July", "august": "August",
   "september": "September", "october": "October", "november": "November", "december": "December"
+},
+"History": {
+  "title": "Historial"
+},
+"Recipes": {
+  "title": "Recetas",
+  "subtitle": "Crea una receta a partir de ingredientes — aparecerá en tu lista de comidas, lista para registrar",
+  "createRecipe": "Crear una receta",
+  "recipeName": "Nombre de la receta",
+  "selectAFood": "Selecciona una comida",
+  "grams": "Gramos",
+  "addIngredient": "+ Añadir ingrediente",
+  "submit": "Crear receta",
+  "createError": "No se pudo crear la receta.",
+  "noRecipes": "Aún no hay recetas.",
+  "totalGrams": "{grams}g en total",
+  "perHundredG": "por 100g",
+  "cal": "cal",
+  "proteinUnit": "proteína",
+  "carbsUnit": "carbohidratos",
+  "fatUnit": "grasa",
+  "fibreUnit": "fibra",
+  "edit": "Editar",
+  "delete": "Eliminar",
+  "loading": "Cargando...",
+  "save": "Guardar",
+  "cancel": "Cancelar",
+  "updateError": "No se pudo actualizar la receta."
 }
 }

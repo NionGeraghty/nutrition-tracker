@@ -85,5 +85,33 @@
   "left": "left",
   "noGoalsSet": "No goals set yet.",
   "summary": "Summary"
+},
+"History": {
+  "title": "History"
+},
+"Recipes": {
+  "title": "Recipes",
+  "subtitle": "Build a recipe from ingredients — it'll appear in your Foods list, ready to log",
+  "createRecipe": "Create a recipe",
+  "recipeName": "Recipe name",
+  "selectAFood": "Select a food",
+  "grams": "Grams",
+  "addIngredient": "+ Add ingredient",
+  "submit": "Create recipe",
+  "createError": "Failed to create recipe.",
+  "noRecipes": "No recipes yet.",
+  "totalGrams": "{grams}g total",
+  "perHundredG": "per 100g",
+  "cal": "cal",
+  "proteinUnit": "protein",
+  "carbsUnit": "carbs",
+  "fatUnit": "fat",
+  "fibreUnit": "fibre",
+  "edit": "Edit",
+  "delete": "Delete",
+  "loading": "Loading...",
+  "save": "Save",
+  "cancel": "Cancel",
+  "updateError": "Failed to update recipe."
 }
 }

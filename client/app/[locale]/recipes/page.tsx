@@ -1,3 +1,4 @@
+import { getTranslations } from 'next-intl/server';
 import { redirect } from 'next/navigation';
 import { getCurrentUser, serverFetch } from '@/lib/api';
 import { Food } from '@/types';
@@ -32,21 +33,20 @@ export default async function RecipesPage() {
     redirect('/login?redirect=/recipes');
   }
 
+  const t = await getTranslations('Recipes');
   const [foods, recipes] = await Promise.all([getFoods(), getRecipes()]);
 
   return (
     <main className="p-4 md:p-8 space-y-6">
       <div>
-        <h1 className="text-2xl font-bold mb-1">Recipes</h1>
-        <p className="text-sm text-gray-500">
-          Build a recipe from ingredients — it'll appear in your Foods list, ready to log
-        </p>
+        <h1 className="text-2xl font-bold mb-1">{t('title')}</h1>
+        <p className="text-sm text-gray-500">{t('subtitle')}</p>
       </div>
 
       <CreateRecipeForm foods={foods} />
 
       {recipes.length === 0 ? (
-        <p>No recipes yet.</p>
+        <p>{t('noRecipes')}</p>
       ) : (
         <ul className="space-y-2">
           {recipes.map((recipe) => (
