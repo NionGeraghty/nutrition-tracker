@@ -2,7 +2,9 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { useTranslations } from 'next-intl';
 import LogoutButton from './LogoutButton';
+import LanguageSwitcher from './LanguageSwitcher';
 
 interface User {
   id: string;
@@ -10,6 +12,7 @@ interface User {
 }
 
 export default function MobileNavMenu({ user }: { user: User | null }) {
+  const t = useTranslations('Nav');
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -26,23 +29,24 @@ export default function MobileNavMenu({ user }: { user: User | null }) {
       {isOpen && (
         <div className="absolute left-0 right-0 bg-white border-b p-4 flex flex-col gap-3 z-10">
           <Link href="/foods" onClick={() => setIsOpen(false)}>
-            Foods
+            {t('foods')}
           </Link>
           <Link href="/recipes" onClick={() => setIsOpen(false)}>
-            Recipes
+            {t('recipes')}
           </Link>
           <Link href="/today" onClick={() => setIsOpen(false)}>
-            Today
+            {t('today')}
           </Link>
           <Link href="/history" onClick={() => setIsOpen(false)}>
-            History
+            {t('history')}
           </Link>
           <Link href="/goals" onClick={() => setIsOpen(false)}>
-            Goals
+            {t('goals')}
           </Link>
           <Link href="/editors" onClick={() => setIsOpen(false)}>
-            Shared Users
+            {t('sharedUsers')}
           </Link>
+          <LanguageSwitcher />
           {user ? (
             <>
               <span className="text-sm text-gray-600">{user.email}</span>
@@ -51,10 +55,10 @@ export default function MobileNavMenu({ user }: { user: User | null }) {
           ) : (
             <>
               <Link href="/login" onClick={() => setIsOpen(false)}>
-                Log in
+                {t('logIn')}
               </Link>
               <Link href="/signup" onClick={() => setIsOpen(false)}>
-                Sign up
+                {t('signUp')}
               </Link>
             </>
           )}

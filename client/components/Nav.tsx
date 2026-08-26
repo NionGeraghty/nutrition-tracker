@@ -3,6 +3,7 @@ import { getTranslations } from 'next-intl/server';
 import { getCurrentUser } from '@/lib/api';
 import MobileNavMenu from './MobileNavMenu';
 import LogoutButton from './LogoutButton';
+import LanguageSwitcher from './LanguageSwitcher';
 
 export default async function Nav() {
   const user = await getCurrentUser();
@@ -22,6 +23,10 @@ export default async function Nav() {
           <Link href="/recipes">{t('recipes')}</Link>
           <Link href="/editors">{t('sharedUsers')}</Link>
           <Link href="/goals">{t('goals')}</Link>
+          <div className="hidden md:flex items-center gap-6">
+            {/* existing links */}
+            <LanguageSwitcher />
+          </div>
           {user ? (
             <div className="flex items-center gap-4">
               <span className="text-sm text-gray-600">{user.email}</span>
