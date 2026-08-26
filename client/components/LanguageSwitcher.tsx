@@ -9,10 +9,8 @@ export default function LanguageSwitcher() {
   const locale = useLocale();
 
   function switchTo(newLocale: string) {
-    // pathname already excludes the current locale prefix in next-intl's routing
-    const target = newLocale === 'en' ? pathname : `/es${pathname}`;
-    router.push(target);
-  }
+  router.push(`/${newLocale}${pathname}`);
+}
 
   return (
     <select
