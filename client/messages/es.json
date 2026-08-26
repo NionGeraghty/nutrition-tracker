@@ -1,0 +1,18 @@
+{
+  "Nav": {
+    "appName": "Macro Tracker",
+    "foods": "Comidas",
+    "today": "Hoy",
+    "history": "Historial",
+    "recipes": "Recetas",
+    "sharedUsers": "Usuarios Compartidos",
+    "goals": "Objetivos",
+    "logIn": "Iniciar sesión",
+    "signUp": "Registrarse",
+    "logOut": "Cerrar sesión"
+  },
+  "Home": {
+    "title": "Macro Tracker",
+    "subtitle": "Controla lo que comes frente a tus objetivos diarios."
+  }
+}
