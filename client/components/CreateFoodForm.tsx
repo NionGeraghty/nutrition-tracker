@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { GrantedAccount } from '@/types';
 import BarcodeScanner from './BarcodeScanner';
 
@@ -16,6 +17,7 @@ interface ExternalFood {
 
 export default function CreateFoodForm({ grantedToMe, userId }: { grantedToMe: GrantedAccount[]; userId: string }) {
   const router = useRouter();
+  const t = useTranslations('Foods');
   const [isOpen, setIsOpen] = useState(false);
   const [name, setName] = useState('');
   const [calories, setCalories] = useState('');
@@ -32,10 +34,10 @@ export default function CreateFoodForm({ grantedToMe, userId }: { grantedToMe: G
   const [scanning, setScanning] = useState(false);
 
   function toggleTarget(id: string) {
-  setSelectedTargets((prev) =>
-    prev.includes(id) ? prev.filter((t) => t !== id) : [...prev, id]
-  );
-}
+    setSelectedTargets((prev) =>
+      prev.includes(id) ? prev.filter((t) => t !== id) : [...prev, id]
+    );
+  }
 
   async function handleSearch() {
     if (searchQuery.trim().length === 0) return;
@@ -85,20 +87,18 @@ export default function CreateFoodForm({ grantedToMe, userId }: { grantedToMe: G
         onClick={() => setIsOpen(!isOpen)}
         className="w-full text-left p-4 font-semibold flex justify-between items-center"
       >
-        Add a food
+        {t('addFood')}
         <span>{isOpen ? '▲' : '▼'}</span>
       </button>
 
       {isOpen && (
         <div className="p-4 pt-0 space-y-4">
           <div className="space-y-2">
-            <label className="block text-sm font-medium">
-              Search a nutrition database (optional)
-            </label>
+            <label className="block text-sm font-medium">{t('searchLabel')}</label>
             <div className="flex gap-2">
               <input
                 type="text"
-                placeholder="e.g. chicken breast"
+                placeholder={t('searchPlaceholder')}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onKeyDown={(e) => {
@@ -114,7 +114,7 @@ export default function CreateFoodForm({ grantedToMe, userId }: { grantedToMe: G
                 onClick={handleSearch}
                 className="border px-3 py-2 rounded text-sm"
               >
-                {searching ? 'Searching...' : 'Search'}
+                {searching ? t('searching') : t('search')}
               </button>
             </div>
 
@@ -129,7 +129,7 @@ export default function CreateFoodForm({ grantedToMe, userId }: { grantedToMe: G
                     >
                       <div className="font-medium">{result.name}</div>
                       <div className="text-gray-500">
-                        {result.caloriesPer100g} cal · {result.proteinPer100g}g protein per 100g
+                        {result.caloriesPer100g} {t('cal')} · {result.proteinPer100g}g {t('proteinUnit')} per 100g
                       </div>
                     </button>
                   </li>
@@ -139,33 +139,33 @@ export default function CreateFoodForm({ grantedToMe, userId }: { grantedToMe: G
           </div>
 
           <button
-  type="button"
-  onClick={() => setScanning(true)}
-  className="border px-3 py-2 rounded text-sm"
->
-  Scan barcode
-</button>
+            type="button"
+            onClick={() => setScanning(true)}
+            className="border px-3 py-2 rounded text-sm"
+          >
+            {t('scanBarcode')}
+          </button>
 
-{scanning && (
-  <BarcodeScanner
-    onDetected={async (code) => {
-      setScanning(false);
-      const response = await fetch(`/api/foods/barcode/${code}`, { credentials: 'include' });
-      if (response.ok) {
-        const result = await response.json();
-        setName(result.name);
-        setCalories(String(result.caloriesPer100g));
-        setProtein(String(result.proteinPer100g));
-        setCarbs(String(result.carbsPer100g));
-        setFat(String(result.fatPer100g));
-        setFibre(String(result.fibrePer100g));
-      } else {
-        setError('No product found for that barcode.');
-      }
-    }}
-    onClose={() => setScanning(false)}
-  />
-)}
+          {scanning && (
+            <BarcodeScanner
+              onDetected={async (code) => {
+                setScanning(false);
+                const response = await fetch(`/api/foods/barcode/${code}`, { credentials: 'include' });
+                if (response.ok) {
+                  const result = await response.json();
+                  setName(result.name);
+                  setCalories(String(result.caloriesPer100g));
+                  setProtein(String(result.proteinPer100g));
+                  setCarbs(String(result.carbsPer100g));
+                  setFat(String(result.fatPer100g));
+                  setFibre(String(result.fibrePer100g));
+                } else {
+                  setError('No product found for that barcode.');
+                }
+              }}
+              onClose={() => setScanning(false)}
+            />
+          )}
 
           <form
             onSubmit={async (e) => {
@@ -188,7 +188,7 @@ export default function CreateFoodForm({ grantedToMe, userId }: { grantedToMe: G
               });
 
               if (!response.ok) {
-                setError('Failed to create food. Check your values and try again.');
+                setError(t('createError'));
                 return;
               }
 
@@ -206,7 +206,7 @@ export default function CreateFoodForm({ grantedToMe, userId }: { grantedToMe: G
             {error && <p className="text-red-600 text-sm">{error}</p>}
 
             <div>
-              <label className="block text-xs text-gray-500 mb-1">Name</label>
+              <label className="block text-xs text-gray-500 mb-1">{t('name')}</label>
               <input
                 type="text"
                 value={name}
@@ -218,7 +218,7 @@ export default function CreateFoodForm({ grantedToMe, userId }: { grantedToMe: G
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
               <div>
-                <label className="block text-xs text-gray-500 mb-1">Calories per 100g</label>
+                <label className="block text-xs text-gray-500 mb-1">{t('caloriesPer100g')}</label>
                 <input
                   type="number"
                   value={calories}
@@ -229,7 +229,7 @@ export default function CreateFoodForm({ grantedToMe, userId }: { grantedToMe: G
                 />
               </div>
               <div>
-                <label className="block text-xs text-gray-500 mb-1">Protein per 100g</label>
+                <label className="block text-xs text-gray-500 mb-1">{t('proteinPer100g')}</label>
                 <input
                   type="number"
                   value={protein}
@@ -240,7 +240,7 @@ export default function CreateFoodForm({ grantedToMe, userId }: { grantedToMe: G
                 />
               </div>
               <div>
-                <label className="block text-xs text-gray-500 mb-1">Carbs per 100g</label>
+                <label className="block text-xs text-gray-500 mb-1">{t('carbsPer100g')}</label>
                 <input
                   type="number"
                   value={carbs}
@@ -251,7 +251,7 @@ export default function CreateFoodForm({ grantedToMe, userId }: { grantedToMe: G
                 />
               </div>
               <div>
-                <label className="block text-xs text-gray-500 mb-1">Fat per 100g</label>
+                <label className="block text-xs text-gray-500 mb-1">{t('fatPer100g')}</label>
                 <input
                   type="number"
                   value={fat}
@@ -262,7 +262,7 @@ export default function CreateFoodForm({ grantedToMe, userId }: { grantedToMe: G
                 />
               </div>
               <div>
-                <label className="block text-xs text-gray-500 mb-1">Fibre per 100g</label>
+                <label className="block text-xs text-gray-500 mb-1">{t('fibrePer100g')}</label>
                 <input
                   type="number"
                   value={fibre}
@@ -276,27 +276,25 @@ export default function CreateFoodForm({ grantedToMe, userId }: { grantedToMe: G
 
             {grantedToMe.length > 0 && (
               <div>
-                <label className="block text-xs text-gray-500 mb-1">
-                  Also add to (in addition to your own account)
-                </label>
+                <label className="block text-xs text-gray-500 mb-1">{t('alsoAddTo')}</label>
                 <div className="space-y-1">
                   {grantedToMe.map((account) => (
-                <label key={account.id} className="flex items-center gap-2 text-sm">
-                  <input
-                    type="checkbox"
-                    checked={selectedTargets.includes(account.owner_id)}
-                    onChange={() => toggleTarget(account.owner_id)}
-                  />
-                  {account.email}
-                </label>
-              ))}
+                    <label key={account.id} className="flex items-center gap-2 text-sm">
+                      <input
+                        type="checkbox"
+                        checked={selectedTargets.includes(account.owner_id)}
+                        onChange={() => toggleTarget(account.owner_id)}
+                      />
+                      {account.email}
+                    </label>
+                  ))}
                 </div>
               </div>
             )}
 
             <div className="flex gap-2">
               <button type="submit" className="bg-black text-white px-4 py-2 rounded">
-                Add food
+                {t('submit')}
               </button>
             </div>
           </form>

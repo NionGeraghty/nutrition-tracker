@@ -14,5 +14,37 @@
   "Home": {
     "title": "Macro Tracker",
     "subtitle": "Controla lo que comes frente a tus objetivos diarios."
+  },
+  "Foods": {
+    "title": "Comidas",
+    "subtitle": "Tu base de datos personal de comidas y sus valores nutricionales",
+    "noFoods": "Aún no hay comidas.",
+    "addFood": "Añadir una comida",
+    "searchLabel": "Buscar en una base de datos nutricional (opcional)",
+    "searchPlaceholder": "ej. pechuga de pollo",
+    "search": "Buscar",
+    "searching": "Buscando...",
+    "scanBarcode": "Escanear código de barras",
+    "name": "Nombre",
+    "caloriesPer100g": "Calorías por 100g",
+    "proteinPer100g": "Proteína por 100g",
+    "carbsPer100g": "Carbohidratos por 100g",
+    "fatPer100g": "Grasa por 100g",
+    "fibrePer100g": "Fibra por 100g",
+    "alsoAddTo": "También añadir a (además de tu propia cuenta)",
+    "submit": "Añadir comida",
+    "createError": "No se pudo crear la comida. Verifica los valores e inténtalo de nuevo.",
+    "edit": "Editar",
+    "delete": "Eliminar",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "deleteConfirm": "¿Eliminar {name}?",
+    "searchFoodsPlaceholder": "Buscar comidas...",
+    "cal": "cal",
+    "proteinUnit": "proteína",
+    "carbsUnit": "carbohidratos",
+    "fatUnit": "grasa",
+    "fibreUnit": "fibra",
+    "selectAFood": "Selecciona una comida"
   }
 }

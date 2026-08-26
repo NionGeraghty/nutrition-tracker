@@ -14,5 +14,37 @@
   "Home": {
     "title": "Macro Tracker",
     "subtitle": "Track what you eat against your daily goals."
+  },
+  "Foods": {
+    "title": "Foods",
+    "subtitle": "Your personal database of foods and their nutrition values",
+    "noFoods": "No foods yet.",
+    "addFood": "Add a food",
+    "searchLabel": "Search a nutrition database (optional)",
+    "searchPlaceholder": "e.g. chicken breast",
+    "search": "Search",
+    "searching": "Searching...",
+    "scanBarcode": "Scan barcode",
+    "name": "Name",
+    "caloriesPer100g": "Calories per 100g",
+    "proteinPer100g": "Protein per 100g",
+    "carbsPer100g": "Carbs per 100g",
+    "fatPer100g": "Fat per 100g",
+    "fibrePer100g": "Fibre per 100g",
+    "alsoAddTo": "Also add to (in addition to your own account)",
+    "submit": "Add food",
+    "createError": "Failed to create food. Check your values and try again.",
+    "edit": "Edit",
+    "delete": "Delete",
+    "save": "Save",
+    "cancel": "Cancel",
+    "deleteConfirm": "Delete {name}?",
+    "searchFoodsPlaceholder": "Search foods...",
+    "cal": "cal",
+    "proteinUnit": "protein",
+    "carbsUnit": "carbs",
+    "fatUnit": "fat",
+    "fibreUnit": "fibre",
+    "selectAFood": "Select a food"    
   }
 }

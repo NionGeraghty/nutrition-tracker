@@ -1,8 +1,9 @@
-import CreateFoodForm from '@/components/CreateFoodForm';
-import FoodsList from '@/components/FoodsList';
+import { getTranslations } from 'next-intl/server';
 import { redirect } from 'next/navigation';
 import { getCurrentUser, serverFetch } from '@/lib/api';
 import { Food, GrantedAccount } from '@/types';
+import CreateFoodForm from '@/components/CreateFoodForm';
+import FoodsList from '@/components/FoodsList';
 
 async function getFoods(): Promise<Food[]> {
   const response = await serverFetch('/foods');
@@ -20,14 +21,14 @@ export default async function FoodsPage() {
     redirect('/login?redirect=/foods');
   }
 
+  const t = await getTranslations('Foods');
   const [foods, grantedToMe] = await Promise.all([getFoods(), getGrantedToMe()]);
-  console.log('grantedToMe:', JSON.stringify(grantedToMe));
 
   return (
     <main className="p-4 md:p-8">
       <div>
-        <h1 className="text-2xl font-bold mb-1">Foods</h1>
-        <p className="text-sm text-gray-500 mb-4">Your personal database of foods and their nutrition values</p>
+        <h1 className="text-2xl font-bold mb-1">{t('title')}</h1>
+        <p className="text-sm text-gray-500 mb-4">{t('subtitle')}</p>
       </div>
       <CreateFoodForm grantedToMe={grantedToMe} userId={user.id} />
       <FoodsList foods={foods} />
