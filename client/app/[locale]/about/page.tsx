@@ -29,6 +29,11 @@ export default async function AboutPage() {
       </div>
 
       <div>
+        <h2 className="text-lg font-semibold mb-2">{t('recipesHeading')}</h2>
+        <p>{t('recipesText')}</p>
+    </div>
+
+      <div>
         <h2 className="text-lg font-semibold mb-2">{t('loggingHeading')}</h2>
         <p className="mb-2">{t('loggingText')}</p>
         <ul className="list-disc pl-5 space-y-1">

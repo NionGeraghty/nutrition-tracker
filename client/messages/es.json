@@ -223,6 +223,8 @@
   "progressHeading": "Seguir tu progreso",
   "progressText": "La página de Historial te permite consultar cualquier día anterior para ver qué comiste y cómo se comparó con tus objetivos — útil para detectar patrones y seguir tu progreso con el tiempo.",
   "closing": "Espero que te resulte útil. Si tienes algún problema o alguna sugerencia, me encantaría saberlo — escríbeme a",
-  "aboutLink": "Acerca de"
+  "aboutLink": "Acerca de",
+  "recipesHeading": "Crear recetas",
+  "recipesText": "También puedes combinar ingredientes en una receta — una comida que cocinas habitualmente, por ejemplo — y la aplicación calculará automáticamente su valor nutricional total por 100g. Una vez creada, la receta aparece en tu base de datos de comidas como cualquier otra comida, lista para registrar."
 }
 }
