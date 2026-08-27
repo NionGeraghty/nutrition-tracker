@@ -13,8 +13,24 @@
     "about": "About"
   },
   "Home": {
-    "title": "Macro Tracker",
-    "subtitle": "Track what you eat against your daily goals."
+    "heroTitle": "Track what you eat. Reach your goals.",
+    "heroSubtitle": "Macro Tracker helps you log your food, hit your daily calorie and macro targets, and see your progress over time.",
+    "signUp": "Sign up",
+    "logIn": "Log in",
+    "learnMore": "Learn more about Macro Tracker",
+    "welcomeBack": "Welcome back",
+    "foodsTitle": "Foods",
+    "foodsDesc": "Build and manage your personal database of foods and their nutrition values.",
+    "todayTitle": "Today",
+    "todayDesc": "Log what you've eaten today and track it against your daily goals.",
+    "historyTitle": "History",
+    "historyDesc": "Look back at previous days to see what you ate and how you did.",
+    "recipesTitle": "Recipes",
+    "recipesDesc": "Combine ingredients into recipes with automatically calculated nutrition.",
+    "sharedUsersTitle": "Shared Users",
+    "sharedUsersDesc": "Give trusted people permission to log to your account, or log to theirs.",
+    "goalsTitle": "Goals",
+    "goalsDesc": "Set your daily calorie and macro targets, or calculate them from your profile."
   },
   "Foods": {
     "title": "Foods",

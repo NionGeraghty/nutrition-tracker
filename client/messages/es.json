@@ -13,8 +13,24 @@
     "about": "Acerca de"
   },
   "Home": {
-    "title": "Macro Tracker",
-    "subtitle": "Controla lo que comes frente a tus objetivos diarios."
+    "heroTitle": "Controla lo que comes. Alcanza tus objetivos.",
+    "heroSubtitle": "Macro Tracker te ayuda a registrar tu comida, alcanzar tus objetivos diarios de calorías y macros, y ver tu progreso con el tiempo.",
+    "signUp": "Registrarse",
+    "logIn": "Iniciar sesión",
+    "learnMore": "Más información sobre Macro Tracker",
+    "welcomeBack": "Bienvenido/a de nuevo",
+    "foodsTitle": "Comidas",
+    "foodsDesc": "Crea y gestiona tu base de datos personal de comidas y sus valores nutricionales.",
+    "todayTitle": "Hoy",
+    "todayDesc": "Registra lo que has comido hoy y compáralo con tus objetivos diarios.",
+    "historyTitle": "Historial",
+    "historyDesc": "Consulta días anteriores para ver qué comiste y cómo te fue.",
+    "recipesTitle": "Recetas",
+    "recipesDesc": "Combina ingredientes en recetas con nutrición calculada automáticamente.",
+    "sharedUsersTitle": "Usuarios Compartidos",
+    "sharedUsersDesc": "Da permiso a personas de confianza para registrar en tu cuenta, o registra en la suya.",
+    "goalsTitle": "Objetivos",
+    "goalsDesc": "Establece tus objetivos diarios de calorías y macros, o calcúlalos a partir de tu perfil."
   },
   "Foods": {
     "title": "Comidas",
