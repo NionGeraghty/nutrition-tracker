@@ -9,7 +9,8 @@
     "goals": "Goals",
     "logIn": "Log in",
     "signUp": "Sign up",
-    "logOut": "Log out"
+    "logOut": "Log out",
+    "about": "About"
   },
   "Home": {
     "title": "Macro Tracker",
@@ -195,5 +196,28 @@
   "resetSuccess": "Your password has been reset.",
   "missingToken": "This reset link is missing a token. Please request a new one from the",
   "forgotPasswordPage": "forgot password page"
+},
+"About": {
+  "title": "About Macro Tracker",
+  "intro": "I built this app for anyone who, like me, finds it hard to stay on top of what they're eating — the idea is simple: paying close attention to exactly what goes into your body makes it much easier to actually reach your goals, whatever they are. Whether you're looking to lose weight, build muscle, or just maintain where you're at, this app is built to support that.",
+  "goalsHeading": "Setting your goals",
+  "goalsText1": "You can enter your own daily calorie and macro targets directly, or let the app estimate them for you based on your height, weight, age, sex, activity level, and goal. This calculator uses standard, widely-used nutrition formulas — but it's still just an estimate.",
+  "goalsDisclaimer": "It is not medical or dietetic advice",
+  "goalsText2": ", and it doesn't know anything about your individual health, body composition, or medical history. Treat it as a sensible starting point, track how your body actually responds over a few weeks, and adjust from there. For guidance tailored specifically to you, speak to a doctor or registered dietitian.",
+  "databaseHeading": "Building your food database",
+  "databaseText1": "Add the foods you eat regularly, along with their nutritional values per 100g. To make this faster, you can:",
+  "databaseSearch": "Search a nutrition database for generic foods, powered by the USDA FoodData Central database",
+  "databaseBarcode": "Scan a barcode on packaged food, using data from Open Food Facts",
+  "databaseText2": "Both of these pull from large, independent, third-party databases — genuinely useful, but not infallible. Occasionally an entry may be incomplete, outdated, or simply wrong.",
+  "databaseDisclaimer": "I'd recommend double-checking any values against the actual packaging before relying on them",
+  "databaseText3": ", especially for anything where accuracy really matters to you. I take no responsibility for inaccurate data provided by USDA or Open Food Facts.",
+  "loggingHeading": "Logging what you eat",
+  "loggingText": "Once your food database is set up, logging is simple: weigh what you eat, log it, and the app tracks your calories and macros for the day against your goals. A few things that make this faster day to day:",
+  "loggingCopy": "Copy entries from a previous day, so you're not re-logging the same breakfast every morning",
+  "loggingShare": "Share access with someone else — a partner, family member, or friend — so you can each add to one another's food database and daily log",
+  "progressHeading": "Tracking your progress",
+  "progressText": "The History page lets you look back at any previous day to see what you ate and how it compared to your goals — useful for spotting patterns and tracking progress over time.",
+  "closing": "I hope you find this useful. If you run into any problems or have suggestions, I'd genuinely like to hear them — reach me at",
+  "aboutLink": "About"
 }
 }

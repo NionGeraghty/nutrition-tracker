@@ -23,6 +23,7 @@ export default async function Nav() {
           <Link href="/recipes">{t('recipes')}</Link>
           <Link href="/editors">{t('sharedUsers')}</Link>
           <Link href="/goals">{t('goals')}</Link>
+          <Link href="/about">{t('about')}</Link>
           <div className="hidden md:flex items-center gap-6">
             {/* existing links */}
             <LanguageSwitcher />

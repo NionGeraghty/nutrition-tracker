@@ -46,6 +46,7 @@ export default function MobileNavMenu({ user }: { user: User | null }) {
           <Link href="/editors" onClick={() => setIsOpen(false)}>
             {t('sharedUsers')}
           </Link>
+          <Link href="/about">{t('about')}</Link>
           <LanguageSwitcher />
           {user ? (
             <>

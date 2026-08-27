@@ -9,7 +9,8 @@
     "goals": "Objetivos",
     "logIn": "Iniciar sesión",
     "signUp": "Registrarse",
-    "logOut": "Cerrar sesión"
+    "logOut": "Cerrar sesión",
+    "about": "Acerca de"
   },
   "Home": {
     "title": "Macro Tracker",
@@ -200,5 +201,28 @@
   "resetSuccess": "Tu contraseña ha sido restablecida.",
   "missingToken": "A este enlace de restablecimiento le falta un token. Solicita uno nuevo desde la",
   "forgotPasswordPage": "página de contraseña olvidada"
+},
+"About": {
+  "title": "Acerca de Macro Tracker",
+  "intro": "Creé esta aplicación para cualquiera que, como yo, tenga dificultades para controlar lo que come — la idea es sencilla: prestar mucha atención a lo que introduces en tu cuerpo facilita mucho alcanzar tus objetivos, sean cuales sean. Ya sea que busques perder peso, ganar músculo o simplemente mantenerte, esta aplicación está diseñada para ayudarte con eso.",
+  "goalsHeading": "Establecer tus objetivos",
+  "goalsText1": "Puedes introducir tus propios objetivos diarios de calorías y macros directamente, o dejar que la aplicación los estime según tu altura, peso, edad, sexo, nivel de actividad y objetivo. Esta calculadora utiliza fórmulas nutricionales estándar y ampliamente utilizadas — pero sigue siendo solo una estimación.",
+  "goalsDisclaimer": "No es un consejo médico ni dietético",
+  "goalsText2": ", y no tiene en cuenta tu salud individual, composición corporal ni historial médico. Trátalo como un punto de partida razonable, observa cómo responde tu cuerpo realmente durante unas semanas, y ajusta a partir de ahí. Para una orientación adaptada específicamente a ti, consulta a un médico o dietista registrado.",
+  "databaseHeading": "Crear tu base de datos de comidas",
+  "databaseText1": "Añade las comidas que consumes habitualmente, junto con sus valores nutricionales por 100g. Para hacerlo más rápido, puedes:",
+  "databaseSearch": "Buscar en una base de datos nutricional de comidas genéricas, con datos de USDA FoodData Central",
+  "databaseBarcode": "Escanear un código de barras en productos envasados, usando datos de Open Food Facts",
+  "databaseText2": "Ambas opciones utilizan bases de datos grandes, independientes y de terceros — genuinamente útiles, pero no infalibles. Ocasionalmente, una entrada puede estar incompleta, desactualizada o simplemente ser incorrecta.",
+  "databaseDisclaimer": "Te recomiendo verificar cualquier valor con el envase real antes de confiar en él",
+  "databaseText3": ", especialmente en todo aquello donde la precisión sea realmente importante para ti. No me hago responsable de datos incorrectos proporcionados por USDA u Open Food Facts.",
+  "loggingHeading": "Registrar lo que comes",
+  "loggingText": "Una vez configurada tu base de datos de comidas, registrar es sencillo: pesa lo que comes, regístralo, y la aplicación hace un seguimiento de tus calorías y macros del día frente a tus objetivos. Algunas cosas que agilizan esto día a día:",
+  "loggingCopy": "Copiar entradas de un día anterior, para no tener que volver a registrar el mismo desayuno cada mañana",
+  "loggingShare": "Compartir acceso con otra persona — pareja, familiar o amigo — para que ambos podáis añadir a la base de datos de comidas y al registro diario del otro",
+  "progressHeading": "Seguir tu progreso",
+  "progressText": "La página de Historial te permite consultar cualquier día anterior para ver qué comiste y cómo se comparó con tus objetivos — útil para detectar patrones y seguir tu progreso con el tiempo.",
+  "closing": "Espero que te resulte útil. Si tienes algún problema o alguna sugerencia, me encantaría saberlo — escríbeme a",
+  "aboutLink": "Acerca de"
 }
 }
