@@ -236,6 +236,12 @@
   "closing": "I hope you find this useful. If you run into any problems or have suggestions, I'd genuinely like to hear them — reach me at",
   "aboutLink": "About",
   "recipesHeading": "Building recipes",
-  "recipesText": "You can also combine ingredients into a recipe — a meal you cook regularly, for example — and the app will automatically calculate its total nutrition per 100g. Once created, a recipe appears in your food database just like any other food, ready to log."
+  "recipesText": "You can also combine ingredients into a recipe — a meal you cook regularly, for example — and the app will automatically calculate its total nutrition per 100g. Once created, a recipe appears in your food database just like any other food, ready to log.",
+  "installHeading": "Installing this app on your phone",
+"installText": "You can add Macro Tracker to your home screen so it opens like a regular app, with its own icon and no browser bar.",
+"installAndroidTitle": "Android (Chrome)",
+"installAndroidText": "Open the site in Chrome, tap the ⋮ menu in the top right, and choose \"Add to Home screen\" or \"Install app\".",
+"installIosTitle": "iPhone (Safari)",
+"installIosText": "This only works in Safari — not Chrome, Ecosia, or other browsers. Open the site in Safari, tap the Share icon, scroll down, and choose \"Add to Home Screen\"."
 }
 }

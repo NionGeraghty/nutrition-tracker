@@ -241,6 +241,12 @@
   "closing": "Espero que te resulte útil. Si tienes algún problema o alguna sugerencia, me encantaría saberlo — escríbeme a",
   "aboutLink": "Acerca de",
   "recipesHeading": "Crear recetas",
-  "recipesText": "También puedes combinar ingredientes en una receta — una comida que cocinas habitualmente, por ejemplo — y la aplicación calculará automáticamente su valor nutricional total por 100g. Una vez creada, la receta aparece en tu base de datos de comidas como cualquier otra comida, lista para registrar."
+  "recipesText": "También puedes combinar ingredientes en una receta — una comida que cocinas habitualmente, por ejemplo — y la aplicación calculará automáticamente su valor nutricional total por 100g. Una vez creada, la receta aparece en tu base de datos de comidas como cualquier otra comida, lista para registrar.",
+  "installHeading": "Instalar esta app en tu teléfono",
+"installText": "Puedes añadir Macro Tracker a tu pantalla de inicio para que se abra como una app normal, con su propio icono y sin la barra del navegador.",
+"installAndroidTitle": "Android (Chrome)",
+"installAndroidText": "Abre el sitio en Chrome, toca el menú ⋮ en la esquina superior derecha, y elige \"Añadir a pantalla de inicio\" o \"Instalar app\".",
+"installIosTitle": "iPhone (Safari)",
+"installIosText": "Esto solo funciona en Safari — no en Chrome, Ecosia u otros navegadores. Abre el sitio en Safari, toca el icono de Compartir, desplázate hacia abajo y elige \"Añadir a pantalla de inicio\"."
 }
 }

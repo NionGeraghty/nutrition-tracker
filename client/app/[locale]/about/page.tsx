@@ -47,6 +47,21 @@ export default async function AboutPage() {
         <p>{t('progressText')}</p>
       </div>
 
+      <div>
+        <h2 className="text-lg font-semibold mb-2">{t('installHeading')}</h2>
+        <p className="mb-3">{t('installText')}</p>
+        <div className="space-y-3">
+          <div>
+            <p className="font-medium text-sm">{t('installAndroidTitle')}</p>
+            <p className="text-sm text-gray-600">{t('installAndroidText')}</p>
+          </div>
+          <div>
+            <p className="font-medium text-sm">{t('installIosTitle')}</p>
+            <p className="text-sm text-gray-600">{t('installIosText')}</p>
+          </div>
+        </div>
+      </div>
+
       <p className="text-sm text-gray-600 pt-4 border-t">
         {t('closing')}{' '}
         <a href="mailto:geraghnb@tcd.ie" className="underline">
