@@ -4,7 +4,6 @@ import { getCurrentUser } from '@/lib/api';
 import MobileNavMenu from './MobileNavMenu';
 import LogoutButton from './LogoutButton';
 import LanguageSwitcher from './LanguageSwitcher';
-import InstallButton from './InstallButton';
 
 export default async function Nav() {
   const user = await getCurrentUser();
@@ -29,7 +28,6 @@ export default async function Nav() {
             {/* existing links */}
             <LanguageSwitcher />
           </div>
-          <InstallButton />
           {user ? (
             <div className="flex items-center gap-4">
               <span className="text-sm text-gray-600">{user.email}</span>
