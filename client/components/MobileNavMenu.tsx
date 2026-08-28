@@ -5,6 +5,7 @@ import { Link } from '@/i18n/navigation';
 import { useTranslations } from 'next-intl';
 import LogoutButton from './LogoutButton';
 import LanguageSwitcher from './LanguageSwitcher';
+import InstallButton from './InstallButton';
 
 interface User {
   id: string;
@@ -48,6 +49,7 @@ export default function MobileNavMenu({ user }: { user: User | null }) {
           </Link>
           <Link href="/about">{t('about')}</Link>
           <LanguageSwitcher />
+          <InstallButton />
           {user ? (
             <>
               <span className="text-sm text-gray-600">{user.email}</span>

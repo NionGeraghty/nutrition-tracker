@@ -237,5 +237,8 @@
   "aboutLink": "About",
   "recipesHeading": "Building recipes",
   "recipesText": "You can also combine ingredients into a recipe — a meal you cook regularly, for example — and the app will automatically calculate its total nutrition per 100g. Once created, a recipe appears in your food database just like any other food, ready to log."
+},
+"Install": {
+  "installApp": "Install app"
 }
 }

@@ -242,5 +242,8 @@
   "aboutLink": "Acerca de",
   "recipesHeading": "Crear recetas",
   "recipesText": "También puedes combinar ingredientes en una receta — una comida que cocinas habitualmente, por ejemplo — y la aplicación calculará automáticamente su valor nutricional total por 100g. Una vez creada, la receta aparece en tu base de datos de comidas como cualquier otra comida, lista para registrar."
+},
+"Install": {
+  "installApp": "Instalar app"
 }
 }
