@@ -13,6 +13,7 @@ export default function EntryItem({ entry, foods, targetUserId }: { entry: Entry
   const [unit, setUnit] = useState<'grams' | 'portions'>('grams');
   const [amount, setAmount] = useState(entry.grams);
   const [mealType, setMealType] = useState(entry.meal_type);
+  const [error, setError] = useState('');
 
   const numGrams = Number(entry.grams);
   const factor = numGrams / 100;
@@ -42,12 +43,19 @@ export default function EntryItem({ entry, foods, targetUserId }: { entry: Entry
   async function handleSave() {
     const grams = calculateGrams();
 
-    await fetch(`/api/entries/${entry.id}`, {
+    const response = await fetch(`/api/entries/${entry.id}`, {
       method: 'PUT',
       credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ foodId, date: entry.date, grams, mealType, targetUserId }),
     });
+
+    if (!response.ok) {
+      const data = await response.json();
+      setError(data.error ?? 'Failed to save.');
+      return;
+    }
+
     setIsEditing(false);
     router.refresh();
   }
@@ -61,51 +69,53 @@ export default function EntryItem({ entry, foods, targetUserId }: { entry: Entry
   }
 
   if (isEditing) {
-    return (
-      <li className="border p-2 rounded space-y-2 text-sm">
-        <select value={foodId} onChange={(e) => handleFoodChange(e.target.value)} className="border p-1 rounded w-full">
-          {foods.map((food) => (
-            <option key={food.id} value={food.id}>{food.name}</option>
-          ))}
-        </select>
+  return (
+    <li className="border p-2 rounded space-y-2 text-sm">
+      <select value={foodId} onChange={(e) => handleFoodChange(e.target.value)} className="border p-1 rounded w-full">
+        {foods.map((food) => (
+          <option key={food.id} value={food.id}>{food.name}</option>
+        ))}
+      </select>
 
-        {hasPortionSize && (
-          <select
-            value={unit}
-            onChange={(e) => {
-              setUnit(e.target.value as 'grams' | 'portions');
-              setAmount('');
-            }}
-            className="border p-1 rounded w-full"
-          >
-            <option value="grams">{t('grams')}</option>
-            <option value="portions">{t('portions')}</option>
-          </select>
-        )}
+      {error && <p className="text-red-600 text-xs">{error}</p>}
 
-        <input
-          type="number"
-          placeholder={unit === 'grams' ? t('grams') : t('numberOfPortions')}
-          value={amount}
-          onChange={(e) => setAmount(e.target.value)}
+      {hasPortionSize && (
+        <select
+          value={unit}
+          onChange={(e) => {
+            setUnit(e.target.value as 'grams' | 'portions');
+            setAmount('');
+          }}
           className="border p-1 rounded w-full"
-          step={unit === 'portions' ? '0.1' : '1'}
-        />
-
-        <select value={mealType} onChange={(e) => setMealType(e.target.value)} className="border p-1 rounded w-full">
-          <option value="breakfast">{t('breakfast')}</option>
-          <option value="lunch">{t('lunch')}</option>
-          <option value="dinner">{t('dinner')}</option>
-          <option value="snack">{t('snack')}</option>
-          <option value="other">{t('other')}</option>
+        >
+          <option value="grams">{t('grams')}</option>
+          <option value="portions">{t('portions')}</option>
         </select>
-        <div className="flex gap-2">
-          <button onClick={handleSave} className="bg-black text-white px-3 py-1 rounded">{t('save')}</button>
-          <button onClick={() => setIsEditing(false)} className="border px-3 py-1 rounded">{t('cancel')}</button>
-        </div>
-      </li>
-    );
-  }
+      )}
+
+      <input
+        type="number"
+        placeholder={unit === 'grams' ? t('grams') : t('numberOfPortions')}
+        value={amount}
+        onChange={(e) => setAmount(e.target.value)}
+        className="border p-1 rounded w-full"
+        step={unit === 'portions' ? '0.1' : '1'}
+      />
+
+      <select value={mealType} onChange={(e) => setMealType(e.target.value)} className="border p-1 rounded w-full">
+        <option value="breakfast">{t('breakfast')}</option>
+        <option value="lunch">{t('lunch')}</option>
+        <option value="dinner">{t('dinner')}</option>
+        <option value="snack">{t('snack')}</option>
+        <option value="other">{t('other')}</option>
+      </select>
+      <div className="flex gap-2">
+        <button onClick={handleSave} className="bg-black text-white px-3 py-1 rounded">{t('save')}</button>
+        <button onClick={() => setIsEditing(false)} className="border px-3 py-1 rounded">{t('cancel')}</button>
+      </div>
+    </li>
+  );
+}
 
   return (
     <li className="border p-2 rounded flex justify-between items-center text-sm">
