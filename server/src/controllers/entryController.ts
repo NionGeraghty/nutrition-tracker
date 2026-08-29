@@ -68,22 +68,23 @@ export async function getEntriesByDate(req: Request, res: Response) {
   }
 
   const result = await pool.query(
-    `SELECT
-       food_entries.id,
-       food_entries.date,
-       food_entries.grams,
-       food_entries.meal_type,
-       foods.name,
-       foods.calories_per_100g,
-       foods.protein_per_100g,
-       foods.carbs_per_100g,
-       foods.fat_per_100g,
-       foods.fibre_per_100g
-     FROM food_entries
-     JOIN foods ON food_entries.food_id = foods.id
-     WHERE food_entries.date = $1 AND food_entries.user_id = $2`,
-    [date, targetUserId]
-  );
+  `SELECT
+     food_entries.id,
+     food_entries.food_id,
+     food_entries.date,
+     food_entries.grams,
+     food_entries.meal_type,
+     foods.name,
+     foods.calories_per_100g,
+     foods.protein_per_100g,
+     foods.carbs_per_100g,
+     foods.fat_per_100g,
+     foods.fibre_per_100g
+   FROM food_entries
+   JOIN foods ON food_entries.food_id = foods.id
+   WHERE food_entries.date = $1 AND food_entries.user_id = $2`,
+  [date, targetUserId]
+);
 
   res.json(result.rows);
 }
