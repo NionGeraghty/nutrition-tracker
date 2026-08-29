@@ -1,12 +1,13 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from '@/i18n/navigation'
+import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 
 interface Food {
   id: string;
   name: string;
+  portion_grams: string | null;
 }
 
 export default function LogEntryForm({
@@ -22,9 +23,27 @@ export default function LogEntryForm({
   const t = useTranslations('Today');
   const [isOpen, setIsOpen] = useState(false);
   const [foodId, setFoodId] = useState('');
-  const [grams, setGrams] = useState('');
+  const [unit, setUnit] = useState<'grams' | 'portions'>('grams');
+  const [amount, setAmount] = useState('');
   const [mealType, setMealType] = useState('breakfast');
   const [error, setError] = useState('');
+
+  const selectedFood = foods.find((f) => f.id === foodId);
+  const hasPortionSize = selectedFood?.portion_grams != null;
+
+  function handleFoodChange(id: string) {
+    setFoodId(id);
+    setUnit('grams');
+    setAmount('');
+  }
+
+  function calculateGrams(): number {
+    if (unit === 'grams') {
+      return Number(amount);
+    }
+    const portionSize = Number(selectedFood?.portion_grams ?? 0);
+    return Number(amount) * portionSize;
+  }
 
   return (
     <div className="border rounded max-w-md">
@@ -43,6 +62,8 @@ export default function LogEntryForm({
             e.preventDefault();
             setError('');
 
+            const grams = calculateGrams();
+
             const response = await fetch('/api/entries', {
               method: 'POST',
               credentials: 'include',
@@ -50,7 +71,7 @@ export default function LogEntryForm({
               body: JSON.stringify({
                 foodId,
                 date,
-                grams: Number(grams),
+                grams,
                 mealType,
                 targetUserId,
               }),
@@ -63,7 +84,8 @@ export default function LogEntryForm({
             }
 
             setFoodId('');
-            setGrams('');
+            setAmount('');
+            setUnit('grams');
             router.refresh();
           }}
           className="p-4 pt-0 space-y-3"
@@ -72,7 +94,7 @@ export default function LogEntryForm({
 
           <select
             value={foodId}
-            onChange={(e) => setFoodId(e.target.value)}
+            onChange={(e) => handleFoodChange(e.target.value)}
             className="border p-2 rounded w-full"
             required
           >
@@ -82,12 +104,30 @@ export default function LogEntryForm({
             ))}
           </select>
 
+          {hasPortionSize && (
+            <div>
+              <label className="block text-xs text-gray-500 mb-1">{t('unit')}</label>
+              <select
+                value={unit}
+                onChange={(e) => {
+                  setUnit(e.target.value as 'grams' | 'portions');
+                  setAmount('');
+                }}
+                className="border p-2 rounded w-full"
+              >
+                <option value="grams">{t('grams')}</option>
+                <option value="portions">{t('portions')}</option>
+              </select>
+            </div>
+          )}
+
           <input
             type="number"
-            placeholder={t('grams')}
-            value={grams}
-            onChange={(e) => setGrams(e.target.value)}
+            placeholder={unit === 'grams' ? t('grams') : t('numberOfPortions')}
+            value={amount}
+            onChange={(e) => setAmount(e.target.value)}
             className="border p-2 rounded w-full"
+            step={unit === 'portions' ? '0.1' : '1'}
             required
           />
 

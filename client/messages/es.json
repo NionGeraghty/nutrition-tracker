@@ -103,7 +103,10 @@
   "fibreUnit": "fibra",
   "left": "restante",
   "noGoalsSet": "Aún no has establecido objetivos.",
-  "summary": "Resumen"
+  "summary": "Resumen",
+  "unit": "Unidad",
+  "portions": "Porciones",
+  "numberOfPortions": "Número de porciones"
 },
 "Months": {
   "january": "January", "february": "February", "march": "March", "april": "April",

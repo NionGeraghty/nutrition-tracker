@@ -103,7 +103,10 @@
   "fibreUnit": "fibre",
   "left": "left",
   "noGoalsSet": "No goals set yet.",
-  "summary": "Summary"
+  "summary": "Summary",
+  "unit": "Unit",
+  "portions": "Portions",
+  "numberOfPortions": "Number of portions"
 },
 "History": {
   "title": "History"
