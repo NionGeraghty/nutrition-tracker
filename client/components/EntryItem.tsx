@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from '@/i18n/navigation'
+import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { Entry, Food } from '@/types';
 
@@ -10,7 +10,8 @@ export default function EntryItem({ entry, foods, targetUserId }: { entry: Entry
   const t = useTranslations('Today');
   const [isEditing, setIsEditing] = useState(false);
   const [foodId, setFoodId] = useState(entry.food_id);
-  const [grams, setGrams] = useState(entry.grams);
+  const [unit, setUnit] = useState<'grams' | 'portions'>('grams');
+  const [amount, setAmount] = useState(entry.grams);
   const [mealType, setMealType] = useState(entry.meal_type);
 
   const numGrams = Number(entry.grams);
@@ -21,12 +22,31 @@ export default function EntryItem({ entry, foods, targetUserId }: { entry: Entry
   const fat = factor * Number(entry.fat_per_100g);
   const fibre = factor * Number(entry.fibre_per_100g);
 
+  const selectedFood = foods.find((f) => f.id === foodId);
+  const hasPortionSize = selectedFood?.portion_grams != null;
+
+  function handleFoodChange(id: string) {
+    setFoodId(id);
+    setUnit('grams');
+    setAmount('');
+  }
+
+  function calculateGrams(): number {
+    if (unit === 'grams') {
+      return Number(amount);
+    }
+    const portionSize = Number(selectedFood?.portion_grams ?? 0);
+    return Number(amount) * portionSize;
+  }
+
   async function handleSave() {
+    const grams = calculateGrams();
+
     await fetch(`/api/entries/${entry.id}`, {
       method: 'PUT',
       credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ foodId, date: entry.date, grams: Number(grams), mealType, targetUserId }),
+      body: JSON.stringify({ foodId, date: entry.date, grams, mealType, targetUserId }),
     });
     setIsEditing(false);
     router.refresh();
@@ -43,12 +63,35 @@ export default function EntryItem({ entry, foods, targetUserId }: { entry: Entry
   if (isEditing) {
     return (
       <li className="border p-2 rounded space-y-2 text-sm">
-        <select value={foodId} onChange={(e) => setFoodId(e.target.value)} className="border p-1 rounded w-full">
+        <select value={foodId} onChange={(e) => handleFoodChange(e.target.value)} className="border p-1 rounded w-full">
           {foods.map((food) => (
             <option key={food.id} value={food.id}>{food.name}</option>
           ))}
         </select>
-        <input type="number" value={grams} onChange={(e) => setGrams(e.target.value)} className="border p-1 rounded w-full" />
+
+        {hasPortionSize && (
+          <select
+            value={unit}
+            onChange={(e) => {
+              setUnit(e.target.value as 'grams' | 'portions');
+              setAmount('');
+            }}
+            className="border p-1 rounded w-full"
+          >
+            <option value="grams">{t('grams')}</option>
+            <option value="portions">{t('portions')}</option>
+          </select>
+        )}
+
+        <input
+          type="number"
+          placeholder={unit === 'grams' ? t('grams') : t('numberOfPortions')}
+          value={amount}
+          onChange={(e) => setAmount(e.target.value)}
+          className="border p-1 rounded w-full"
+          step={unit === 'portions' ? '0.1' : '1'}
+        />
+
         <select value={mealType} onChange={(e) => setMealType(e.target.value)} className="border p-1 rounded w-full">
           <option value="breakfast">{t('breakfast')}</option>
           <option value="lunch">{t('lunch')}</option>
