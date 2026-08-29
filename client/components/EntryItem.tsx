@@ -43,6 +43,8 @@ export default function EntryItem({ entry, foods, targetUserId }: { entry: Entry
   async function handleSave() {
     const grams = calculateGrams();
 
+    console.log({ foodId, date: entry.date, grams, mealType });
+
     const response = await fetch(`/api/entries/${entry.id}`, {
       method: 'PUT',
       credentials: 'include',
