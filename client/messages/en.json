@@ -62,7 +62,9 @@
     "carbsUnit": "carbs",
     "fatUnit": "fat",
     "fibreUnit": "fibre",
-    "selectAFood": "Select a food"    
+    "selectAFood": "Select a food",
+    "portionGrams": "Portion size in grams (optional)",
+    "portionHint": "e.g. if 1 slice of bread is 30g, enter 30"
   },
   "Today": {
   "title": "Today — {date}",

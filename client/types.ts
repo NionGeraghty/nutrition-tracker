@@ -6,6 +6,7 @@ export interface Food {
   carbs_per_100g: string;
   fat_per_100g: string;
   fibre_per_100g: string;
+  portion_grams: string | null;
 }
 
 export interface Entry {

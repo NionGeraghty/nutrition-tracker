@@ -27,6 +27,7 @@ export default function CreateFoodForm({ grantedToMe, userId }: { grantedToMe: G
   const [fibre, setFibre] = useState('');
   const [error, setError] = useState('');
   const [selectedTargets, setSelectedTargets] = useState<string[]>([]);
+  const [portionGrams, setPortionGrams] = useState('');
 
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<ExternalFood[]>([]);
@@ -183,6 +184,7 @@ export default function CreateFoodForm({ grantedToMe, userId }: { grantedToMe: G
                   carbsPer100g: Number(carbs),
                   fatPer100g: Number(fat),
                   fibrePer100g: Number(fibre),
+                  portionGrams: portionGrams ? Number(portionGrams) : undefined,
                   targetUserIds: selectedTargets.length > 0 ? [userId, ...selectedTargets] : undefined,
                 }),
               });
@@ -198,6 +200,7 @@ export default function CreateFoodForm({ grantedToMe, userId }: { grantedToMe: G
               setCarbs('');
               setFat('');
               setFibre('');
+              setPortionGrams('');
 
               router.refresh();
             }}
@@ -272,6 +275,17 @@ export default function CreateFoodForm({ grantedToMe, userId }: { grantedToMe: G
                   required
                 />
               </div>
+            </div>
+            <div>
+              <label className="block text-xs text-gray-500 mb-1">{t('portionGrams')}</label>
+              <input
+                type="number"
+                value={portionGrams}
+                onChange={(e) => setPortionGrams(e.target.value)}
+                onKeyDown={handleArrowNav}
+                className="border p-2 rounded w-full"
+                placeholder={t('portionHint')}
+              />
             </div>
 
             {grantedToMe.length > 0 && (

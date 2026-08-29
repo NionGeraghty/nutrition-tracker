@@ -42,7 +42,7 @@ export async function getFoodById(req: Request, res: Response) {
 }
 
 export async function createFood(req: Request, res: Response) {
-  const { name, caloriesPer100g, proteinPer100g, carbsPer100g, fatPer100g, fibrePer100g, targetUserIds } = req.body;
+  const { name, caloriesPer100g, proteinPer100g, carbsPer100g, fatPer100g, fibrePer100g, portionGrams, targetUserIds } = req.body;
 
   if (
     typeof name !== 'string' ||
@@ -50,7 +50,8 @@ export async function createFood(req: Request, res: Response) {
     typeof proteinPer100g !== 'number' ||
     typeof carbsPer100g !== 'number' ||
     typeof fatPer100g !== 'number' ||
-    typeof fibrePer100g !== 'number'
+    typeof fibrePer100g !== 'number' ||
+    (portionGrams !== undefined && portionGrams !== null && typeof portionGrams !== 'number')
   ) {
     return res.status(400).json({ error: 'Invalid food data' });
   }
@@ -63,10 +64,10 @@ export async function createFood(req: Request, res: Response) {
   const results = [];
   for (const userId of targets) {
     const result = await pool.query<Food>(
-      `INSERT INTO foods (name, calories_per_100g, protein_per_100g, carbs_per_100g, fat_per_100g, fibre_per_100g, user_id)
-       VALUES ($1, $2, $3, $4, $5, $6, $7)
+      `INSERT INTO foods (name, calories_per_100g, protein_per_100g, carbs_per_100g, fat_per_100g, fibre_per_100g, portion_grams, user_id)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
        RETURNING *`,
-      [name, caloriesPer100g, proteinPer100g, carbsPer100g, fatPer100g, fibrePer100g, userId]
+      [name, caloriesPer100g, proteinPer100g, carbsPer100g, fatPer100g, fibrePer100g, portionGrams ?? null, userId]
     );
     results.push(result.rows[0]);
   }
@@ -81,7 +82,7 @@ export async function updateFood(req: Request, res: Response) {
     return res.status(400).json({ error: 'Invalid id' });
   }
 
-  const { name, caloriesPer100g, proteinPer100g, carbsPer100g, fatPer100g, fibrePer100g } = req.body;
+  const { name, caloriesPer100g, proteinPer100g, carbsPer100g, fatPer100g, fibrePer100g, portionGrams } = req.body;
 
   if (
     typeof name !== 'string' ||
@@ -89,17 +90,18 @@ export async function updateFood(req: Request, res: Response) {
     typeof proteinPer100g !== 'number' ||
     typeof carbsPer100g !== 'number' ||
     typeof fatPer100g !== 'number' ||
-    typeof fibrePer100g !== 'number'
+    typeof fibrePer100g !== 'number' ||
+    (portionGrams !== undefined && portionGrams !== null && typeof portionGrams !== 'number')
   ) {
     return res.status(400).json({ error: 'Invalid food data' });
   }
 
   const result = await pool.query<Food>(
     `UPDATE foods
-     SET name = $1, calories_per_100g = $2, protein_per_100g = $3, carbs_per_100g = $4, fat_per_100g = $5, fibre_per_100g = $6
-     WHERE id = $7 AND user_id = $8
+     SET name = $1, calories_per_100g = $2, protein_per_100g = $3, carbs_per_100g = $4, fat_per_100g = $5, fibre_per_100g = $6, portion_grams = $7
+     WHERE id = $8 AND user_id = $9
      RETURNING *`,
-    [name, caloriesPer100g, proteinPer100g, carbsPer100g, fatPer100g, fibrePer100g, id, req.session.userId]
+    [name, caloriesPer100g, proteinPer100g, carbsPer100g, fatPer100g, fibrePer100g, portionGrams ?? null, id, req.session.userId]
   );
 
   if (result.rows.length === 0) {

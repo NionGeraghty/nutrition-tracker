@@ -15,6 +15,7 @@ export default function FoodItem({ food }: { food: Food }) {
   const [carbs, setCarbs] = useState(food.carbs_per_100g);
   const [fat, setFat] = useState(food.fat_per_100g);
   const [fibre, setFibre] = useState(food.fibre_per_100g);
+  const [portionGrams, setPortionGrams] = useState(food.portion_grams ?? '');
 
   async function handleSave() {
     await fetch(`/api/foods/${food.id}`, {
@@ -28,6 +29,7 @@ export default function FoodItem({ food }: { food: Food }) {
         carbsPer100g: Number(carbs),
         fatPer100g: Number(fat),
         fibrePer100g: Number(fibre),
+        portionGrams: portionGrams ? Number(portionGrams) : undefined,
       }),
     });
 
@@ -90,6 +92,16 @@ export default function FoodItem({ food }: { food: Food }) {
             <label className="block text-xs text-gray-500 mb-1">{t('fibrePer100g')}</label>
             <input value={fibre} onChange={(e) => setFibre(e.target.value)} onKeyDown={handleArrowNav} className="border p-1 rounded w-full" />
           </div>
+        </div>
+        <div>
+          <label className="block text-xs text-gray-500 mb-1">{t('portionGrams')}</label>
+          <input
+            value={portionGrams}
+            onChange={(e) => setPortionGrams(e.target.value)}
+            onKeyDown={handleArrowNav}
+            className="border p-1 rounded w-full"
+            placeholder={t('portionHint')}
+          />
         </div>
         <div className="flex gap-2">
           <button onClick={handleSave} className="bg-black text-white px-3 py-1 rounded text-sm">{t('save')}</button>
