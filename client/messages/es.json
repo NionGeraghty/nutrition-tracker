@@ -1,12 +1,12 @@
 {
   "Nav": {
     "appName": "Macro Tracker",
-    "foods": "Comidas",
-    "today": "Hoy",
-    "history": "Historial",
-    "recipes": "Recetas",
-    "sharedUsers": "Usuarios Compartidos",
-    "goals": "Objetivos",
+    "foods": "Mis Comidas",
+    "today": "Comidas de Hoy",
+    "history": "Mi Historial",
+    "recipes": "Mis Recetas",
+    "sharedUsers": "Usuarios Conectados",
+    "goals": "Mis Objetivos",
     "logIn": "Iniciar sesión",
     "signUp": "Registrarse",
     "logOut": "Cerrar sesión",
@@ -19,21 +19,21 @@
     "logIn": "Iniciar sesión",
     "learnMore": "Más información sobre Macro Tracker",
     "welcomeBack": "Bienvenido/a de nuevo",
-    "foodsTitle": "Comidas",
+    "foodsTitle": "Mis Comidas",
     "foodsDesc": "Crea y gestiona tu base de datos personal de comidas y sus valores nutricionales.",
-    "todayTitle": "Hoy",
+    "todayTitle": "Comidas de Hoy",
     "todayDesc": "Registra lo que has comido hoy y compáralo con tus objetivos diarios.",
-    "historyTitle": "Historial",
+    "historyTitle": "Mi Historial",
     "historyDesc": "Consulta días anteriores para ver qué comiste y cómo te fue.",
-    "recipesTitle": "Recetas",
+    "recipesTitle": "Mis Recetas",
     "recipesDesc": "Combina ingredientes en recetas con nutrición calculada automáticamente.",
-    "sharedUsersTitle": "Usuarios Compartidos",
+    "sharedUsersTitle": "Usuarios Conectados",
     "sharedUsersDesc": "Da permiso a personas de confianza para registrar en tu cuenta, o registra en la suya.",
-    "goalsTitle": "Objetivos",
+    "goalsTitle": "Mis Objetivos",
     "goalsDesc": "Establece tus objetivos diarios de calorías y macros, o calcúlalos a partir de tu perfil."
   },
   "Foods": {
-    "title": "Comidas",
+    "title": "Mis Comidas",
     "subtitle": "Tu base de datos personal de comidas y sus valores nutricionales",
     "noFoods": "Aún no hay comidas.",
     "addFood": "Añadir una comida",
@@ -67,7 +67,7 @@
     "portionHint": "ej. si 1 rebanada de pan son 30g, escribe 30"
   },
   "Today": {
-  "title": "Hoy — {date}",
+  "title": "Comidas de Hoy — {date}",
   "subtitle": "Lo que has comido hoy, comparado con tus objetivos",
   "viewing": "Viendo",
   "me": "Yo",
@@ -114,10 +114,10 @@
   "september": "September", "october": "October", "november": "November", "december": "December"
 },
 "History": {
-  "title": "Historial"
+  "title": "Mi Historial"
 },
 "Recipes": {
-  "title": "Recetas",
+  "title": "Mis Recetas",
   "subtitle": "Crea una receta a partir de ingredientes — aparecerá en tu lista de comidas, lista para registrar",
   "createRecipe": "Crear una receta",
   "recipeName": "Nombre de la receta",
@@ -142,7 +142,7 @@
   "updateError": "No se pudo actualizar la receta."
 },
 "Goals": {
-  "title": "Objetivos",
+  "title": "Mis Objetivos",
   "calories": "Calorías",
   "protein": "Proteína (g)",
   "carbs": "Carbohidratos (g)",
@@ -183,7 +183,7 @@
   "explainWhy": "Estas fórmulas se basan en promedios de grandes grupos de personas. Tus necesidades reales dependen de cosas que no pueden medir — composición corporal, genética, condiciones de salud y más. Dos personas con la misma altura, peso y edad pueden tener necesidades energéticas reales genuinamente diferentes. Usa estos números como un punto de partida informado, no como una garantía."
 },
 "Editors": {
-  "title": "Usuarios Compartidos",
+  "title": "Usuarios Conectados",
   "subtitle": "Da permiso a otras personas para añadir comidas, recetas y entradas a tu cuenta",
   "returnFavour": "¿Devolver el favor?",
   "hasGivenAccess": "{email} te ha dado permiso para editar sus datos.",

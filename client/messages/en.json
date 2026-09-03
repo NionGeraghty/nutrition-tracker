@@ -1,12 +1,12 @@
 {
   "Nav": {
     "appName": "Macro Tracker",
-    "foods": "Foods",
-    "today": "Today",
-    "history": "History",
-    "recipes": "Recipes",
-    "sharedUsers": "Shared Users",
-    "goals": "Goals",
+    "foods": "My Foods",
+    "today": "Today's Meals",
+    "history": "My History",
+    "recipes": "My Recipes",
+    "sharedUsers": "Connected Users",
+    "goals": "My Goals",
     "logIn": "Log in",
     "signUp": "Sign up",
     "logOut": "Log out",
@@ -19,21 +19,21 @@
     "logIn": "Log in",
     "learnMore": "Learn more about Macro Tracker",
     "welcomeBack": "Welcome back",
-    "foodsTitle": "Foods",
+    "foodsTitle": "My Foods",
     "foodsDesc": "Build and manage your personal database of foods and their nutrition values.",
-    "todayTitle": "Today",
+    "todayTitle": "Today's meals",
     "todayDesc": "Log what you've eaten today and track it against your daily goals.",
-    "historyTitle": "History",
+    "historyTitle": "My History",
     "historyDesc": "Look back at previous days to see what you ate and how you did.",
-    "recipesTitle": "Recipes",
+    "recipesTitle": "My Recipes",
     "recipesDesc": "Combine ingredients into recipes with automatically calculated nutrition.",
-    "sharedUsersTitle": "Shared Users",
+    "sharedUsersTitle": "Connected Users",
     "sharedUsersDesc": "Give trusted people permission to log to your account, or log to theirs.",
-    "goalsTitle": "Goals",
+    "goalsTitle": "My Goals",
     "goalsDesc": "Set your daily calorie and macro targets, or calculate them from your profile."
   },
   "Foods": {
-    "title": "Foods",
+    "title": "My Foods",
     "subtitle": "Your personal database of foods and their nutrition values",
     "noFoods": "No foods yet.",
     "addFood": "Add a food",
@@ -67,7 +67,7 @@
     "portionHint": "e.g. if 1 slice of bread is 30g, enter 30"
   },
   "Today": {
-  "title": "Today — {date}",
+  "title": "Today's Meals — {date}",
   "subtitle": "What you've eaten today, compared to your goals",
   "viewing": "Viewing",
   "me": "Me",
@@ -109,10 +109,10 @@
   "numberOfPortions": "Number of portions"
 },
 "History": {
-  "title": "History"
+  "title": "My History"
 },
 "Recipes": {
-  "title": "Recipes",
+  "title": "My Recipes",
   "subtitle": "Build a recipe from ingredients — it'll appear in your Foods list, ready to log",
   "createRecipe": "Create a recipe",
   "recipeName": "Recipe name",
@@ -137,7 +137,7 @@
   "updateError": "Failed to update recipe."
 },
 "Goals": {
-  "title": "Goals",
+  "title": "My Goals",
   "calories": "Calories",
   "protein": "Protein (g)",
   "carbs": "Carbs (g)",
