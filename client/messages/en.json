@@ -108,6 +108,11 @@
   "portions": "Portions",
   "numberOfPortions": "Number of portions"
 },
+"Months": {
+  "january": "January", "february": "February", "march": "March", "april": "April",
+  "may": "May", "june": "June", "july": "July", "august": "August",
+  "september": "September", "october": "October", "november": "November", "december": "December"
+},
 "History": {
   "title": "My History"
 },
@@ -178,7 +183,7 @@
   "explainWhy": "These formulas are based on averages across large groups of people. Your actual needs depend on things they can't measure — body composition, genetics, health conditions, and more. Two people with identical height, weight, and age can have genuinely different real-world energy needs. Use these numbers as an informed starting point, not a guarantee."
 },
 "Editors": {
-  "title": "Sharing",
+  "title": "Connected Users",
   "subtitle": "Give people permission to add foods, recipes, and entries to your account",
   "returnFavour": "Return the favour?",
   "hasGivenAccess": "{email} has given you permission to edit their data.",
