@@ -16,14 +16,14 @@ export default function SummaryCard({ summary }: { summary: Summary }) {
 
   return (
     <div className="border rounded p-4 bg-gray-50">
-      <h2 className="font-semibold mb-3">{t('summary')}</h2>
+      <h2 className="font-semibold text-base text-gray-900 mb-3">{t('summary')}</h2>
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
         {macros.map((macro) => (
           <div key={macro.label} className="text-center">
-            <div className="text-xs font-medium text-gray-500 capitalize">{macro.label}</div>
-            <div>{macro.total.toFixed(macro.decimals)}{macro.unit}</div>
+            <div className="text-xs text-gray-400 capitalize">{macro.label}</div>
+            <div className="font-semibold text-gray-900">{macro.total.toFixed(macro.decimals)}{macro.unit}</div>
             {summary.goals && (
-              <div className="text-xs text-gray-500">
+              <div className="text-sm text-gray-500">
                 {macro.remaining!.toFixed(macro.decimals)}{macro.unit} {t('left')}
               </div>
             )}

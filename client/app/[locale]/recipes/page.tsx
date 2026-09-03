@@ -40,9 +40,9 @@ export default async function RecipesPage() {
 
   return (
     <main className="p-4 md:p-8 space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold mb-1">{t('title')}</h1>
-        <p className="text-sm text-gray-500">{t('subtitle')}</p>
+      <div className="mb-6">
+        <h1 className="text-3xl font-bold text-gray-900">{t('title')}</h1>
+        <p className="text-sm text-gray-500 mt-1">{t('subtitle')}</p>
       </div>
 
       <CreateRecipeForm foods={foods} />

@@ -30,7 +30,7 @@ export default async function Nav() {
           </div>
           {user ? (
             <div className="flex items-center gap-4">
-              <span className="text-sm text-gray-600">{user.email}</span>
+              <span className="text-sm text-gray-500">{user.email}</span>
               <LogoutButton />
             </div>
           ) : (

@@ -12,33 +12,33 @@ export default function ExplanationSection() {
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full text-left p-3 text-xs font-medium flex justify-between items-center"
+        className="w-full text-left p-3 font-semibold text-base text-gray-900 flex justify-between items-center"
       >
         {t('howCalculated')}
         <span>{isOpen ? '▲' : '▼'}</span>
       </button>
 
       {isOpen && (
-        <div className="p-3 pt-0 text-xs text-gray-600 space-y-3">
+        <div className="p-3 pt-0 space-y-3">
           <div>
-            <p className="font-medium text-gray-800">{t('explainCaloriesTitle')}</p>
-            <p>{t('explainCalories')}</p>
+            <p className="font-semibold text-gray-900">{t('explainCaloriesTitle')}</p>
+            <p className="text-sm text-gray-500">{t('explainCalories')}</p>
           </div>
           <div>
-            <p className="font-medium text-gray-800">{t('explainProteinTitle')}</p>
-            <p>{t('explainProtein')}</p>
+            <p className="font-semibold text-gray-900">{t('explainProteinTitle')}</p>
+            <p className="text-sm text-gray-500">{t('explainProtein')}</p>
           </div>
           <div>
-            <p className="font-medium text-gray-800">{t('explainFatCarbsTitle')}</p>
-            <p>{t('explainFatCarbs')}</p>
+            <p className="font-semibold text-gray-900">{t('explainFatCarbsTitle')}</p>
+            <p className="text-sm text-gray-500">{t('explainFatCarbs')}</p>
           </div>
           <div>
-            <p className="font-medium text-gray-800">{t('explainFibreTitle')}</p>
-            <p>{t('explainFibre')}</p>
+            <p className="font-semibold text-gray-900">{t('explainFibreTitle')}</p>
+            <p className="text-sm text-gray-500">{t('explainFibre')}</p>
           </div>
           <div>
-            <p className="font-medium text-gray-800">{t('explainWhyTitle')}</p>
-            <p>{t('explainWhy')}</p>
+            <p className="font-semibold text-gray-900">{t('explainWhyTitle')}</p>
+            <p className="text-sm text-gray-500">{t('explainWhy')}</p>
           </div>
         </div>
       )}

@@ -7,7 +7,7 @@ export default async function LoginPage() {
 
   return (
     <main className="p-8">
-      <h1 className="text-2xl font-bold mb-4">{t('logInTitle')}</h1>
+      <h1 className="text-3xl font-bold text-gray-900 mb-6">{t('logInTitle')}</h1>
       <Suspense fallback={<p>Loading...</p>}>
         <LoginForm />
       </Suspense>

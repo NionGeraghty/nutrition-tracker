@@ -23,7 +23,7 @@ export default async function GoalsPage() {
 
   return (
     <main className="p-4 md:p-8">
-      <h1 className="text-2xl font-bold mb-4">{t('title')}</h1>
+      <h1 className="text-3xl font-bold text-gray-900 mb-6">{t('title')}</h1>
       <GoalsForm goals={goals} />
     </main>
   );

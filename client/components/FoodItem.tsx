@@ -117,8 +117,8 @@ export default function FoodItem({ food }: { food: Food }) {
       className="border rounded flex justify-between items-center gap-2 p-2 text-sm cursor-pointer hover:bg-primary-light hover:border-primary transition"
     >
       <div>
-        <div className="font-semibold">{food.name}</div>
-        <div className="text-sm text-gray-600">
+        <div className="font-semibold text-gray-900">{food.name}</div>
+        <div className="text-sm text-gray-500">
           {food.calories_per_100g} {t('cal')} · {food.protein_per_100g}g {t('proteinUnit')} ·{' '}
           {food.carbs_per_100g}g {t('carbsUnit')} · {food.fat_per_100g}g {t('fatUnit')} · {food.fibre_per_100g}g {t('fibreUnit')}
         </div>

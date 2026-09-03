@@ -78,7 +78,7 @@ export default function GoalsCalculator({ onCalculate }: { onCalculate: (macros:
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full text-left p-4 font-semibold flex justify-between items-center hover:bg-primary-light transition"
+        className="w-full text-left p-4 font-semibold text-base text-gray-900 flex justify-between items-center hover:bg-primary-light transition"
       >
         {t('calculateFromProfile')}
         <span>{isOpen ? '▲' : '▼'}</span>
@@ -86,7 +86,7 @@ export default function GoalsCalculator({ onCalculate }: { onCalculate: (macros:
 
       {isOpen && (
         <form onSubmit={handleCalculate} className="p-4 pt-0 space-y-3">
-          <p className="text-xs text-gray-500">{t('disclaimer')}</p>
+          <p className="text-xs text-gray-400">{t('disclaimer')}</p>
 
           <select value={sex} onChange={(e) => setSex(e.target.value)} className="border p-2 rounded w-full">
             <option value="male">{t('male')}</option>

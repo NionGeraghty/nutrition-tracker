@@ -7,7 +7,7 @@ export default async function ResetPasswordPage() {
 
   return (
     <main className="p-8">
-      <h1 className="text-2xl font-bold mb-4">{t('resetPasswordTitle')}</h1>
+      <h1 className="text-3xl font-bold text-gray-900 mb-6">{t('resetPasswordTitle')}</h1>
       <Suspense fallback={<p>Loading...</p>}>
         <ResetPasswordForm />
       </Suspense>

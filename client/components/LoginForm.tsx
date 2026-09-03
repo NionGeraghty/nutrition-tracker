@@ -45,11 +45,11 @@ export default function LoginForm() {
 
       <button type="submit" className="bg-primary hover:bg-primary-hover text-white px-4 py-2 rounded w-full transition">{t('logIn')}</button>
 
-      <p className="text-sm text-gray-600">
+      <p className="text-sm text-gray-500">
         <Link href="/forgot-password" className="text-primary underline">{t('forgotYourPassword')}</Link>
       </p>
 
-      <p className="text-sm text-gray-600">
+      <p className="text-sm text-gray-500">
         {t('noAccount')}{' '}
         <Link href="/signup" className="text-primary underline">{t('signUp')}</Link>
       </p>

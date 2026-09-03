@@ -12,7 +12,7 @@ export default function ForgotPasswordForm() {
     return (
       <div className="border border-primary bg-primary-light rounded p-4 max-w-sm space-y-2">
         <p>{t('forgotSuccessTitle')}</p>
-        <p className="text-sm text-gray-600">{t('forgotSuccessNote')}</p>
+        <p className="text-sm text-gray-500">{t('forgotSuccessNote')}</p>
       </div>
     );
   }

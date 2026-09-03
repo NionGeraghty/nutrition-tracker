@@ -123,8 +123,8 @@ export default function EntryItem({ entry, foods, targetUserId }: { entry: Entry
       className="border rounded flex justify-between items-center p-2 text-sm cursor-pointer hover:bg-primary-light hover:border-primary transition"
     >
       <div>
-        <div>{entry.name} — {entry.grams}g</div>
-        <div className="text-gray-600">
+        <div className="font-semibold text-gray-900">{entry.name} — {entry.grams}g</div>
+        <div className="text-sm text-gray-500">
           {calories.toFixed(0)} {t('cal')} · {protein.toFixed(1)}g {t('proteinUnit')} ·{' '}
           {carbs.toFixed(1)}g {t('carbsUnit')} · {fat.toFixed(1)}g {t('fatUnit')} · {fibre.toFixed(1)}g {t('fibreUnit')}
         </div>

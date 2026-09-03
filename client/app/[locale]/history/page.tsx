@@ -63,7 +63,7 @@ export default async function HistoryPage({
 
   return (
     <main className="p-4 md:p-8 space-y-6">
-      <h1 className="text-2xl font-bold">{t('title')}</h1>
+      <h1 className="text-3xl font-bold text-gray-900 mb-6">{t('title')}</h1>
 
       <div className="flex flex-wrap gap-4">
         <DatePicker date={date} />

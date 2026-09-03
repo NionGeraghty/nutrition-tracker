@@ -50,7 +50,7 @@ export default function MobileNavMenu({ user }: { user: User | null }) {
           <LanguageSwitcher />
           {user ? (
             <>
-              <span className="text-sm text-gray-600">{user.email}</span>
+              <span className="text-sm text-gray-500">{user.email}</span>
               <LogoutButton />
             </>
           ) : (

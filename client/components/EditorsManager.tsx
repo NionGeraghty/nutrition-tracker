@@ -42,7 +42,7 @@ export default function EditorsManager({
     <div className="space-y-6">
       {unreciprocated.length > 0 && (
         <div className="border border-accent bg-amber-50 rounded p-4 space-y-2">
-          <h2 className="font-semibold text-sm">{t('returnFavour')}</h2>
+          <h2 className="font-semibold text-base text-gray-900 mb-3">{t('returnFavour')}</h2>
           {unreciprocated.map((person) => (
             <div key={person.id} className="flex justify-between items-center text-sm">
               <span>{t('hasGivenAccess', { email: person.email })}</span>
@@ -77,7 +77,7 @@ export default function EditorsManager({
         }}
         className="border p-4 rounded space-y-3 max-w-sm"
       >
-        <h2 className="font-semibold">{t('grantTitle')}</h2>
+        <h2 className="font-semibold text-base text-gray-900 mb-3">{t('grantTitle')}</h2>
         {error && <p className="text-red-600 text-sm">{error}</p>}
         <input
           type="email"
@@ -91,14 +91,14 @@ export default function EditorsManager({
       </form>
 
       <div>
-        <h2 className="font-semibold mb-2">{t('myEditorsTitle')}</h2>
+        <h2 className="font-semibold text-base text-gray-900 mb-3">{t('myEditorsTitle')}</h2>
         {myEditors.length === 0 ? (
           <p className="text-sm text-gray-500">{t('noEditors')}</p>
         ) : (
           <ul className="space-y-2">
             {myEditors.map((person) => (
               <li key={person.id} className="border p-2 rounded flex justify-between items-center text-sm">
-                <span>{person.email}</span>
+                <span className="font-semibold text-gray-900">{person.email}</span>
                 <button onClick={() => handleRemove(person.id)} className="text-red-600 underline">{t('remove')}</button>
               </li>
             ))}
@@ -107,13 +107,13 @@ export default function EditorsManager({
       </div>
 
       <div>
-        <h2 className="font-semibold mb-2">{t('grantedToMeTitle')}</h2>
+        <h2 className="font-semibold text-base text-gray-900 mb-3">{t('grantedToMeTitle')}</h2>
         {grantedToMe.length === 0 ? (
           <p className="text-sm text-gray-500">{t('noneGranted')}</p>
         ) : (
           <ul className="space-y-2">
             {grantedToMe.map((person) => (
-              <li key={person.id} className="border p-2 rounded text-sm">{person.email}</li>
+              <li key={person.id} className="border p-2 rounded text-sm font-semibold text-gray-900">{person.email}</li>
             ))}
           </ul>
         )}

@@ -6,7 +6,7 @@ export default async function SignupPage() {
 
   return (
     <main className="p-8">
-      <h1 className="text-2xl font-bold mb-4">{t('signUpTitle')}</h1>
+      <h1 className="text-3xl font-bold text-gray-900 mb-6">{t('signUpTitle')}</h1>
       <SignupForm />
     </main>
   );

@@ -86,7 +86,7 @@ export default function CreateFoodForm({ grantedToMe, userId }: { grantedToMe: G
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full text-left p-4 font-semibold flex justify-between items-center hover:bg-primary-light transition"
+        className="w-full text-left p-4 font-semibold text-base text-gray-900 flex justify-between items-center hover:bg-primary-light transition"
       >
         {t('addFood')}
         <span>{isOpen ? '▲' : '▼'}</span>
@@ -128,8 +128,8 @@ export default function CreateFoodForm({ grantedToMe, userId }: { grantedToMe: G
                       onClick={() => applyResult(result)}
                       className="w-full text-left p-2 text-sm hover:bg-primary-light transition"
                     >
-                      <div className="font-medium">{result.name}</div>
-                      <div className="text-gray-500">
+                      <div className="font-semibold text-gray-900">{result.name}</div>
+                      <div className="text-sm text-gray-500">
                         {result.caloriesPer100g} {t('cal')} · {result.proteinPer100g}g {t('proteinUnit')} per 100g
                       </div>
                     </button>

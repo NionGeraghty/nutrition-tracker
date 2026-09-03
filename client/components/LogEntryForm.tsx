@@ -50,7 +50,7 @@ export default function LogEntryForm({
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full text-left p-4 font-semibold flex justify-between items-center hover:bg-primary-light transition"
+        className="w-full text-left p-4 font-semibold text-base text-gray-900 flex justify-between items-center hover:bg-primary-light transition"
       >
         {t('logFood')}
         <span>{isOpen ? '▲' : '▼'}</span>

@@ -87,7 +87,7 @@ export default function GoalsForm({ goals }: { goals: Goals | null }) {
       </form>
 
       <div className="mt-4 max-w-md space-y-3">
-        <p className="text-xs text-gray-500">
+        <p className="text-xs text-gray-400">
           <strong>{t('medicalDisclaimer')}</strong>
         </p>
         <ExplanationSection />

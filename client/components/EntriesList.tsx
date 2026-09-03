@@ -30,7 +30,7 @@ export default function EntriesList({ entries, foods, targetUserId }: { entries:
     <div className="space-y-4">
       {grouped.map((group) => (
         <div key={group.mealType}>
-          <h3 className="font-semibold mb-2">{mealLabels[group.mealType]}</h3>
+          <h3 className="font-semibold text-base text-gray-900 mb-3">{mealLabels[group.mealType]}</h3>
           <ul className="space-y-2">
             {group.items.map((item) => (
               <EntryItem key={item.id} entry={item} foods={foods} targetUserId={targetUserId} />

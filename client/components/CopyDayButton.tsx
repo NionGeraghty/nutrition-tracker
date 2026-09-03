@@ -45,7 +45,7 @@ export default function CopyDayButton({ toDate, targetUserId }: { toDate: string
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full text-left p-3 text-sm font-medium flex justify-between items-center hover:bg-primary-light transition"
+        className="w-full text-left p-3 font-semibold text-base text-gray-900 flex justify-between items-center hover:bg-primary-light transition"
       >
         {t('copyFromAnotherDay')}
         <span>{isOpen ? '▲' : '▼'}</span>

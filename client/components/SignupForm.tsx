@@ -43,7 +43,7 @@ export default function SignupForm() {
 
       <button type="submit" className="bg-primary hover:bg-primary-hover text-white px-4 py-2 rounded w-full transition">{t('signUp')}</button>
 
-      <p className="text-sm text-gray-600">
+      <p className="text-sm text-gray-500">
         {t('alreadyHaveAccount')}{' '}
         <Link href="/login" className="text-primary underline">{t('logIn')}</Link>
       </p>

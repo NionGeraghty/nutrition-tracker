@@ -142,8 +142,8 @@ export default function RecipeItem({ recipe, foods }: { recipe: Recipe; foods: F
       className="border rounded flex justify-between items-center p-3 cursor-pointer hover:bg-primary-light hover:border-primary transition"
     >
       <div>
-        <div className="font-semibold">{recipe.name}</div>
-        <div className="text-sm text-gray-600">
+        <div className="font-semibold text-gray-900">{recipe.name}</div>
+        <div className="text-sm text-gray-500">
           {t('totalGrams', { grams: recipe.total_grams })}
           {recipe.calories_per_100g && (
             <>

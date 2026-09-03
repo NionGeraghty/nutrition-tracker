@@ -41,7 +41,7 @@ export default async function Home() {
 
   return (
     <main className="p-4 md:p-8">
-      <h1 className="text-2xl font-bold mb-6">
+      <h1 className="text-3xl font-bold text-gray-900 mb-6">
         {t('welcomeBack')}, {user.email}
       </h1>
 
@@ -52,8 +52,8 @@ export default async function Home() {
             href={card.href}
             className="border border-gray-200 rounded-lg p-5 hover:border-primary hover:bg-primary-light transition"
           >
-            <h2 className="font-semibold mb-1">{card.title}</h2>
-            <p className="text-sm text-gray-600">{card.desc}</p>
+            <h2 className="font-semibold text-gray-900 mb-1">{card.title}</h2>
+            <p className="text-sm text-gray-500">{card.desc}</p>
           </Link>
         ))}
       </div>
