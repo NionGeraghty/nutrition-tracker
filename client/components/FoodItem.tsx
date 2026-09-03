@@ -114,7 +114,7 @@ export default function FoodItem({ food }: { food: Food }) {
   return (
     <li
       onClick={() => setIsEditing(true)}
-      className="border p-2 rounded flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 text-sm cursor-pointer hover:bg-gray-50"
+      className="border p-2 rounded flex justify-between items-center gap-2 text-sm cursor-pointer hover:bg-gray-50"
     >
       <div>
         <div className="font-semibold">{food.name}</div>
@@ -128,7 +128,7 @@ export default function FoodItem({ food }: { food: Food }) {
           e.stopPropagation();
           handleDelete();
         }}
-        className="text-sm text-red-600 underline shrink-0"
+        className="text-sm text-red-600 underline shrink-0 self-end sm:self-auto"
       >
         {t('delete')}
       </button>
