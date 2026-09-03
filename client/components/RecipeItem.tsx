@@ -137,7 +137,10 @@ export default function RecipeItem({ recipe, foods }: { recipe: Recipe; foods: F
   }
 
   return (
-    <li className="border p-3 rounded flex justify-between items-center">
+    <li
+      onClick={startEditing}
+      className="border p-3 rounded flex justify-between items-center cursor-pointer hover:bg-gray-50"
+    >
       <div>
         <div className="font-semibold">{recipe.name}</div>
         <div className="text-sm text-gray-600">
@@ -152,14 +155,16 @@ export default function RecipeItem({ recipe, foods }: { recipe: Recipe; foods: F
           )}
         </div>
       </div>
-      <div className="flex gap-2">
-        <button onClick={startEditing} className="text-sm underline" disabled={loading}>
-          {loading ? t('loading') : t('edit')}
-        </button>
-        <button onClick={handleDelete} className="text-sm text-red-600 underline">
-          {t('delete')}
-        </button>
-      </div>
+      <button
+        onClick={(e) => {
+          e.stopPropagation();
+          handleDelete();
+        }}
+        className="text-sm text-red-600 underline shrink-0"
+        disabled={loading}
+      >
+        {loading ? t('loading') : t('delete')}
+      </button>
     </li>
   );
 }

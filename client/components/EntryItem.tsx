@@ -118,7 +118,10 @@ export default function EntryItem({ entry, foods, targetUserId }: { entry: Entry
 }
 
   return (
-    <li className="border p-2 rounded flex justify-between items-center text-sm">
+    <li
+      onClick={() => setIsEditing(true)}
+      className="border p-2 rounded flex justify-between items-center text-sm cursor-pointer hover:bg-gray-50"
+    >
       <div>
         <div>{entry.name} — {entry.grams}g</div>
         <div className="text-gray-600">
@@ -126,10 +129,15 @@ export default function EntryItem({ entry, foods, targetUserId }: { entry: Entry
           {carbs.toFixed(1)}g {t('carbsUnit')} · {fat.toFixed(1)}g {t('fatUnit')} · {fibre.toFixed(1)}g {t('fibreUnit')}
         </div>
       </div>
-      <div className="flex gap-2 shrink-0 ml-2">
-        <button onClick={() => setIsEditing(true)} className="underline">{t('edit')}</button>
-        <button onClick={handleDelete} className="text-red-600 underline">{t('delete')}</button>
-      </div>
+      <button
+        onClick={(e) => {
+          e.stopPropagation();
+          handleDelete();
+        }}
+        className="text-sm text-red-600 underline shrink-0 ml-2"
+      >
+        {t('delete')}
+      </button>
     </li>
   );
 }

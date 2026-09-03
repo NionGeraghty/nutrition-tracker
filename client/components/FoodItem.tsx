@@ -112,7 +112,10 @@ export default function FoodItem({ food }: { food: Food }) {
   }
 
   return (
-    <li className="border p-2 rounded flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 text-sm">
+    <li
+      onClick={() => setIsEditing(true)}
+      className="border p-2 rounded flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 text-sm cursor-pointer hover:bg-gray-50"
+    >
       <div>
         <div className="font-semibold">{food.name}</div>
         <div className="text-sm text-gray-600">
@@ -120,10 +123,15 @@ export default function FoodItem({ food }: { food: Food }) {
           {food.carbs_per_100g}g {t('carbsUnit')} · {food.fat_per_100g}g {t('fatUnit')} · {food.fibre_per_100g}g {t('fibreUnit')}
         </div>
       </div>
-      <div className="flex gap-2">
-        <button onClick={() => setIsEditing(true)} className="text-sm underline">{t('edit')}</button>
-        <button onClick={handleDelete} className="text-sm text-red-600 underline">{t('delete')}</button>
-      </div>
+      <button
+        onClick={(e) => {
+          e.stopPropagation();
+          handleDelete();
+        }}
+        className="text-sm text-red-600 underline shrink-0"
+      >
+        {t('delete')}
+      </button>
     </li>
   );
 }
