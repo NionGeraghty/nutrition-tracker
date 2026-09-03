@@ -60,7 +60,7 @@ export default function GoalsForm({ goals }: { goals: Goals | null }) {
         className="border p-4 rounded space-y-3 max-w-md"
       >
         {error && <p className="text-red-600 text-sm">{error}</p>}
-        {saved && <p className="text-green-600 text-sm">{t('saved')}</p>}
+        {saved && <p className="text-primary text-sm font-medium">{t('saved')}</p>}
 
         <div>
           <label className="block text-sm font-medium mb-1">{t('calories')}</label>
@@ -83,7 +83,7 @@ export default function GoalsForm({ goals }: { goals: Goals | null }) {
           <input type="number" value={fibre} onChange={(e) => setFibre(e.target.value)} className="border p-2 rounded w-full" required />
         </div>
 
-        <button type="submit" className="bg-black text-white px-4 py-2 rounded">{t('save')}</button>
+        <button type="submit" className="bg-primary hover:bg-primary-hover text-white px-4 py-2 rounded transition">{t('save')}</button>
       </form>
 
       <div className="mt-4 max-w-md space-y-3">

@@ -78,7 +78,7 @@ export default function GoalsCalculator({ onCalculate }: { onCalculate: (macros:
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full text-left p-4 font-semibold flex justify-between items-center"
+        className="w-full text-left p-4 font-semibold flex justify-between items-center hover:bg-primary-light transition"
       >
         {t('calculateFromProfile')}
         <span>{isOpen ? '▲' : '▼'}</span>
@@ -110,7 +110,7 @@ export default function GoalsCalculator({ onCalculate }: { onCalculate: (macros:
             <option value="gain">{t('gain')}</option>
           </select>
 
-          <button type="submit" className="bg-black text-white px-4 py-2 rounded">{t('calculate')}</button>
+          <button type="submit" className="bg-primary hover:bg-primary-hover text-white px-4 py-2 rounded transition">{t('calculate')}</button>
         </form>
       )}
     </div>

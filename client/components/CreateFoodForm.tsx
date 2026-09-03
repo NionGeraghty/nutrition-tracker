@@ -86,7 +86,7 @@ export default function CreateFoodForm({ grantedToMe, userId }: { grantedToMe: G
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full text-left p-4 font-semibold flex justify-between items-center"
+        className="w-full text-left p-4 font-semibold flex justify-between items-center hover:bg-primary-light transition"
       >
         {t('addFood')}
         <span>{isOpen ? '▲' : '▼'}</span>
@@ -113,7 +113,7 @@ export default function CreateFoodForm({ grantedToMe, userId }: { grantedToMe: G
               <button
                 type="button"
                 onClick={handleSearch}
-                className="border px-3 py-2 rounded text-sm"
+                className="border border-gray-300 px-3 py-2 rounded text-sm"
               >
                 {searching ? t('searching') : t('search')}
               </button>
@@ -126,7 +126,7 @@ export default function CreateFoodForm({ grantedToMe, userId }: { grantedToMe: G
                     <button
                       type="button"
                       onClick={() => applyResult(result)}
-                      className="w-full text-left p-2 text-sm hover:bg-gray-50"
+                      className="w-full text-left p-2 text-sm hover:bg-primary-light transition"
                     >
                       <div className="font-medium">{result.name}</div>
                       <div className="text-gray-500">
@@ -142,7 +142,7 @@ export default function CreateFoodForm({ grantedToMe, userId }: { grantedToMe: G
           <button
             type="button"
             onClick={() => setScanning(true)}
-            className="border px-3 py-2 rounded text-sm"
+            className="border border-gray-300 px-3 py-2 rounded text-sm"
           >
             {t('scanBarcode')}
           </button>
@@ -307,7 +307,7 @@ export default function CreateFoodForm({ grantedToMe, userId }: { grantedToMe: G
             )}
 
             <div className="flex gap-2">
-              <button type="submit" className="bg-black text-white px-4 py-2 rounded">
+              <button type="submit" className="bg-primary hover:bg-primary-hover text-white px-4 py-2 rounded transition">
                 {t('submit')}
               </button>
             </div>

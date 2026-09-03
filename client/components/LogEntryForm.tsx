@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter } from '@/i18n/navigation';
 import { useTranslations } from 'next-intl';
 
 interface Food {
@@ -50,7 +50,7 @@ export default function LogEntryForm({
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full text-left p-4 font-semibold flex justify-between items-center"
+        className="w-full text-left p-4 font-semibold flex justify-between items-center hover:bg-primary-light transition"
       >
         {t('logFood')}
         <span>{isOpen ? '▲' : '▼'}</span>
@@ -144,7 +144,7 @@ export default function LogEntryForm({
           </select>
 
           <div className="flex gap-2">
-            <button type="submit" className="bg-black text-white px-4 py-2 rounded">
+            <button type="submit" className="bg-primary hover:bg-primary-hover text-white px-4 py-2 rounded transition">
               {t('logEntry')}
             </button>
           </div>

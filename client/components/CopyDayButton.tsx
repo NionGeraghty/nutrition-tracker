@@ -45,7 +45,7 @@ export default function CopyDayButton({ toDate, targetUserId }: { toDate: string
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full text-left p-3 text-sm font-medium flex justify-between items-center"
+        className="w-full text-left p-3 text-sm font-medium flex justify-between items-center hover:bg-primary-light transition"
       >
         {t('copyFromAnotherDay')}
         <span>{isOpen ? '▲' : '▼'}</span>
@@ -54,7 +54,7 @@ export default function CopyDayButton({ toDate, targetUserId }: { toDate: string
       {isOpen && (
         <div className="p-3 pt-0 space-y-2">
           {error && <p className="text-red-600 text-xs">{error}</p>}
-          {message && <p className="text-green-600 text-xs">{message}</p>}
+          {message && <p className="text-primary text-xs font-medium">{message}</p>}
 
           <select value={mode} onChange={(e) => setMode(e.target.value as 'yesterday' | 'specific')} className="border p-2 rounded w-full text-sm">
             <option value="yesterday">{t('yesterday', { date: formatDateDisplay(yesterday) })}</option>
@@ -109,7 +109,7 @@ export default function CopyDayButton({ toDate, targetUserId }: { toDate: string
               setMessage(t('copySuccess', { count: data.copied }));
               router.refresh();
             }}
-            className="bg-black text-white px-3 py-2 rounded text-sm w-full disabled:opacity-50"
+            className="bg-primary hover:bg-primary-hover text-white px-3 py-2 rounded text-sm w-full disabled:opacity-50 transition"
           >
             {loading ? t('copying') : t('copyEntries')}
           </button>

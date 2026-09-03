@@ -10,13 +10,13 @@ export default async function Home() {
     return (
       <main className="flex-1 flex items-center justify-center p-8">
         <div className="max-w-xl text-center space-y-6">
-          <h1 className="text-4xl font-bold">{t('heroTitle')}</h1>
+          <h1 className="text-4xl font-bold text-gray-900">{t('heroTitle')}</h1>
           <p className="text-lg text-gray-600">{t('heroSubtitle')}</p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <Link href="/signup" className="bg-black text-white px-6 py-3 rounded font-medium">
+            <Link href="/signup" className="bg-primary hover:bg-primary-hover text-white px-6 py-3 rounded font-medium transition">
               {t('signUp')}
             </Link>
-            <Link href="/login" className="border px-6 py-3 rounded font-medium">
+            <Link href="/login" className="border border-gray-300 px-6 py-3 rounded font-medium">
               {t('logIn')}
             </Link>
           </div>
@@ -50,7 +50,7 @@ export default async function Home() {
           <Link
             key={card.href}
             href={card.href}
-            className="border rounded-lg p-5 hover:border-black hover:shadow-sm transition"
+            className="border border-gray-200 rounded-lg p-5 hover:border-primary hover:bg-primary-light transition"
           >
             <h2 className="font-semibold mb-1">{card.title}</h2>
             <p className="text-sm text-gray-600">{card.desc}</p>

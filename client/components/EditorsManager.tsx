@@ -41,12 +41,12 @@ export default function EditorsManager({
   return (
     <div className="space-y-6">
       {unreciprocated.length > 0 && (
-        <div className="border border-amber-300 bg-amber-50 rounded p-4 space-y-2">
+        <div className="border border-accent bg-amber-50 rounded p-4 space-y-2">
           <h2 className="font-semibold text-sm">{t('returnFavour')}</h2>
           {unreciprocated.map((person) => (
             <div key={person.id} className="flex justify-between items-center text-sm">
               <span>{t('hasGivenAccess', { email: person.email })}</span>
-              <button onClick={() => handleReciprocate(person.email)} className="bg-black text-white px-3 py-1 rounded text-xs">
+              <button onClick={() => handleReciprocate(person.email)} className="bg-primary hover:bg-primary-hover text-white px-3 py-1 rounded text-xs transition">
                 {t('giveAccessBack')}
               </button>
             </div>
@@ -87,7 +87,7 @@ export default function EditorsManager({
           className="border p-2 rounded w-full"
           required
         />
-        <button type="submit" className="bg-black text-white px-4 py-2 rounded">{t('grantAccess')}</button>
+        <button type="submit" className="bg-primary hover:bg-primary-hover text-white px-4 py-2 rounded transition">{t('grantAccess')}</button>
       </form>
 
       <div>

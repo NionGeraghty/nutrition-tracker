@@ -41,11 +41,11 @@ export default function SignupForm() {
       <input type="email" placeholder={t('email')} value={email} onChange={(e) => setEmail(e.target.value)} className="border p-2 rounded w-full" required />
       <input type="password" placeholder={t('passwordMin')} value={password} onChange={(e) => setPassword(e.target.value)} className="border p-2 rounded w-full" required minLength={8} />
 
-      <button type="submit" className="bg-black text-white px-4 py-2 rounded w-full">{t('signUp')}</button>
+      <button type="submit" className="bg-primary hover:bg-primary-hover text-white px-4 py-2 rounded w-full transition">{t('signUp')}</button>
 
       <p className="text-sm text-gray-600">
         {t('alreadyHaveAccount')}{' '}
-        <Link href="/login" className="underline">{t('logIn')}</Link>
+        <Link href="/login" className="text-primary underline">{t('logIn')}</Link>
       </p>
     </form>
   );

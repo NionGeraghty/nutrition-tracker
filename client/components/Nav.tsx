@@ -12,7 +12,7 @@ export default async function Nav() {
   return (
     <nav className="border-b p-4">
       <div className="flex justify-between items-center">
-        <Link href="/" className="font-semibold">
+        <Link href="/" className="font-semibold text-primary">
           {t('appName')}
         </Link>
 

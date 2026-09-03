@@ -62,7 +62,7 @@ export default function RecipeItem({ recipe, foods }: { recipe: Recipe; foods: F
 
   if (isEditing) {
     return (
-      <li className="border p-3 rounded space-y-3">
+      <li className="border border-primary rounded p-3 space-y-3">
         {error && <p className="text-red-600 text-sm">{error}</p>}
 
         <input value={name} onChange={(e) => setName(e.target.value)} className="border p-2 rounded w-full" />
@@ -96,7 +96,7 @@ export default function RecipeItem({ recipe, foods }: { recipe: Recipe; foods: F
           ))}
         </div>
 
-        <button type="button" onClick={addIngredientRow} className="text-sm underline">
+        <button type="button" onClick={addIngredientRow} className="text-sm text-primary underline">
           {t('addIngredient')}
         </button>
 
@@ -124,11 +124,11 @@ export default function RecipeItem({ recipe, foods }: { recipe: Recipe; foods: F
               setIsEditing(false);
               router.refresh();
             }}
-            className="bg-black text-white px-3 py-1 rounded text-sm"
+            className="bg-primary hover:bg-primary-hover text-white px-3 py-1 rounded text-sm transition"
           >
             {t('save')}
           </button>
-          <button type="button" onClick={() => setIsEditing(false)} className="border px-3 py-1 rounded text-sm">
+          <button type="button" onClick={() => setIsEditing(false)} className="border border-gray-300 px-3 py-1 rounded text-sm">
             {t('cancel')}
           </button>
         </div>
@@ -139,7 +139,7 @@ export default function RecipeItem({ recipe, foods }: { recipe: Recipe; foods: F
   return (
     <li
       onClick={startEditing}
-      className="border p-3 rounded flex justify-between items-center cursor-pointer hover:bg-gray-50"
+      className="border rounded flex justify-between items-center p-3 cursor-pointer hover:bg-primary-light hover:border-primary transition"
     >
       <div>
         <div className="font-semibold">{recipe.name}</div>

@@ -43,15 +43,15 @@ export default function LoginForm() {
       <input type="email" placeholder={t('email')} value={email} onChange={(e) => setEmail(e.target.value)} className="border p-2 rounded w-full" required />
       <input type="password" placeholder={t('password')} value={password} onChange={(e) => setPassword(e.target.value)} className="border p-2 rounded w-full" required />
 
-      <button type="submit" className="bg-black text-white px-4 py-2 rounded w-full">{t('logIn')}</button>
+      <button type="submit" className="bg-primary hover:bg-primary-hover text-white px-4 py-2 rounded w-full transition">{t('logIn')}</button>
 
       <p className="text-sm text-gray-600">
-        <Link href="/forgot-password" className="underline">{t('forgotYourPassword')}</Link>
+        <Link href="/forgot-password" className="text-primary underline">{t('forgotYourPassword')}</Link>
       </p>
 
       <p className="text-sm text-gray-600">
         {t('noAccount')}{' '}
-        <Link href="/signup" className="underline">{t('signUp')}</Link>
+        <Link href="/signup" className="text-primary underline">{t('signUp')}</Link>
       </p>
     </form>
   );

@@ -66,7 +66,7 @@ export default function FoodItem({ food }: { food: Food }) {
 
   if (isEditing) {
     return (
-      <li className="border p-3 rounded space-y-2">
+      <li className="border border-primary rounded p-3 space-y-2">
         <div>
           <label className="block text-xs text-gray-500 mb-1">{t('name')}</label>
           <input value={name} onChange={(e) => setName(e.target.value)} onKeyDown={handleArrowNav} className="border p-1 rounded w-full" />
@@ -104,8 +104,8 @@ export default function FoodItem({ food }: { food: Food }) {
           />
         </div>
         <div className="flex gap-2">
-          <button onClick={handleSave} className="bg-black text-white px-3 py-1 rounded text-sm">{t('save')}</button>
-          <button onClick={() => setIsEditing(false)} className="border px-3 py-1 rounded text-sm">{t('cancel')}</button>
+          <button onClick={handleSave} className="bg-primary hover:bg-primary-hover text-white px-3 py-1 rounded text-sm transition">{t('save')}</button>
+          <button onClick={() => setIsEditing(false)} className="border border-gray-300 px-3 py-1 rounded text-sm">{t('cancel')}</button>
         </div>
       </li>
     );
@@ -114,7 +114,7 @@ export default function FoodItem({ food }: { food: Food }) {
   return (
     <li
       onClick={() => setIsEditing(true)}
-      className="border p-2 rounded flex justify-between items-center gap-2 text-sm cursor-pointer hover:bg-gray-50"
+      className="border rounded flex justify-between items-center gap-2 p-2 text-sm cursor-pointer hover:bg-primary-light hover:border-primary transition"
     >
       <div>
         <div className="font-semibold">{food.name}</div>

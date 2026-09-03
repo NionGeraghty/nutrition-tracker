@@ -26,9 +26,9 @@ export default function ResetPasswordForm() {
 
   if (success) {
     return (
-      <div className="border p-4 rounded max-w-sm space-y-2">
+      <div className="border border-primary bg-primary-light rounded p-4 max-w-sm space-y-2">
         <p>{t('resetSuccess')}</p>
-        <Link href="/login" className="underline">{t('logIn')}</Link>
+        <Link href="/login" className="text-primary underline">{t('logIn')}</Link>
       </div>
     );
   }
@@ -58,7 +58,7 @@ export default function ResetPasswordForm() {
     >
       {error && <p className="text-red-600 text-sm">{error}</p>}
       <input type="password" placeholder={t('newPasswordMin')} value={password} onChange={(e) => setPassword(e.target.value)} className="border p-2 rounded w-full" required minLength={8} />
-      <button type="submit" className="bg-black text-white px-4 py-2 rounded w-full">{t('resetPassword')}</button>
+      <button type="submit" className="bg-primary hover:bg-primary-hover text-white px-4 py-2 rounded w-full transition">{t('resetPassword')}</button>
     </form>
   );
 }
