@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from '@/i18n/navigation';
 import { useTranslations } from 'next-intl';
+import FoodPicker from './FoodPicker';
 
 interface Food {
   id: string;
@@ -62,6 +63,11 @@ export default function LogEntryForm({
             e.preventDefault();
             setError('');
 
+            if (!foodId) {
+              setError(t('selectAFood'));
+              return;
+            }
+
             const grams = calculateGrams();
 
             const response = await fetch('/api/entries', {
@@ -92,17 +98,7 @@ export default function LogEntryForm({
         >
           {error && <p className="text-red-600 text-sm">{error}</p>}
 
-          <select
-            value={foodId}
-            onChange={(e) => handleFoodChange(e.target.value)}
-            className="border p-2 rounded w-full"
-            required
-          >
-            <option value="" disabled>{t('selectAFood')}</option>
-            {foods.map((food) => (
-              <option key={food.id} value={food.id}>{food.name}</option>
-            ))}
-          </select>
+          <FoodPicker foods={foods} value={foodId} onChange={handleFoodChange} placeholder={t('selectAFood')} />
 
           {hasPortionSize && (
             <div>
