@@ -64,7 +64,7 @@
     "fibreUnit": "fibra",
     "selectAFood": "Selecciona una comida",
     "portionGrams": "Tamaño de la porción en gramos (opcional)",
-    "portionHint": "ej. si 1 rebanada de pan son 30g, escribe 30"
+    "portionHint": "ej. si 1 huevo son 30g, escribe 30"
   },
   "Today": {
   "title": "Comidas de Hoy — {date}",
