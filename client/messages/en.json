@@ -180,7 +180,20 @@
   "explainFibreTitle": "Fibre",
   "explainFibre": "A general daily fibre target, not personalised to your other numbers.",
   "explainWhyTitle": "Why this won't be exact",
-  "explainWhy": "These formulas are based on averages across large groups of people. Your actual needs depend on things they can't measure — body composition, genetics, health conditions, and more. Two people with identical height, weight, and age can have genuinely different real-world energy needs. Use these numbers as an informed starting point, not a guarantee."
+  "explainWhy": "These formulas are based on averages across large groups of people. Your actual needs depend on things they can't measure — body composition, genetics, health conditions, and more. Two people with identical height, weight, and age can have genuinely different real-world energy needs. Use these numbers as an informed starting point, not a guarantee.",
+  "knowBodyFat": "I know my body fat percentage",
+  "bodyFatPercent": "Body fat percentage",
+  "bodyFatHint": "Using this gives a more accurate estimate, since it accounts for your body composition, not just weight",
+  "howToEstimateBodyFat": "How do I find out my body fat percentage?",
+  "bodyFatMethodsIntro": "A few common ways to estimate it, roughly from least to most accurate:",
+  "bodyFatMethodTapeTitle": "Tape measurement (US Navy method)",
+  "bodyFatMethodTapeText": "Free, using just a measuring tape around your neck and waist (and hips, for women). Many free calculators online will do the math for you if you give them these measurements.",
+  "bodyFatMethodScaleTitle": "Smart scale (bioelectrical impedance)",
+  "bodyFatMethodScaleText": "Convenient, but results can vary noticeably depending on hydration and time of day — treat it as a rough trend, not an exact number.",
+  "bodyFatMethodCalipersTitle": "Skinfold calipers",
+  "bodyFatMethodCalipersText": "Fairly accurate with practice, inexpensive, but takes some skill to measure consistently.",
+  "bodyFatMethodDexaTitle": "DEXA scan",
+  "bodyFatMethodDexaText": "The most accurate option, but costs money and requires a specialist facility."
 },
 "Editors": {
   "title": "Connected Users",

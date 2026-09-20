@@ -180,7 +180,20 @@
   "explainFibreTitle": "Fibra",
   "explainFibre": "Un objetivo diario general de fibra, no personalizado según tus otros números.",
   "explainWhyTitle": "Por qué esto no será exacto",
-  "explainWhy": "Estas fórmulas se basan en promedios de grandes grupos de personas. Tus necesidades reales dependen de cosas que no pueden medir — composición corporal, genética, condiciones de salud y más. Dos personas con la misma altura, peso y edad pueden tener necesidades energéticas reales genuinamente diferentes. Usa estos números como un punto de partida informado, no como una garantía."
+  "explainWhy": "Estas fórmulas se basan en promedios de grandes grupos de personas. Tus necesidades reales dependen de cosas que no pueden medir — composición corporal, genética, condiciones de salud y más. Dos personas con la misma altura, peso y edad pueden tener necesidades energéticas reales genuinamente diferentes. Usa estos números como un punto de partida informado, no como una garantía.",
+  "knowBodyFat": "Conozco mi porcentaje de grasa corporal",
+  "bodyFatPercent": "Porcentaje de grasa corporal",
+  "bodyFatHint": "Usar esto da una estimación más precisa, ya que tiene en cuenta tu composición corporal, no solo el peso",
+  "howToEstimateBodyFat": "¿Cómo puedo saber mi porcentaje de grasa corporal?",
+  "bodyFatMethodsIntro": "Algunas formas comunes de estimarlo, de menos a más preciso:",
+  "bodyFatMethodTapeTitle": "Cinta métrica (método de la Marina de EE. UU.)",
+  "bodyFatMethodTapeText": "Gratis, usando solo una cinta métrica alrededor del cuello y la cintura (y las caderas, en mujeres). Muchas calculadoras gratuitas en línea harán el cálculo por ti si les das estas medidas.",
+  "bodyFatMethodScaleTitle": "Báscula inteligente (bioimpedancia)",
+  "bodyFatMethodScaleText": "Cómoda, pero los resultados pueden variar notablemente según la hidratación y la hora del día — trátalo como una tendencia aproximada, no un número exacto.",
+  "bodyFatMethodCalipersTitle": "Plicómetro (pliegues cutáneos)",
+  "bodyFatMethodCalipersText": "Bastante preciso con práctica, económico, pero requiere algo de habilidad para medir de forma consistente.",
+  "bodyFatMethodDexaTitle": "Escáner DEXA",
+  "bodyFatMethodDexaText": "La opción más precisa, pero tiene coste y requiere una instalación especializada."
 },
 "Editors": {
   "title": "Usuarios Conectados",
