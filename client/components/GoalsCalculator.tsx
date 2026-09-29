@@ -9,7 +9,7 @@ interface CalculatedMacros {
   carbs: number;
   fat: number;
   fibre: number;
-}
+} 
 
 export default function GoalsCalculator({ onCalculate }: { onCalculate: (macros: CalculatedMacros) => void }) {
   const t = useTranslations('Goals');
