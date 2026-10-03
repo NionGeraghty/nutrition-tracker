@@ -12,6 +12,7 @@ import './types/session';
 import { requireAuth } from './middleware/requireAuth';
 import recipeRoutes from './routes/recipeRoutes';
 import editorRoutes from './routes/editorRoutes';
+import suggestionRoutes from './routes/suggestionRoutes';
 
 const app = express();
 
@@ -51,6 +52,7 @@ app.use('/goals', requireAuth, goalRoutes);
 app.use('/summary', requireAuth, summaryRoutes);
 app.use('/recipes', requireAuth, recipeRoutes);
 app.use('/editors', requireAuth, editorRoutes);
+app.use('/suggestions', requireAuth, suggestionRoutes);
 app.use('/auth', authRoutes);
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {

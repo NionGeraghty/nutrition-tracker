@@ -14,6 +14,7 @@ afterEach(async () => {
   await pool.query('DELETE FROM daily_goals');
   await pool.query('DELETE FROM editor_permissions');
   await pool.query(`DELETE FROM users WHERE id != $1`, [process.env.DEV_USER_ID]);
+  await pool.query('DELETE FROM suggestion_requests');
 });
 
 afterAll(async () => {

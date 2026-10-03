@@ -22,3 +22,19 @@ export async function resolveAllowedTargets(
 
   return allValid ? targets : null;
 }
+
+export async function resolveTargetUser(
+  requesterId: string,
+  requestedUserId: unknown
+): Promise<string | null> {
+  if (typeof requestedUserId !== 'string' || requestedUserId === requesterId) {
+    return requesterId;
+  }
+
+  const result = await pool.query(
+    'SELECT id FROM editor_permissions WHERE owner_id = $1 AND editor_id = $2',
+    [requestedUserId, requesterId]
+  );
+
+  return result.rows.length > 0 ? requestedUserId : null;
+}
